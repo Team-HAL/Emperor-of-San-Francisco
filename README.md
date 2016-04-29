@@ -1,6 +1,6 @@
-# Backbone Visualizer
+# Emperor of San Francisco
 
-> Visualizes a Backbone.js web application for new employees jumping onto a project
+> A multiplayer board game based off of King of Tokyo.
 
 
 ## Team
