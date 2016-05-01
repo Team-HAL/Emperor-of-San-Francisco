@@ -1,53 +1,71 @@
 const express = require('express');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-
 const app = express();
-const server = require('http').Server(app);
+
+const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const users = [];
+let sock1, sock2, sock3;
 
-io.on('connection', (socket) => {
-  console.log('A user has connected!');
-  console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
-  console.log('Just entered socket id: ', socket.id);
+var users = [];
 
+io.on('connection', function(socket) {
+  socket.on('get_player', (id)=>{
+    io.emit('load_player', playerID);
+  })
+  socket.on('msg', (text)=>{
+    io.emit('msg', text);
+  })
+
+  // socket.on('disconnect', function() {
+  //   console.log('A user has disconnect');
+  //   let i = users.indexOf(socket);
+  //   delete allClients[i];
+  // });
+
+/*
+  -client code
+  let sock = io();
+  sock.on('msg', function(text){
+    
+  })
+*/
   users.push(socket);
 
-  if (users.length) {
-    io.emit('gameStarts', 'GAME STARTS!');
+  if (!sock1){
+    sock1 = socket;
   }
-
-  socket.on('changeHP', (data) => {
-    io.emit('loadHP', data);
-  });
-
-  socket.on('changeVP', (data) => {
-    io.emit('loadVP', data);
-  });
-
-  socket.on('changeMoney', (data) => {
-    io.emit('loadMoney', data);
-  });
-
-  socket.on('nextTurn', (data) => {
-    io.emit('nextTurn', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('A user has disconnected...');
-    const i = users.indexOf(socket);
-    users.splice(i, 1);
-  });
+  else if (!sock2){
+    sock2 = socket;
+  }
+  else if (!sock3){
+    sock3 = socket;
+  }
+  else if(users.length === 4){
+    new game(sock1,sock2,sock3,socket);
+    socket.emit('msg', 'Match started!')
+    sock1=sock2=sock3=null;
+  }
 });
 
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../'));
 
 const port = process.env.PORT || 8000;
+
 server.listen(port);
-console.log('Server is running on ' + port);
+app.use(express.static(__dirname + '/../'));
+
 
 module.exports = app;
+
+class game {
+  constructor(sock1,sock2,sock3,sock4){
+    this.players=[sock1,sock2,sock3,sock4];
+    this.turn=0;
+
+    this.init();
+  }
+  init(){
+    this.players.forEach((sock) =>{
+      sock.emit('msg', 'game start!')
+    })
+  }
+}
