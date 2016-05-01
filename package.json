@@ -30,14 +30,12 @@
     "express": "^4.13.4",
     "jquery": "^2.2.3",
     "lodash": "^4.11.1",
-    "morgan": "^1.7.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "redux": "^3.5.2",
-    "socket.io": "^1.4.5",  
     "redux-promise": "^0.5.3",
     "thinky": "^2.3.2",
     "underscore": "^1.8.3",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0"  
   }
 }
