@@ -12,15 +12,13 @@ const User = React.createClass({
   },
 
   afterOpenModal: function() {
-    // references are now sync'd and can be accessed.
-    console.log(this);
     this.refs.subtitle.style.color = '#f00';
   },
 
   closeModal: function() {
     this.setState({ modalIsOpen: false });
   },
-
+  
   render: function() {
     return (
       <li>
