@@ -1,8 +1,13 @@
 const express = require('express');
-const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackConfig = require('./../webpack.config.js');
 
 const app = express();
+const compiler = webpack(webpackConfig);
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
@@ -12,10 +17,15 @@ io.on('connection', (socket) => {
   console.log('A user has connected!');
   console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
   console.log('Just entered socket id: ', socket.id);
+  console.log('TEAM THIS IS THE USERS: ', users);
 
-  users.push(socket);
+  if (users.length !== 4) {
+    users.push(socket);
+  }
 
-  if (users.length) {
+  io.emit('loadUsers', Object.keys(users));
+
+  if (users.length === 4) {
     io.emit('gameStarts', 'GAME STARTS!');
   }
 
@@ -44,6 +54,8 @@ io.on('connection', (socket) => {
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(webpackDevMiddleware(compiler));
+app.use(webpackHotMiddleware(compiler));
 app.use(express.static(__dirname + '/../'));
 
 const port = process.env.PORT || 8000;
