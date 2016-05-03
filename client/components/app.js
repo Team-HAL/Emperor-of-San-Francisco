@@ -1,9 +1,11 @@
 import React from 'react';
 import PlayerView from './player_view.js';
 import Players from './players.js';
+import PlayerActions from './player_actions.js';
+import TurnView from './turn_view.js';
 
 import _ from 'lodash';
-import Dices from './dices.js'
+import Dices from './dices.js';
 
 
 const socket = io.connect();
@@ -13,19 +15,25 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       users: [],
-      victoryPoints: [],
+      victoryPoints: [0, 0, 0, 0],
+      healthPoints: [10, 10, 10, 10],
+      energy: [0, 0, 0, 0],
       currentUser: 0,
+      currentTurn: 0,
       otherPlayers: [],
     };
+
     socket.on('getUser', this._currentUser.bind(this));
     socket.on('loadUsers', this._userConnect.bind(this));
+    socket.on('updateTurn', this._updateTurn.bind(this));
     socket.on('updateVP', this._updateVP.bind(this));
+    socket.on('updateHP', this._updateHP.bind(this));
+    socket.on('updateEnergy', this._updateEnergy.bind(this));
   }
 
   _userConnect(newPlayer) {
     const otherPlayerIDs = newPlayer;
     otherPlayerIDs.splice(this.state.currentUser, 1);
-
     this.setState({ users: newPlayer });
     this.setState({ otherPlayers: otherPlayerIDs });
   }
@@ -37,36 +45,52 @@ export default class App extends React.Component {
     this.setState({ otherPlayers });
   }
 
+  _updateTurn(currentTurn) {
+    this.setState({ currentTurn });
+  }
+
   _updateVP(victoryPoints) {
     this.setState({ victoryPoints });
   }
 
-  _increaseVP(num) {
-    socket.emit('increaseVP', num);
+  _updateHP(healthPoints) {
+    this.setState({ healthPoints });
+  }
+
+  _updateEnergy(energy) {
+    this.setState({ energy });
   }
 
 
   render() {
     return (
       <div>
+
+        <TurnView
+          currentTurn={this.state.currentTurn}
+        />
+
         {/* Current Player View */}
         <PlayerView
           key={this.state.currentUser}
           player={this.state.currentUser}
           victoryPoints={this.state.victoryPoints}
+          healthPoints={this.state.healthPoints}
+          energy={this.state.energy}
         />
 
-        <button
-          className="btn btn-primary"
-          onClick={ () => { this._increaseVP(1); }}
-        >
-          Increase current user Victory Points
-        </button>
+        <PlayerActions
+          socket={socket}
+          player={this.state.currentUser}
+          otherPlayers={this.state.otherPlayers}
+        />
 
         {/* Other Player View */}
         <Players
           otherPlayers={this.state.otherPlayers}
           victoryPoints={this.state.victoryPoints}
+          healthPoints={this.state.healthPoints}
+          energy={this.state.energy}
         />
 
       <Dices />
