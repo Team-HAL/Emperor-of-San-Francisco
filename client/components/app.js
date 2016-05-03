@@ -3,8 +3,9 @@ import PlayerView from './player_view.js';
 import Players from './players.js';
 
 import _ from 'lodash';
+import UsersList from './users_list';
+import Dices from './dices.js'
 
-// import UsersList from './users_list';
 
 const socket = io.connect();
 
@@ -69,6 +70,8 @@ export default class App extends React.Component {
           victoryPoints={this.state.victoryPoints}
         />
 
+      <Dices />
+      <UsersList socket={socket} />
       </div>
     );
   }
