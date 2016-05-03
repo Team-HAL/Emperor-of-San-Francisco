@@ -1,6 +1,7 @@
 import React from 'react';
 import PlayerView from './player_view.js';
 import Players from './players.js';
+import PlayerActions from './player_actions.js';
 
 import _ from 'lodash';
 import Dices from './dices.js'
@@ -14,6 +15,7 @@ export default class App extends React.Component {
     this.state = {
       users: [],
       victoryPoints: [],
+      healthPoints: [],
       currentUser: 0,
       otherPlayers: [],
     };
@@ -54,6 +56,11 @@ export default class App extends React.Component {
           key={this.state.currentUser}
           player={this.state.currentUser}
           victoryPoints={this.state.victoryPoints}
+          healthPoints={this.state.healthPoints}
+        />
+
+        <PlayerActions
+          
         />
 
         <button
@@ -67,6 +74,7 @@ export default class App extends React.Component {
         <Players
           otherPlayers={this.state.otherPlayers}
           victoryPoints={this.state.victoryPoints}
+          healthPoints={this.state.healthPoints}
         />
 
       <Dices />

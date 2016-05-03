@@ -8,6 +8,7 @@ const Players = (props) => {
         key={userid}
         player={userid}
         victoryPoints={props.victoryPoints}
+        healthPoints={props.healthPoints}
       />
       );
   });
