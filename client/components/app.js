@@ -3,7 +3,6 @@ import PlayerView from './player_view.js';
 import Players from './players.js';
 
 import _ from 'lodash';
-import UsersList from './users_list';
 import Dices from './dices.js'
 
 
@@ -71,7 +70,6 @@ export default class App extends React.Component {
         />
 
       <Dices />
-      <UsersList socket={socket} />
       </div>
     );
   }
