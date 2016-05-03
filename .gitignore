@@ -5,3 +5,4 @@ config/component/config.js
 .flooignore
 bundle.js
 .eslintrc.js
+npm-debug.log
