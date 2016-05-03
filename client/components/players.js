@@ -1,21 +1,22 @@
 import React from 'react';
+import PlayerView from './player_view.js';
 
 const Players = (props) => {
-  let items = props.users.map((userid) => {
+  let items = props.otherPlayers.map((userid) => {
     return (
-      <PlayersView
-        userid={userid}
+      <PlayerView
+        key={userid}
+        player={userid}
+        victoryPoints={props.victoryPoints}
       />
       );
   });
   return (
     <div>
-      <h5>Users online</h5>
-      <ul>
-        {items}
-      </ul>
+      <h3>Other Players</h3>
+      {items}
     </div>
   );
 };
 
-export default EventNearby;
+export default Players;

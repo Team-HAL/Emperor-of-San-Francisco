@@ -1,5 +1,7 @@
 import React from 'react';
 import PlayerView from './player_view.js';
+import Players from './players.js';
+
 import _ from 'lodash';
 
 // import UsersList from './users_list';
@@ -26,8 +28,6 @@ export default class App extends React.Component {
 
     this.setState({ users: newPlayer });
     this.setState({ otherPlayers: otherPlayerIDs });
-    console.log(this.state.otherPlayers);
-    console.log(this.state.currentUser);
   }
 
   _currentUser(currentUser) {
@@ -49,30 +49,28 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
+        {/* Current Player View */}
         <PlayerView
+          key={this.state.currentUser}
           player={this.state.currentUser}
           victoryPoints={this.state.victoryPoints}
-          addVP={ (num) => {
-            this._increaseVP(num);
-          }}
         />
+
+        <button
+          className="btn btn-primary"
+          onClick={ () => { this._increaseVP(1); }}
+        >
+          Increase current user Victory Points
+        </button>
+
+        {/* Other Player View */}
+        <Players
+          otherPlayers={this.state.otherPlayers}
+          victoryPoints={this.state.victoryPoints}
+        />
+
       </div>
     );
   }
 }
 
-// export default class App extends React.Component {
-//   render() {
-//     return (
-//       <UsersList socket={socket} />
-//     );
-//   }
-// }
-
-
-// let items = this.state.users.map(function(user){
-//   return(
-//     <Player users={users} />
-//   )
-
-//  })
