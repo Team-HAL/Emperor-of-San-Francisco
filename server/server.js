@@ -1,19 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-// const webpack = require('webpack');
-// const webpackDevMiddleware = require('webpack-dev-middleware');
-// const webpackHotMiddleware = require('webpack-hot-middleware');
-// const webpackConfig = require('./../webpack.config.js');
 
 const app = express();
-// const compiler = webpack(webpackConfig);
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
 const users = [];
-const VP = [0,0,0,0];
-const cards = ['acid spray', 'wood armor', 'energy sword']
+const VP = [0, 0, 0, 0];
+const HP = [10, 10, 10, 10];
+const energy = [0, 0, 0, 0];
+const cards = ['acid spray', 'wood armor', 'energy sword'];
+const discardPile = [];
+
 io.on('connection', (socket) => {
   // console.log('A user has connected!');
   // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
@@ -23,17 +22,50 @@ io.on('connection', (socket) => {
     users.push(socket);
   }
 
-  // console.log('TEAM THIS IS THE USERS: ', users);
-
   socket.emit('getUser', users.indexOf(socket));
 
   io.emit('loadUsers', Object.keys(users));
-  // 0, 1, 2, 3
 
   if (users.length === 4) {
     io.emit('gameStarts', 'GAME STARTS!');
-
   }
+
+  socket.on('attackOne', (data) => {
+    // From data we have data.damage, data.to, and data.currentUser
+    HP[data.to] = HP[data.to] - data.damage;
+    io.emit('updateHP', HP);
+  });
+
+  socket.on('attackAll', (data) => {
+    // From data we have data.damage, data.otherPlayers, and data.currentUser
+    HP.forEach((item, i) => {
+      // if it hits the attacker's HP, don't update
+      if (data.otherPlayers.includes(i)) {
+        HP[i] = HP[i] - data.damage;
+      }
+    });
+    io.emit('updateHP', HP);
+  });
+
+  socket.on('getEnergy', (data) => {
+    // Data here would be the amount of energy to be added
+    const i = users.indexOf(socket);
+    energy[i] = energy[i] + data;
+
+    io.emit('updateEnergy', energy);
+  });
+
+  socket.on('getCard', (data) => {
+    // data here would be the number of cards you want to get
+    const cardsToSend = [];
+
+    for (let i = 0; i < data; i++) {
+      cardsToSend.push(cards.splice(Math.floor(Math.random() * cards.length), 1));
+    }
+
+    discardPile = discardPile.concat(cardsToSend);
+    socket.emit('loadCard', cardsToSend);
+  });
 
   socket.on('changeHP', (data) => {
     io.emit('loadHP', data);
@@ -50,7 +82,7 @@ io.on('connection', (socket) => {
   socket.on('nextTurn', (data) => {
     io.emit('nextTurn', data);
   });
-  
+
   socket.on('increaseVP', (data) => {
     VP[users.indexOf(socket)] += data;
     io.emit('updateVP', VP);
@@ -67,8 +99,6 @@ io.on('connection', (socket) => {
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-// app.use(webpackDevMiddleware(compiler));
-// app.use(webpackHotMiddleware(compiler));
 app.use(express.static(__dirname + '/../'));
 
 const port = process.env.PORT || 8000;
