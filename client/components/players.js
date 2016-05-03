@@ -9,6 +9,7 @@ const Players = (props) => {
         player={userid}
         victoryPoints={props.victoryPoints}
         healthPoints={props.healthPoints}
+        energy={props.energy}
       />
       );
   });

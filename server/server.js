@@ -1,3 +1,5 @@
+
+"use strict";
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -24,7 +26,8 @@ io.on('connection', (socket) => {
 
   socket.emit('getUser', users.indexOf(socket));
 
-  io.emit('loadUsers', Object.keys(users));
+  io.emit('loadUsers', Object.keys(users).map((x) => { return parseInt(x, 10); }));
+
 
   if (users.length === 4) {
     io.emit('gameStarts', 'GAME STARTS!');
@@ -38,11 +41,8 @@ io.on('connection', (socket) => {
 
   socket.on('attackAll', (data) => {
     // From data we have data.damage, data.otherPlayers, and data.currentUser
-    HP.forEach((item, i) => {
-      // if it hits the attacker's HP, don't update
-      if (data.otherPlayers.includes(i)) {
-        HP[i] = HP[i] - data.damage;
-      }
+    data.otherPlayers.forEach((item) => {
+      HP[item] = HP[item] - data.damage;
     });
     io.emit('updateHP', HP);
   });
@@ -90,9 +90,9 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('A user has disconnected...');
-    io.emit('loadUsers', Object.keys(users));
     const i = users.indexOf(socket);
     users.splice(i, 1);
+    io.emit('loadUsers', Object.keys(users));
   });
 });
 
