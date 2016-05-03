@@ -12,8 +12,9 @@ const users = [];
 const VP = [0, 0, 0, 0];
 const HP = [10, 10, 10, 10];
 const energy = [0, 0, 0, 0];
+let currentTurn = 0;
 const cards = ['acid spray', 'wood armor', 'energy sword'];
-const discardPile = [];
+let discardPile = [];
 
 io.on('connection', (socket) => {
   // console.log('A user has connected!');
@@ -23,6 +24,14 @@ io.on('connection', (socket) => {
   if (users.length !== 4) {
     users.push(socket);
   }
+
+  socket.on('endTurn', () => {
+    currentTurn++;
+    if (currentTurn > users.length - 1) {
+      currentTurn = 0;
+    }
+    io.emit('updateTurn', currentTurn);
+  })
 
   socket.emit('getUser', users.indexOf(socket));
 
@@ -77,10 +86,6 @@ io.on('connection', (socket) => {
 
   socket.on('changeMoney', (data) => {
     io.emit('loadMoney', data);
-  });
-
-  socket.on('nextTurn', (data) => {
-    io.emit('nextTurn', data);
   });
 
   socket.on('increaseVP', (data) => {
