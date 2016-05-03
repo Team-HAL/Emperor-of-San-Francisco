@@ -17,7 +17,7 @@ export default class Dice extends React.Component {
     }
   }
   render(){
-    let image = `../../client/images/${this.state.number}.png`
+    let image = `../../client/images/dice/${this.state.number}.png`
     return <img 
               src= {image} 
               onClick={()=>{

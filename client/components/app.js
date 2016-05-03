@@ -5,7 +5,8 @@ import PlayerActions from './player_actions.js';
 import TurnView from './turn_view.js';
 
 import _ from 'lodash';
-import Dices from './dices.js';
+import Dices from './dices.js'
+import CardsView from './cards.js'
 
 
 const socket = io.connect();
@@ -94,6 +95,7 @@ export default class App extends React.Component {
         />
 
       <Dices />
+      <CardsView />
       </div>
     );
   }
