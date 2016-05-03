@@ -4,7 +4,7 @@ import Players from './players.js';
 import PlayerActions from './player_actions.js';
 
 import _ from 'lodash';
-import Dices from './dices.js'
+import Dices from './dices.js';
 
 
 const socket = io.connect();
@@ -60,7 +60,9 @@ export default class App extends React.Component {
         />
 
         <PlayerActions
-          
+          socket={socket}
+          player={this.state.currentUser}
+          otherPlayers={this.state.otherPlayers}
         />
 
         <button
