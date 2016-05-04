@@ -23,8 +23,20 @@ const PlayerActions = (props) => {
   }
 
   const _endTurn = () => {
-    console.log(props);
-    props.socket.emit('endTurn');
+    let data = {}
+    props.diceArray.forEach((item)=>{
+      console.log(item);
+      if(item >6){
+        item = item - 6;        
+      } 
+      if(data[item]){
+        data[item]++;
+      } else {
+        data[item] = 1;
+      }
+    });
+    console.log(data);
+    props.socket.emit('endTurn', data);
   }
 
   const _currentUserTurn = () => {

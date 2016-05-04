@@ -24,6 +24,7 @@ export default class App extends React.Component {
       otherPlayers: [],
       currentEmperor: 0,
       stayOrLeave: true,
+      diceArray: [],
     };
 
     socket.on('getUser', this._currentUser.bind(this));
@@ -75,10 +76,14 @@ export default class App extends React.Component {
     this.setState({ stayOrLeave });
   }
 
+  _updateDiceArray(diceArray){
+    this.setState({ diceArray })
+  }
+
   render() {
     return (
       <div>
-        <Dices />
+        <Dices update= {(data)=>this._updateDiceArray(data)}/>
         <TurnView
           currentTurn={this.state.currentTurn}
         />
@@ -93,6 +98,7 @@ export default class App extends React.Component {
         />
 
         <PlayerActions
+          diceArray={this.state.diceArray}
           socket={socket}
           player={this.state.currentUser}
           otherPlayers={this.state.otherPlayers}

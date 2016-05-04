@@ -5,20 +5,32 @@ export default class Dices extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      diceArr: [1,1,1,1,1,1]
+      diceArray: [1, 1, 1, 1, 1, 1],
+      maxRoll: 3,
     }
   }
+  // getDiceArr(){
+  //   const diceArray = []
+  //   for(var i = 0; i<this.state.diceArray.length; i++){
+  //     diceArray.push(this.refs[i].getDiceRoll());
+  //   }
+  //   console.log(diceArray);
+  //   this.setState({ diceArray });
+  // }
   render(){
-    const items = this.state.diceArr.map((num,index)=>{
+    const items = this.state.diceArray.map((num,index)=>{
       return <Dice key={index} random={num} ref={index}/>
     })
     return (
       <div>
         {items}
         <button onClick={()=>{
-            for(var i = 0; i<this.state.diceArr.length;i++){
-              this.refs[i].roll();              
+            let diceArray = [];
+            for(var i = 0; i<this.state.diceArray.length;i++){
+              diceArray.push(this.refs[i].roll());              
             }
+            this.props.update(diceArray);
+            this.setState({diceArray})
           }}>Roll dice!</button>
       </div>
     )

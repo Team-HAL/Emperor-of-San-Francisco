@@ -8,13 +8,13 @@ export default class Dice extends React.Component {
       number: 1
     }
   }
-  componentDidMount(){
-    this.roll();
-  }
   roll(){
     if(this.state.keep === false){
-      this.setState({number:Math.ceil(Math.random()*6)})      
+      let die = (Math.ceil(Math.random()*6)); 
+      this.setState({number:die});
+      return die;
     }
+    return this.state.number;
   }
   render(){
     let image = `../../client/images/dice/${this.state.number}.jpeg`
