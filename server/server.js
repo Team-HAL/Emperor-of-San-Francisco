@@ -15,6 +15,7 @@ const energy = [0, 0, 0, 0];
 let currentTurn = 0;
 const cards = ['acid spray', 'wood armor', 'energy sword'];
 let discardPile = [];
+let currentEmperor = 0; 
 
 io.on('connection', (socket) => {
   // console.log('A user has connected!');
@@ -43,9 +44,12 @@ io.on('connection', (socket) => {
   }
 
   socket.on('attackOne', (data) => {
-    // From data we have data.damage, data.to, and data.currentUser
-    HP[data.to] = HP[data.to] - data.damage;
+    // From data we have data.damage and data.currentUser
+    HP[currentEmperor] = HP[currentEmperor] - data.damage;
     io.emit('updateHP', HP);
+
+    // Give an option for the current emperor to leave San Francisco
+    users[currentEmperor].emit('stayOrLeave', true);
   });
 
   socket.on('attackAll', (data) => {
