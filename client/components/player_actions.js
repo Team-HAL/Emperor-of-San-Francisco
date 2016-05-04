@@ -1,4 +1,5 @@
 import React from 'react';
+import EmperorView from './emperor_view';
 
 const PlayerActions = (props) => {
 
@@ -6,7 +7,7 @@ const PlayerActions = (props) => {
     let data = {
       damage: dmg,
       otherPlayers: props.otherPlayers,
-      currentUser: props.currentUser,
+      currentUser: props.player,
     }
     props.socket.emit('attackAll', data);
   }
@@ -47,6 +48,14 @@ const PlayerActions = (props) => {
         >
           End Turn
         </button>
+      </li>
+        <EmperorView
+          currentUser={props.player}
+          stayOrLeave={props.stayOrLeave}
+          socket={props.socket}
+        />
+      <li>
+
       </li>
     </div>
   );
