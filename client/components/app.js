@@ -66,7 +66,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-
+        <Dices />
         <TurnView
           currentTurn={this.state.currentTurn}
         />
@@ -94,7 +94,6 @@ export default class App extends React.Component {
           energy={this.state.energy}
         />
 
-      <Dices />
       <CardsView />
       </div>
     );

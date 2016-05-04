@@ -5,10 +5,10 @@ export default class Card extends React.Component {
     super(props);
   }
   render(){
+    let img = `../../client/images/cards/${this.props.item.name}.jpeg`;
+    console.log(img);
     return(
-      <div>
-        this is a card
-      </div>
+      <img className="card" src={img}/>
     )
   }
 }

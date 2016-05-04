@@ -17,8 +17,9 @@ export default class Dice extends React.Component {
     }
   }
   render(){
-    let image = `../../client/images/dice/${this.state.number}.png`
+    let image = `../../client/images/dice/${this.state.number}.jpeg`
     return <img 
+              className="dice"
               src= {image} 
               onClick={()=>{
                 if (this.state.number<=6){
