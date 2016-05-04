@@ -17,9 +17,11 @@ const EmperorView = (props) => {
     props.socket.emit('leaveTokyo', props.currentUser);
   }
   return (
+    <li>
       <MuiThemeProvider muiTheme={muiTheme}>
         <FlatButton label="Leave Tokyo" disabled={!props.stayOrLeave} onClick={() => { _leaveTokyo(); }} />
       </MuiThemeProvider>
+    </li>
     );
 };
 

@@ -15,6 +15,8 @@ const energy = [0, 0, 0, 0];
 let currentTurn = 0;
 const cards = ['acid spray', 'wood armor', 'energy sword'];
 let discardPile = [];
+
+// -1 -> No one in city.
 let currentEmperor = 0;
 
 io.on('connection', (socket) => {

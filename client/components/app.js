@@ -97,6 +97,7 @@ export default class App extends React.Component {
           player={this.state.currentUser}
           otherPlayers={this.state.otherPlayers}
           stayOrLeave={this.state.stayOrLeave}
+          currentTurn={this.state.currentTurn}
         />
 
         {/* Other Player View */}
