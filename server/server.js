@@ -16,6 +16,9 @@ let currentTurn = 0;
 const cards = ['acid spray', 'wood armor', 'energy sword'];
 let discardPile = [];
 
+// -1 -> No one in city.
+let currentEmperor = 0;
+
 io.on('connection', (socket) => {
   // console.log('A user has connected!');
   // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
@@ -42,10 +45,21 @@ io.on('connection', (socket) => {
     io.emit('gameStarts', 'GAME STARTS!');
   }
 
+  socket.on('leaveTokyo', (data) => {
+    if (currentEmperor === data) { // Cheat check
+      currentEmperor = -1; // City is vacated
+    }
+    socket.emit('stayOrLeave', false)
+    io.emit('updateEmperor', currentEmperor);
+  });
+
   socket.on('attackOne', (data) => {
-    // From data we have data.damage, data.to, and data.currentUser
-    HP[data.to] = HP[data.to] - data.damage;
+    // From data we have data.damage and data.currentUser
+    HP[currentEmperor] = HP[currentEmperor] - data.damage;
     io.emit('updateHP', HP);
+
+    // Display option for the current emperor to leave San Francisco
+    users[currentEmperor].emit('stayOrLeave', true);
   });
 
   socket.on('attackAll', (data) => {

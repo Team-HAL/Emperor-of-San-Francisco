@@ -22,6 +22,8 @@ export default class App extends React.Component {
       currentUser: 0,
       currentTurn: 0,
       otherPlayers: [],
+      currentEmperor: 0,
+      stayOrLeave: true,
     };
 
     socket.on('getUser', this._currentUser.bind(this));
@@ -30,6 +32,8 @@ export default class App extends React.Component {
     socket.on('updateVP', this._updateVP.bind(this));
     socket.on('updateHP', this._updateHP.bind(this));
     socket.on('updateEnergy', this._updateEnergy.bind(this));
+    socket.on('updateEmperor', this._updateEmperor.bind(this));
+    socket.on('stayOrLeave', this._updateEmperorView.bind(this));
   }
 
   _userConnect(newPlayer) {
@@ -62,6 +66,14 @@ export default class App extends React.Component {
     this.setState({ energy });
   }
 
+  _updateEmperor(currentEmperor) {
+    console.log(currentEmperor);
+    this.setState({ currentEmperor });
+  }
+
+  _updateEmperorView(stayOrLeave) {
+    this.setState({ stayOrLeave });
+  }
 
   render() {
     return (
@@ -84,6 +96,8 @@ export default class App extends React.Component {
           socket={socket}
           player={this.state.currentUser}
           otherPlayers={this.state.otherPlayers}
+          stayOrLeave={this.state.stayOrLeave}
+          currentTurn={this.state.currentTurn}
         />
 
         {/* Other Player View */}
