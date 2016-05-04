@@ -34,7 +34,6 @@
     "material-ui": "^0.15.0-beta.2",
     "mocha": "^2.1.0",
     "mocha-loader": "^0.7.0",
-    "mock-socket": "^2.0.0",
     "morgan": "^1.7.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
