@@ -1,0 +1,13 @@
+.dice {
+  border-radius: 15px;
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+}
+
+.card {
+  width:210px;
+  height:300px;
+  margin: 5px;
+  border-radius: 20px;
+}
