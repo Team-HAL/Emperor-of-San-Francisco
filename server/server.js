@@ -27,12 +27,50 @@ io.on('connection', (socket) => {
   if (users.length !== 4) {
     users.push(socket);
   }
-
-  socket.on('endTurn', () => {
+  
+  // Data = Dice Object: {1:2,2:2,3:3,4:0,5:0,6:0}
+  //4 = attack
+  //5 = energy
+  //6 = heart
+  //3 '1's = 1 point
+  //4 '1's = 2 points
+  //5 '1's = 3 points etc..
+  socket.on('endTurn', (data) => {
+    let player = users.indexOf(socket);
+    if(data['1']>=3){
+      VP[player] += data['1']-2;
+    } else if (data['2']>=3) {
+      VP[player] += data['2']-1;
+    } else if (data['3']>=3) {
+      VP[player] += data['3'];
+    }
+    //if(data['4'] || data['6']){
+    if(player === currentEmperor){
+      users.forEach((item,index)=>{
+        if(index!==player){
+          if (data['4']){
+            HP[index] -= data['4'];            
+          }
+        }
+        if(data['6']){
+          HP[index] += data['6'];
+          console.log('HP', HP)
+        }
+      })
+      io.emit('updateHP', HP);  
+    }
+    if(data['5']){
+      energy[player] += data['5'];
+      io.emit('updateEnergy', energy);
+    }
+    //}
     currentTurn++;
     if (currentTurn > users.length - 1) {
       currentTurn = 0;
     }
+    //change loadVP to updateVP when refactor
+    console.log(VP)
+    io.emit('updateVP', VP);
     io.emit('updateTurn', currentTurn);
   })
 
@@ -91,6 +129,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('changeHP', (data) => {
+    //change loadVP to updateVP when refactor
     io.emit('loadHP', data);
   });
 
