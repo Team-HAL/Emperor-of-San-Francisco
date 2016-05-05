@@ -4,5 +4,7 @@ config/component/config.js
 .floo
 .flooignore
 bundle.js
+testBundle.js
 .eslintrc.js
 npm-debug.log
+.DS_Store
