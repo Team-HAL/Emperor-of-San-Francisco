@@ -8,7 +8,6 @@ import {deepOrange500} from 'material-ui/styles/colors';
 
 
 const PlayerActions = (props) => {
-
   const _attackAll = (dmg) => {
     let data = {
       damage: dmg,
@@ -25,7 +24,6 @@ const PlayerActions = (props) => {
   const _endTurn = () => {
     let data = {}
     props.diceArray.forEach((item)=>{
-      console.log(item);
       if(item >6){
         item = item - 6;        
       } 
@@ -35,7 +33,6 @@ const PlayerActions = (props) => {
         data[item] = 1;
       }
     });
-    console.log(data);
     props.socket.emit('endTurn', data);
   }
 
