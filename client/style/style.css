@@ -1,13 +1,20 @@
-.dice {
-  border-radius: 15px;
-  width: 100px;
-  height: 100px;
-  margin: 5px;
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
 }
 
-.card {
-  width:210px;
-  height:300px;
-  margin: 5px;
-  border-radius: 20px;
+.gameTitle {
+  display: table;
+  margin: 3px auto;
+  font-size: xx-large;
+}
+
+.container {
+  position: relative;
+  width: 1100px;
+  height: 900px;
+  margin: 3px auto;
+  padding: 0px;
+  /*border: 1px solid royalblue;*/
 }
