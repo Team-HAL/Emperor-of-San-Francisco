@@ -3,10 +3,11 @@ import PlayerView from './player_view.js';
 import Players from './players.js';
 import PlayerActions from './player_actions.js';
 import TurnView from './turn_view.js';
+import Board from './board.js';
 
 import _ from 'lodash';
-import Dices from './dices.js'
-import CardsView from './cards.js'
+import Dices from './dices.js';
+import CardsView from './cards.js';
 
 
 const socket = io.connect();
@@ -76,14 +77,14 @@ export default class App extends React.Component {
     this.setState({ stayOrLeave });
   }
 
-  _updateDiceArray(diceArray){
-    this.setState({ diceArray })
+  _updateDiceArray(diceArray) {
+    this.setState({ diceArray });
   }
 
   render() {
     return (
       <div>
-        <Dices update= {(data)=>this._updateDiceArray(data)}/>
+        <Dices update = {(data) => this._updateDiceArray(data)} />
         <TurnView
           currentTurn={this.state.currentTurn}
         />
@@ -107,14 +108,15 @@ export default class App extends React.Component {
         />
 
         {/* Other Player View */}
+        <Board />
+        <CardsView />
+
         <Players
           otherPlayers={this.state.otherPlayers}
           victoryPoints={this.state.victoryPoints}
           healthPoints={this.state.healthPoints}
           energy={this.state.energy}
         />
-
-      <CardsView />
       </div>
     );
   }

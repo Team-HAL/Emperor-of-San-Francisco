@@ -36,9 +36,16 @@ export default class Cards extends React.Component {
   render(){
     const items = this.state.card.map((item)=>{
       return <Card key={item.name} item={item}/>
-    })
+    });
+
+    const style = {
+      position: 'absolute',
+      top: 560,
+      right: 0,
+    };
+
     return(
-      <div>
+      <div style={style}>
         {items}
         {/*Deck image*/}
         <img src="" />
