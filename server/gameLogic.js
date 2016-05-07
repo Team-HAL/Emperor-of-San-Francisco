@@ -1,5 +1,6 @@
 'use strict';
 const Users = [];
+
 const users = [];
 const HP = [10, 10, 10, 10];
 const maxHP = [10, 10, 10, 10];
