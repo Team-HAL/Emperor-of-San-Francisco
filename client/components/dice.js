@@ -8,12 +8,17 @@ const Dice = (props) => {
     margin: '1px 1px',
   };
 
-  let image = `../../client/images/dice/${props.keep ? props.number + 6 : props.number}.jpeg`;
+  let image = `../../client/images/dice/${props.keep ? 6 + parseInt(props.number) : props.number}.jpeg`;
 
   return (
     <img
       style={style}
       src={image}
+      onClick={() => {
+        if (props.number !== 0){
+          props.keepFunc(props.index);         
+        }
+      }}
     />
   );
 };

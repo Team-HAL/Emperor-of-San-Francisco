@@ -69,7 +69,6 @@ export default class App extends React.Component {
   }
 
   _updateEmperor(currentEmperor) {
-    console.log(currentEmperor);
     this.setState({ currentEmperor });
   }
 
