@@ -5,21 +5,23 @@ export default class Dices extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      diceArray: [1, 1, 1, 1, 1, 1],
-      maxRoll: 3,
+      keep: [],
+      unkeep: [2, 2, 2, 2, 2, 2],
     };
+
+    // From gameLogic's rollDice listener everytime we roll at the bottom
+    props.socket.on('diceDisplay', data => {
+      this.setState({keep: data.keep, unkeep: data.unkeep});
+    });
   }
-  // getDiceArr(){
-  //   const diceArray = []
-  //   for(var i = 0; i<this.state.diceArray.length; i++){
-  //     diceArray.push(this.refs[i].getDiceRoll());
-  //   }
-  //   console.log(diceArray);
-  //   this.setState({ diceArray });
-  // }
+
   render() {
-    const items = this.state.diceArray.map((num, index) => {
-      return <Dice key={index} random={num} ref={index}/>;
+    const unkeep = this.state.unkeep.map((num, index) => {
+      return <Dice key={`unkeep${index}`} keep={false} number={num} />;
+    });
+
+    const keep = this.state.keep.map((num, index) => {
+      return <Dice key={`keep${index}`} keep={true} number={num} />;
     });
 
     const divStyle = {
@@ -40,17 +42,13 @@ export default class Dices extends React.Component {
 
     return (
       <div style={divStyle}>
-        {items}
+        {unkeep}
+        {keep}
         <button
           className='btn btn-default'
           style={buttonStyle}
           onClick={() => {
-            let diceArray = [];
-            for (let i = 0; i < this.state.diceArray.length; i++) {
-              diceArray.push(this.refs[i].roll());
-            }
-            this.props.update(diceArray);
-            this.setState({ diceArray });
+            this.props.socket.emit('rollDice', this.state);
           }
         }>
           Roll!

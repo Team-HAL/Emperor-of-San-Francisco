@@ -103,7 +103,7 @@ const PlayerActions = (props) => {
         disabled={!props.stayOrLeave}
         onClick={() => { _leaveTokyo(); }}
       >
-        Leave Tokyo
+        Leave SF
       </button>
     </div>
   );

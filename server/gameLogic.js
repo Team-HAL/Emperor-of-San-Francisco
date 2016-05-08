@@ -1,30 +1,34 @@
 'use strict';
 const Users = [];
 const users = [];
-const VP = [0, 0, 0, 0];
 const HP = [10, 10, 10, 10];
 const maxHP = [10, 10, 10, 10];
+const VP = [0, 0, 0, 0];
 const energy = [0, 0, 0, 0];
 let currentTurn = 0;
-const cards = ['acid spray', 'wood armor', 'energy sword'];
 let discardPile = [];
+let currentEmperor = 0;
+const cards = ['acid spray', 'wood armor', 'energy sword'];
+
 class UserTemplate {
   constructor(socket) {
     this.monster = null;
-    this.VP = 0;
     this.HP = 10;
     this.maxHP = 10;
+    this.VP = 0;
     this.maxVP = 20;
     this.socket = socket;
     this.energy = 0;
     this.inTokyo = false;
-    this.rollRemaining = 2;
+    this.rollRemaining = 3;
+    this.maxRoll = 3;
+    this.numberOfDice = 6;
     this.attackModifier = 0;
     this.armorModifier = 0;
     this.isEmperor = true;
   }
 }
-let currentEmperor = 0;
+
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
@@ -45,6 +49,42 @@ module.exports = (io) => {
     }
     // Data = Dice Object: {1:2,2:2,3:3,4:0,5:0,6:0}
     */
+
+    // Roll dice from dices.js
+    socket.on('rollDice', data => {
+      // search for current player
+      let player;
+      Users.forEach((user, index) => {
+        if (user.socket === socket) {
+          player = index;
+        }
+      });
+
+      // Data to emit
+      const result = {
+        unkeep: data.unkeep,
+        keep: data.keep,
+      };
+
+      // Player validator if rolling the dice
+      if (currentTurn === player) {
+        let diceArray = [];
+        if (Users[player].rollRemaining > 0) {
+          Users[player].rollRemaining--;
+
+          data.unkeep.forEach(dice => {
+            diceArray.push((Math.ceil(Math.random() * 6)));
+          });
+
+          result.unkeep = diceArray;
+        }
+      }
+
+      // Emit to dices.js
+      io.emit('diceDisplay', result);
+    });
+
+
     socket.on('endTurn', (data) => {
       let player;
       Users.forEach((user, index) => {
@@ -52,7 +92,7 @@ module.exports = (io) => {
           player = index;
         }
       });
-      console.log(data)
+      
       if (data['1'] >= 3) {
         Users[player].VP += data['1'] - 2;
       } else if (data['2'] >= 3) {
@@ -78,7 +118,7 @@ module.exports = (io) => {
           }
         });
         if (data['6']) {
-          if (Users[player].HP + data['6'] <=Users[player].maxHP) {
+          if (Users[player].HP + data['6'] <= Users[player].maxHP) {
             Users[player].HP += data['6'];
           } else {
             Users[player.HP] = Users[player].maxHP;
@@ -96,10 +136,20 @@ module.exports = (io) => {
       const tempVP = Users.map((user) => {
         return user.VP;
       });
+
+      Users[player].rollRemaining = Users[player].maxRoll;
+
       currentTurn++;
       if (currentTurn > Users.length - 1) {
         currentTurn = 0;
       }
+
+      const nextUsersDice = [];
+      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
+        nextUsersDice.push(2);
+      }
+
+      io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
       io.emit('updateEnergy', energy);
       io.emit('updateVP', tempVP);
       io.emit('updateHP', tempHP);

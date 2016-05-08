@@ -77,14 +77,10 @@ export default class App extends React.Component {
     this.setState({ stayOrLeave });
   }
 
-  _updateDiceArray(diceArray) {
-    this.setState({ diceArray });
-  }
-
   render() {
     return (
       <div>
-        <Dices update = {(data) => this._updateDiceArray(data)} />
+        <Dices socket={socket} />
         <TurnView
           currentTurn={this.state.currentTurn}
         />
