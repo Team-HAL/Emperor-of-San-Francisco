@@ -6,7 +6,7 @@ export default class Dices extends React.Component {
     super(props);
     this.state = {
       keep: [],
-      unkeep: [2, 2, 2, 2, 2, 2],
+      unkeep: [0, 0, 0, 0, 0, 0],
     };
 
     // From gameLogic's rollDice listener everytime we roll at the bottom
@@ -14,14 +14,23 @@ export default class Dices extends React.Component {
       this.setState({keep: data.keep, unkeep: data.unkeep});
     });
   }
-
+  keep(index) {
+    const temp = this.state;
+    temp.keep.push(temp.unkeep.splice(index, 1));
+    this.props.socket.emit('updateDice', temp);
+  }
+  unkeep(index) {
+    const temp = this.state;
+    temp.unkeep.push(temp.keep.splice(index, 1));
+    this.props.socket.emit('updateDice', temp);
+  }
   render() {
     const unkeep = this.state.unkeep.map((num, index) => {
-      return <Dice key={`unkeep${index}`} keep={false} number={num} />;
+      return <Dice key={`unkeep${index}`} keepFunc={this.keep.bind(this)} keep= {false}  number={num} index={index}/>;
     });
 
     const keep = this.state.keep.map((num, index) => {
-      return <Dice key={`keep${index}`} keep={true} number={num} />;
+      return <Dice key={`keep${index}`} keepFunc={this.unkeep.bind(this)} keep = {true} number={num} index={index}/>;
     });
 
     const divStyle = {

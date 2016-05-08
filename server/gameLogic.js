@@ -50,7 +50,12 @@ module.exports = (io) => {
     // Data = Dice Object: {1:2,2:2,3:3,4:0,5:0,6:0}
     */
 
-    // Roll dice from dices.js
+    // Update keep/unkeep
+    socket.on('updateDice', data => {
+      io.emit('diceDisplay', data);
+    });
+
+    // Roll dice from dices.js    
     socket.on('rollDice', data => {
       // search for current player
       let player;
@@ -146,7 +151,7 @@ module.exports = (io) => {
 
       const nextUsersDice = [];
       for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
-        nextUsersDice.push(2);
+        nextUsersDice.push(0);
       }
 
       io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
