@@ -1,14 +1,7 @@
 'use strict';
 const Users = [];
-
-const users = [];
-const HP = [10, 10, 10, 10];
-const maxHP = [10, 10, 10, 10];
-const VP = [0, 0, 0, 0];
-const energy = [0, 0, 0, 0];
-let currentTurn = 0;
+let currentTurn = 1;
 let discardPile = [];
-let currentEmperor = 0;
 const cards = ['acid spray', 'wood armor', 'energy sword'];
 
 class UserTemplate {
@@ -33,30 +26,37 @@ class UserTemplate {
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
-    // console.log('A user has connected!');
+    console.log('A user has connected!');
     // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
     // console.log('Just entered socket id: ', socket.id);
+
     if (Users.length < 6) {
-      Users.push(new UserTemplate(socket));
+      let added = false;
+      for (let i = 0; i < Users.length; i++) {
+        if (!Users[i]) {
+          Users[i] = new UserTemplate(socket);
+          Users[i].isEmperor = i > 0 ? false : true;
+          added = true;
+        }
+      }
+
+      if (!added) {
+        Users.push(new UserTemplate(socket));
+      }
     }
+
     for (let i = 0; i < Users.length; i++) {
       if (Users[i].socket === socket) {
         socket.emit('getUser', i);
       }
     }
-    /*
-    if (users.length < 6) {
-      users.push(socket);
-    }
-    // Data = Dice Object: {1:2,2:2,3:3,4:0,5:0,6:0}
-    */
 
     // Update keep/unkeep
     socket.on('updateDice', data => {
       io.emit('diceDisplay', data);
     });
 
-    // Roll dice from dices.js    
+    // Roll dice from dices.js
     socket.on('rollDice', data => {
       // search for current player
       let player;
@@ -90,15 +90,32 @@ module.exports = (io) => {
       io.emit('diceDisplay', result);
     });
 
+    socket.on('preEndTurn', () => {
+      socket.emit('midEndTurn');
+    });
 
-    socket.on('endTurn', (data) => {
+    socket.on('endTurn', (dicesKeep) => {
       let player;
       Users.forEach((user, index) => {
         if (user.socket === socket) {
           player = index;
         }
       });
-      
+
+      // data 4 is attack, 5 is energy, 6 is life
+      const data = {};
+      dicesKeep.forEach((diceValue) => {
+        if (diceValue > 6) {
+          diceValue = diceValue - 6;
+        }
+
+        if (data[diceValue]) {
+          data[diceValue]++;
+        } else {
+          data[diceValue] = 1;
+        }
+      });
+
       if (data['1'] >= 3) {
         Users[player].VP += data['1'] - 2;
       } else if (data['2'] >= 3) {
@@ -126,8 +143,6 @@ module.exports = (io) => {
         if (data['6']) {
           if (Users[player].HP + data['6'] <= Users[player].maxHP) {
             Users[player].HP += data['6'];
-          } else {
-            Users[player.HP] = Users[player].maxHP;
           }
         }
       }
@@ -135,12 +150,17 @@ module.exports = (io) => {
       if (data['5']) {
         Users[player].energy += data['5'];
       }
+
       const tempHP = Users.map((user) => {
         return user.HP;
       });
 
       const tempVP = Users.map((user) => {
         return user.VP;
+      });
+
+      const tempEnergy = Users.map((user) => {
+        return user.energy;
       });
 
       Users[player].rollRemaining = Users[player].maxRoll;
@@ -156,63 +176,15 @@ module.exports = (io) => {
       }
 
       io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
-      io.emit('updateEnergy', energy);
-      io.emit('updateVP', tempVP);
       io.emit('updateHP', tempHP);
+      io.emit('updateVP', tempVP);
+      io.emit('updateEnergy', tempEnergy);
       io.emit('updateTurn', currentTurn);
     });
-    /*
-    // socket.on('endTurn', (data) => {
-    //   const player = users.indexOf(socket);
-    //   if (data['1'] >= 3) {
-    //     VP[player] += data['1'] - 2;
-    //   } else if (data['2'] >= 3) {
-    //     VP[player] += data['2'] - 1;
-    //   } else if (data['3'] >= 3) {
-    //     VP[player] += data['3'];
-    //   }
-    //   // if(data['4'] || data['6']){
-    //   if (player === currentEmperor) {
-    //     users.forEach((item, index) => {
-    //       if (index !== player) {
-    //         if (data['4']) {
-    //           HP[index] -= data['4'];
-    //         }
-    //       }
-    //       if (data['6']) {
-    //         HP[index] += data['6'];
-    //         console.log('HP', HP);
-    //       }
-    //     });
-    //     io.emit('updateHP', HP);
-    //   }
-    //   if (data['5']) {
-    //     energy[player] += data['5'];
-    //     io.emit('updateEnergy', energy);
-    //   }
-    //   currentTurn++;
-    //   if (currentTurn > users.length - 1) {
-    //     currentTurn = 0;
-    //   }
-    //   // change loadVP to updateVP when refactor
-    //   console.log(VP);
-    //   io.emit('updateVP', VP);
-    //   io.emit('updateTurn', currentTurn);
-    // });
-    */
 
-    /*
-    socket.emit('getUser', users.indexOf(socket));
-    */
     io.emit('loadUsers', Object.keys(Users).map((x) => {
       return parseInt(x, 10);
     }));
-    /*
-    io.emit('loadUsers', Object.keys(users).map((x) => {
-      return parseInt(x, 10);
-    }));
-    */
-
 
     // if (users.length === 4) {
     //   io.emit('gameStarts', 'GAME STARTS!');
@@ -247,13 +219,13 @@ module.exports = (io) => {
     });
     */
 
-    socket.on('getEnergy', (data) => {
-      // Data here would be the amount of energy to be added
-      const i = users.indexOf(socket);
-      energy[i] = energy[i] + data;
+    // socket.on('getEnergy', (data) => {
+    //   // Data here would be the amount of energy to be added
+    //   const i = users.indexOf(socket);
+    //   energy[i] = energy[i] + data;
 
-      io.emit('updateEnergy', energy);
-    });
+    //   io.emit('updateEnergy', energy);
+    // });
 
     socket.on('getCard', (data) => {
       // data here would be the number of cards you want to get
@@ -267,31 +239,11 @@ module.exports = (io) => {
       socket.emit('loadCard', cardsToSend);
     });
 
-    /*
-    socket.on('changeHP', (data) => {
-      // change loadVP to updateVP when refactor
-      io.emit('loadHP', data);
-    });
-
-    socket.on('changeVP', (data) => {
-      io.emit('loadVP', data);
-    });
-
-    socket.on('changeMoney', (data) => {
-      io.emit('loadMoney', data);
-    });
-
-    socket.on('increaseVP', (data) => {
-      VP[users.indexOf(socket)] += data;
-      io.emit('updateVP', VP);
-    });
-    */
-
     socket.on('disconnect', () => {
       console.log('A user has disconnected...');
-      const i = users.indexOf(socket);
-      users.splice(i, 1);
-      io.emit('loadUsers', Object.keys(users));
+      const i = Users.indexOf(socket);
+      delete Users[i];
+      io.emit('loadUsers', Object.keys(Users));
     });
   });
 };
