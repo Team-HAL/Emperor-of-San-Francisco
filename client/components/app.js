@@ -21,11 +21,10 @@ export default class App extends React.Component {
       healthPoints: [10, 10, 10, 10],
       energy: [0, 0, 0, 0],
       currentUser: 0,
-      currentTurn: 0,
+      currentTurn: 1,
       otherPlayers: [],
       currentEmperor: 0,
       stayOrLeave: true,
-      diceArray: [],
     };
 
     socket.on('getUser', this._currentUser.bind(this));
@@ -88,13 +87,12 @@ export default class App extends React.Component {
         <PlayerView
           key={this.state.currentUser}
           player={this.state.currentUser}
-          victoryPoints={this.state.victoryPoints}
           healthPoints={this.state.healthPoints}
+          victoryPoints={this.state.victoryPoints}
           energy={this.state.energy}
         />
 
         <PlayerActions
-          diceArray={this.state.diceArray}
           socket={socket}
           player={this.state.currentUser}
           otherPlayers={this.state.otherPlayers}
