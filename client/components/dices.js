@@ -11,26 +11,42 @@ export default class Dices extends React.Component {
 
     // From gameLogic's rollDice listener everytime we roll at the bottom
     props.socket.on('diceDisplay', data => {
-      this.setState({keep: data.keep, unkeep: data.unkeep});
+      this.setState({ keep: data.keep, unkeep: data.unkeep });
+    });
+
+    // From gameLogic's preEndTurn listener
+    // everytime we _endTurn at player_actions.js
+    props.socket.on('midEndTurn', () => {
+      this.props.socket.emit('endTurn', this.state.keep.concat(this.state.unkeep));
     });
   }
   keep(index) {
     const temp = this.state;
-    temp.keep.push(temp.unkeep.splice(index, 1));
+    temp.keep.push(temp.unkeep.splice(index, 1)[0]);
     this.props.socket.emit('updateDice', temp);
   }
   unkeep(index) {
     const temp = this.state;
-    temp.unkeep.push(temp.keep.splice(index, 1));
+    temp.unkeep.push(temp.keep.splice(index, 1)[0]);
     this.props.socket.emit('updateDice', temp);
   }
   render() {
     const unkeep = this.state.unkeep.map((num, index) => {
-      return <Dice key={`unkeep${index}`} keepFunc={this.keep.bind(this)} keep= {false}  number={num} index={index}/>;
+      return (
+        <Dice
+          key={`unkeep${index}`} keepFunc={this.keep.bind(this)}
+          keep={false} number={num} index={index}
+        />
+      );
     });
 
     const keep = this.state.keep.map((num, index) => {
-      return <Dice key={`keep${index}`} keepFunc={this.unkeep.bind(this)} keep = {true} number={num} index={index}/>;
+      return (
+        <Dice
+          key={`keep${index}`} keepFunc={this.unkeep.bind(this)}
+          keep={true} number={num} index={index}
+        />
+      );
     });
 
     const divStyle = {
