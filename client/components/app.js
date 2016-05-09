@@ -102,7 +102,7 @@ export default class App extends React.Component {
 
         {/* Other Player View */}
         <Board />
-        <CardsView />
+        <CardsView socket={socket}/>
 
         <Players
           otherPlayers={this.state.otherPlayers}

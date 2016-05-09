@@ -35,7 +35,7 @@ export default class Cards extends React.Component {
   }
   render(){
     const items = this.state.card.map((item)=>{
-      return <Card key={item.name} item={item}/>
+      return <Card key={item.name} item={item} socket={this.props.socket}/>
     });
 
     const style = {
