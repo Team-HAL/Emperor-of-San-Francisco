@@ -1,32 +1,8 @@
 import React from 'react';
-// import EmperorView from './emperor_view';
-
-// import FlatButton from 'material-ui/FlatButton';
-// import getMuiTheme from 'material-ui/styles/getMuiTheme';
-// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-// import {deepOrange500} from 'material-ui/styles/colors';
-
 
 const PlayerActions = (props) => {
-  const _attackAll = (dmg) => {
-    const data = {
-      damage: dmg,
-      otherPlayers: props.otherPlayers,
-      currentUser: props.player,
-    };
-    props.socket.emit('attackAll', data);
-  };
-
-  const _increaseVP = (num) => {
-    props.socket.emit('increaseVP', num);
-  };
-
   const _currentUserTurn = () => {
     return !(props.currentTurn === props.player);
-  };
-
-  const _leaveTokyo = () => {
-    props.socket.emit('leaveTokyo', props.player);
   };
 
   const divStyle = {
@@ -56,24 +32,6 @@ const PlayerActions = (props) => {
   return (
     <div style={divStyle}>
       <button
-        className="btn btn-danger"
-        style={buttonStyle}
-        onClick={() => { _attackAll(1); }}
-        disabled={_currentUserTurn()}
-      >
-        Attack All
-      </button>
-
-      <button
-        className="btn btn-primary"
-        style={buttonStyle}
-        onClick={() => { _increaseVP(1); }}
-        disabled={_currentUserTurn()}
-      >
-        Increase VP
-      </button>
-
-      <button
         className="btn btn-info"
         style={buttonStyle}
         onClick={() => { props.socket.emit('preEndTurn'); }}
@@ -83,16 +41,16 @@ const PlayerActions = (props) => {
       </button>
 
       <button
-        className="btn btn-primary"
+        className="btn btn-danger"
         style={buttonStyle}
-        disabled={canYield}
+        disabled={!canYield}
         onClick={() => { props.socket.emit('emperorYield', true); }}
       >
         Yield
       </button>
 
       <button
-        className="btn btn-primary"
+        className="btn btn-warning"
         style={buttonStyle}
         disabled={!canYield}
         onClick={() => { props.socket.emit('emperorYield', false); }}
@@ -104,3 +62,40 @@ const PlayerActions = (props) => {
 };
 
 export default PlayerActions;
+
+// const _leaveTokyo = () => {
+//   props.socket.emit('leaveTokyo', props.player);
+// };
+
+// const _attackAll = (dmg) => {
+//   const data = {
+//     damage: dmg,
+//     otherPlayers: props.otherPlayers,
+//     currentUser: props.player,
+//   };
+//   props.socket.emit('attackAll', data);
+// };
+
+// const _increaseVP = (num) => {
+//   props.socket.emit('increaseVP', num);
+// };
+
+/*
+<button
+  className="btn btn-danger"
+  style={buttonStyle}
+  onClick={() => { _attackAll(1); }}
+  disabled={_currentUserTurn()}
+>
+  Attack All
+</button>
+
+<button
+  className="btn btn-primary"
+  style={buttonStyle}
+  onClick={() => { _increaseVP(1); }}
+  disabled={_currentUserTurn()}
+>
+  Increase VP
+</button>
+*/
