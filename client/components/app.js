@@ -18,7 +18,7 @@ export default class App extends React.Component {
     this.state = {
       users: [],
       victoryPoints: [0, 0, 0, 0],
-      healthPoints: [],
+      healthPoints: [10, 10, 10, 10, 10, 10],
       energy: [0, 0, 0, 0],
       currentUser: 0,
       currentTurn: 1,
