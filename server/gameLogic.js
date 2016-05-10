@@ -1,8 +1,10 @@
 'use strict';
+const e = require('./events.js');
+const cards = require('./cardData.js');
+const deck = cards.slice();
 const Users = [];
 let currentTurn = 1;
 let discardPile = [];
-const cards = ['acid spray', 'wood armor', 'energy sword'];
 
 class UserTemplate {
   constructor(socket) {
@@ -90,6 +92,13 @@ module.exports = (io) => {
       io.emit('diceDisplay', result);
     });
 
+    socket.on('cardsDisplay', (data) => {
+    });
+
+    socket.on('buyCard', (data) => {
+
+    });
+
     socket.on('preEndTurn', () => {
       socket.emit('midEndTurn');
     });
@@ -116,36 +125,40 @@ module.exports = (io) => {
         }
       });
 
-      if (data['1'] >= 3) {
-        Users[player].VP += data['1'] - 2;
-      } else if (data['2'] >= 3) {
-        Users[player].VP += data['2'] - 1;
-      } else if (data['3'] >= 3) {
-        Users[player].VP += data['3'];
-      }
+      // if (data['1'] >= 3) {
+      //   Users[player].VP += data['1'] - 2;
+      // } else if (data['2'] >= 3) {
+      //   Users[player].VP += data['2'] - 1;
+      // } else if (data['3'] >= 3) {
+      //   Users[player].VP += data['3'];
+      // }
 
-      if (Users[player].isEmperor) {
-        Users.forEach((user, index) => {
-          if (index !== player) {
-            if (data['4']) {
-              user.HP -= data['4'];
-            }
-          }
-        });
-      } else {
-        Users.forEach((user) => {
-          if (user.isEmperor) {
-            if (data['4']) {
-              user.HP -= data['4'];
-            }
-          }
-        });
-        if (data['6']) {
-          if (Users[player].HP + data['6'] <= Users[player].maxHP) {
-            Users[player].HP += data['6'];
-          }
-        }
-      }
+      // if (Users[player].isEmperor) {
+      //   Users.forEach((user, index) => {
+      //     if (index !== player) {
+      //       if (data['4']) {
+      //         user.HP -= data['4'];
+      //       }
+      //     }
+      //   });
+      // } else {
+      //   Users.forEach((user) => {
+      //     if (user.isEmperor) {
+      //       if (data['4']) {
+      //         user.HP -= data['4'];
+      //       }
+      //     }
+      //   });
+      //   if (data['6']) {
+      //     if (Users[player].HP + data['6'] <= Users[player].maxHP) {
+      //       Users[player].HP += data['6'];
+      //     }
+      //   }
+      // }
+      
+      e.onVPDiceIncrease(Users, player, data);
+      e.onAttack(Users, player, data['4']);
+      e.onHeal(Users, player, data['6']);
 
       if (data['5']) {
         Users[player].energy += data['5'];
@@ -175,11 +188,35 @@ module.exports = (io) => {
         nextUsersDice.push(0);
       }
 
-      io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
-      io.emit('updateHP', tempHP);
-      io.emit('updateVP', tempVP);
-      io.emit('updateEnergy', tempEnergy);
-      io.emit('updateTurn', currentTurn);
+      let emitted = false;
+      io.on('emperorYield', (data) => {
+        if (data) {
+          Users.forEach((user) => {
+            if (user.isEmperor) {
+              user.isEmperor = false;
+              Users[player].isEmperor = true;
+            }
+          });
+        }
+        emitted = true;
+        io.emit('emperorAttack', { canYield: false });
+        io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
+        io.emit('updateHP', tempHP);
+        io.emit('updateVP', tempVP);
+        io.emit('updateEnergy', tempEnergy);
+        io.emit('updateTurn', currentTurn);
+      });
+
+
+      setTimeout(() => {
+        if (!emitted) {
+          io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
+          io.emit('updateHP', tempHP);
+          io.emit('updateVP', tempVP);
+          io.emit('updateEnergy', tempEnergy);
+          io.emit('updateTurn', currentTurn);
+        }
+      }, 5000);
     });
 
     io.emit('loadUsers', Object.keys(Users).map((x) => {
@@ -227,17 +264,18 @@ module.exports = (io) => {
     //   io.emit('updateEnergy', energy);
     // });
 
-    socket.on('getCard', (data) => {
-      // data here would be the number of cards you want to get
-      const cardsToSend = [];
+    // not in used
+    // socket.on('getCard', (data) => {
+    //   // data here would be the number of cards you want to get
+    //   const cardsToSend = [];
 
-      for (let i = 0; i < data; i++) {
-        cardsToSend.push(cards.splice(Math.floor(Math.random() * cards.length), 1));
-      }
+    //   for (let i = 0; i < data; i++) {
+    //     cardsToSend.push(cards.splice(Math.floor(Math.random() * cards.length), 1));
+    //   }
 
-      discardPile = discardPile.concat(cardsToSend);
-      socket.emit('loadCard', cardsToSend);
-    });
+    //   discardPile = discardPile.concat(cardsToSend);
+    //   socket.emit('loadCard', cardsToSend);
+    // });
 
     socket.on('disconnect', () => {
       console.log('A user has disconnected...');

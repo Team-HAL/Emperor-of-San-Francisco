@@ -34,7 +34,14 @@ module.exports = {
       this.onReceive(Users, target, damage);
     });
   },
-
+  onBuy: (Users, from) => {
+    if (from) {
+      console.log('buy from other people');
+    } else {
+      console.log('buy from deck');
+    }
+    
+  },
   onReceive: (Users, target, damage) => {
     let playercards = Users[target].action.armormodifier;
     if (playercards) {
@@ -47,6 +54,38 @@ module.exports = {
     if (damage > 0) {
       Users[target].HP -= damage;
     }
+    if (Users[target].isEmperor) {
+      Users[target].socket.emit('emperorAttack', { canYield: true, damage: damage });
+    }
+  },
+  
+  onHeal: (Users, target, amount) => {
+    let targetuser = Users[target];
+
+    let playercards = targetuser.action.healmodifier;
+    if (playercards) {
+      for (let card in playercards) {
+        playercards[card](targetuser);
+      }
+    }
+    if (!targetuser.isEmperor) {
+      if (targetuser.HP + amount <= targetuser.maxHP) {
+        targetuser.HP += amount;
+      } else {
+        targetuser.HP = targetuser.maxHP;
+      }
+    }
   },
 
-}
+  onVPDiceIncrease: (Users, target, dice) => {
+    let targetuser = Users[target];
+    if (data['1'] >= 3) {
+      targetuser.VP += data['1'] - 2;
+    } else if (data['2'] >= 3) {
+      targetuser.VP += data['2'] - 1;
+    } else if (data['3'] >= 3) {
+      targetuser.VP += data['3'];
+    }  
+  },
+
+};

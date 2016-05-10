@@ -18,13 +18,12 @@ export default class App extends React.Component {
     this.state = {
       users: [],
       victoryPoints: [0, 0, 0, 0],
-      healthPoints: [10, 10, 10, 10],
+      healthPoints: [],
       energy: [0, 0, 0, 0],
       currentUser: 0,
       currentTurn: 1,
       otherPlayers: [],
       currentEmperor: 0,
-      stayOrLeave: true,
     };
 
     socket.on('getUser', this._currentUser.bind(this));
@@ -102,7 +101,7 @@ export default class App extends React.Component {
 
         {/* Other Player View */}
         <Board />
-        <CardsView />
+        <CardsView socket={socket} />
 
         <Players
           otherPlayers={this.state.otherPlayers}

@@ -47,6 +47,12 @@ const PlayerActions = (props) => {
     margin: '0px auto',
   };
 
+  let canYield = false;
+
+  props.socket.on('emperorAttack', data => {
+    canYield = data.canYield;
+  });
+
   return (
     <div style={divStyle}>
       <button
@@ -79,10 +85,19 @@ const PlayerActions = (props) => {
       <button
         className="btn btn-primary"
         style={buttonStyle}
-        disabled={!props.stayOrLeave}
-        onClick={() => { _leaveTokyo(); }}
+        disabled={canYield}
+        onClick={() => { props.socket.emit('emperorYield', true); }}
       >
-        Leave SF
+        Yield
+      </button>
+
+      <button
+        className="btn btn-primary"
+        style={buttonStyle}
+        disabled={!canYield}
+        onClick={() => { props.socket.emit('emperorYield', false); }}
+      >
+        No Yield
       </button>
     </div>
   );
