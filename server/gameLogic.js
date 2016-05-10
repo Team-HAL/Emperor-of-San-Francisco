@@ -2,9 +2,10 @@
 const e = require('./events.js');
 const cards = require('./cardData.js');
 const deck = cards.slice();
+let currentCards = [];
+let discardPile = [];
 const Users = [];
 let currentTurn = 1;
-let discardPile = [];
 
 class UserTemplate {
   constructor(socket) {
@@ -14,7 +15,7 @@ class UserTemplate {
     this.VP = 0;
     this.maxVP = 20;
     this.socket = socket;
-    this.energy = 0;
+    this.energy = 10;
     this.inTokyo = false;
     this.rollRemaining = 3;
     this.maxRoll = 3;
@@ -22,6 +23,7 @@ class UserTemplate {
     this.attackModifier = 0;
     this.armorModifier = 0;
     this.isEmperor = true;
+    this.cards = [];
     this.action = {
       attackmodifier: {},
       armormodifier: {},
@@ -97,11 +99,32 @@ module.exports = (io) => {
       io.emit('diceDisplay', result);
     });
 
-    socket.on('cardsDisplay', (data) => {
+    socket.on('draw', (data) => {
+      for (let i = 0; i < data; i++) {
+        currentCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
+      }
+      io.emit('cardDisplay', currentCards);
     });
 
     socket.on('buyCard', (data) => {
+      let player;
+      Users.forEach((user, index) => {
+        if (user.socket === socket) {
+          player = index;
+        }
+      });
+      e.onBuy(Users, data, currentCards, player);
+      
+      const tempCards = Users.map((user) => {
+        return user.cards;
+      });
 
+      const tempEnergy = Users.map((user) => {
+        return user.energy;
+      });
+      
+      io.emit('updateEnergy', tempEnergy);
+      io.emit('updateCards', tempCards);
     });
 
     socket.on('preEndTurn', () => {

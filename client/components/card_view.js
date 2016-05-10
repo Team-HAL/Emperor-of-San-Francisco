@@ -11,6 +11,7 @@ export default class Card extends React.Component {
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.buyCard = this.buyCard.bind(this);
+    this.drawOne = this.drawOne.bind(this);
   }
 
   openModal() {
@@ -24,8 +25,13 @@ export default class Card extends React.Component {
   }
 
   buyCard() {
-    this.props.socket.emit('add')
+    this.props.socket.emit('buyCard', this.props.item.name);
   }
+
+  drawOne() {
+    this.props.socket.emit('draw', 1);
+  }
+
 
   closeModal() {
     this.setState({ modalIsOpen: false });
@@ -79,7 +85,7 @@ export default class Card extends React.Component {
           <button
             style={buttonStyle}
             className="btn btn-primary"
-            onClick={() => { this.buyCard(); }}
+            onClick={() => { this.buyCard(); this.drawOne() }}
           >
             Buy card
           </button>

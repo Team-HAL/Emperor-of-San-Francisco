@@ -20,6 +20,16 @@ const Player = (props) => {
     'textIndent': 7,
   };
 
+  const cardStyle = {
+    width: 20,
+    height: 40,
+  };
+
+  // let items = props.cards[props.player].map((card) => {
+  //   let img = `../../client/images/cards/${card.name}.jpeg`;
+  //   return <img key={card.name + Math.random()} src={img} style={cardStyle} />;
+  // }) || null;
+
   return (
     <div style={divStyle}>
       <h5 style={headerStyle}>Player: {parseInt(props.player) + 1}</h5>

@@ -25,13 +25,13 @@ module.exports = {
 
     // Emperor attacks everyone
     if (Users[player].isEmperor) {
-      Users.forEach(function(user, index) {
+      Users.forEach(function (user, index) {
         if (index !== player) {
           targets.push(index);
         }
       });
 
-   // Monsters outside of Tokyo attack only Emperor  
+   // Monsters outside of Tokyo attack only Emperor
     } else {
       Users.forEach((user) => {
         if (user.isEmperor) {
@@ -49,23 +49,34 @@ module.exports = {
       }
 
     targets.forEach(function(target) {
-      // Users[target].HP -= damage; 
-      
+      // Users[target].HP -= damage;
+
       onReceiveHelper(Users, target, damage);
     });
   },
-  onBuy: (Users, from) => {
+
+  onBuy: (Users, card, currentCards, player, from) => {
     if (from) {
       console.log('buy from other people');
     } else {
-      console.log('buy from deck');
+      for (let i = 0; i < currentCards.length; i++) {
+        if (currentCards[i].name === card && Users[player].energy >= currentCards[i].cost) {
+          Users[player].energy -= currentCards[i].cost;
+          Users[player].cards.push(currentCards.splice(i, 1)[0]);
+        }
+      }
+      console.log(Users[player].cards);
     }
-    
   },
+
+  onNewCard: () => {
+
+  },
+
   onReceive: (Users, target, damage) => {
     onReceiveHelper(Users, target, damage);
   },
-  
+
   onHeal: (Users, target, amount) => {
     let targetuser = Users[target];
     if (targetuser.action.healmodifier) {
@@ -94,7 +105,7 @@ module.exports = {
       targetuser.VP += dice['2'] - 1;
     } else if (dice['3'] >= 3) {
       targetuser.VP += dice['3'];
-    }  
+    }
   },
 
   onVPEmperorIncrease: (Users, player) => {

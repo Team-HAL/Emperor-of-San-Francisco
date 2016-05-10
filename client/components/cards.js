@@ -33,12 +33,26 @@ export default class Cards extends React.Component {
       // ],
       card: [],
     };
-    props.socket.emit('cardDisplay', 3 - this.state.card.length);
-    props.socket.on()
+    props.socket.on('cardDisplay', (data) => {
+      this.setState({ card:data });
+    });
+
+    this.start = this.start.bind(this);
+    this.draw = this.draw.bind(this);
+    
   }
-  render(){
-    const items = this.state.card.map((item)=>{
-      return <Card key={item.name} item={item} socket={this.props.socket}/>
+
+  start() {
+    this.props.socket.emit('start', 'placeholder');
+  }
+
+  draw() {
+    this.props.socket.emit('draw', 3 - this.state.card.length);
+  }
+
+  render() {
+    const items = this.state.card.map((item) => {
+      return <Card key={item.name} item={item} socket={this.props.socket} />;
     });
 
     const style = {
@@ -51,6 +65,7 @@ export default class Cards extends React.Component {
       <div style={style}>
         {items}
         {/*Deck image*/}
+        <button onClick={() => { this.start(); this.draw() }}>Start game!</button>
         <img src="" />
       </div>
     );

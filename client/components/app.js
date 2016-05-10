@@ -24,8 +24,9 @@ export default class App extends React.Component {
       currentTurn: 1,
       otherPlayers: [],
       currentEmperor: 0,
+      cards: [],
     };
-
+    socket.on('updateCards', this._currentUserCards.bind(this));
     socket.on('getUser', this._currentUser.bind(this));
     socket.on('loadUsers', this._userConnect.bind(this));
     socket.on('updateTurn', this._updateTurn.bind(this));
@@ -48,6 +49,10 @@ export default class App extends React.Component {
     otherPlayers.splice(currentUser, 1);
     this.setState({ currentUser });
     this.setState({ otherPlayers });
+  }
+
+  _currentUserCards(cards){
+    this.setState ({ cards })
   }
 
   _updateTurn(currentTurn) {
@@ -89,6 +94,7 @@ export default class App extends React.Component {
           healthPoints={this.state.healthPoints}
           victoryPoints={this.state.victoryPoints}
           energy={this.state.energy}
+          cards={this.state.cards}
         />
 
         <PlayerActions
@@ -108,6 +114,7 @@ export default class App extends React.Component {
           victoryPoints={this.state.victoryPoints}
           healthPoints={this.state.healthPoints}
           energy={this.state.energy}
+          cards={this.state.cards}
         />
       </div>
     );
