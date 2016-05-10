@@ -85,7 +85,10 @@ export default class Card extends React.Component {
           <button
             style={buttonStyle}
             className="btn btn-primary"
-            onClick={() => { this.buyCard(); this.drawOne() }}
+            onClick={() => { 
+              this.buyCard(); 
+              this.drawOne();
+            }}
           >
             Buy card
           </button>

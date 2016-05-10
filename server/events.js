@@ -55,17 +55,19 @@ module.exports = {
     });
   },
 
-  onBuy: (Users, card, currentCards, player, from) => {
-    if (from) {
-      console.log('buy from other people');
-    } else {
-      for (let i = 0; i < currentCards.length; i++) {
-        if (currentCards[i].name === card && Users[player].energy >= currentCards[i].cost) {
-          Users[player].energy -= currentCards[i].cost;
-          Users[player].cards.push(currentCards.splice(i, 1)[0]);
+  onBuy: (Users, card, currentCards, player, currentTurn, from) => {
+    if (player === currentTurn) {
+      if (from) {
+        console.log('buy from other people');
+      } else {
+        for (let i = 0; i < currentCards.length; i++) {
+          if (currentCards[i].name === card && Users[player].energy >= currentCards[i].cost) {
+            Users[player].energy -= currentCards[i].cost;
+            Users[player].cards.push(currentCards.splice(i, 1)[0]);
+          }
         }
-      }
-      console.log(Users[player].cards);
+        console.log(Users[player].cards);
+      }      
     }
   },
 

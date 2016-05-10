@@ -13,12 +13,12 @@ export default class Cards extends React.Component {
       // {
       //   name: 'gas_refinery',
       //   cost: 6,
-      //   discard: true,              
+      //   discard: true,
       // },
       // {
       //   name: 'rapid_healing',
       //   cost: 3,
-      //   discard: false,              
+      //   discard: false,
       // },
       // {
       //   name: 'healing_ray',
@@ -39,7 +39,7 @@ export default class Cards extends React.Component {
 
     this.start = this.start.bind(this);
     this.draw = this.draw.bind(this);
-    
+
   }
 
   start() {
@@ -52,7 +52,13 @@ export default class Cards extends React.Component {
 
   render() {
     const items = this.state.card.map((item) => {
-      return <Card key={item.name} item={item} socket={this.props.socket} />;
+      return <Card
+        key={item.name}
+        item={item}
+        socket={this.props.socket}
+        currentUser = {this.props.currentUser}
+        currentTurn = {this.props.currentTurn}
+      />;
     });
 
     const style = {

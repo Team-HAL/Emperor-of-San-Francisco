@@ -107,7 +107,7 @@ export default class App extends React.Component {
 
         {/* Other Player View */}
         <Board />
-        <CardsView socket={socket} />
+        <CardsView socket={socket} currentUser={ this.state.currentUser } currentTurn={ this.state.currentTurn } />
 
         <Players
           otherPlayers={this.state.otherPlayers}

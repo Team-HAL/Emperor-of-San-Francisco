@@ -113,18 +113,21 @@ module.exports = (io) => {
           player = index;
         }
       });
-      e.onBuy(Users, data, currentCards, player);
-      
-      const tempCards = Users.map((user) => {
-        return user.cards;
-      });
+      // if (player === currentTurn){
+        e.onBuy(Users, data, currentCards, player, currentTurn); 
 
-      const tempEnergy = Users.map((user) => {
-        return user.energy;
-      });
+        const tempCards = Users.map((user) => {
+          return user.cards;
+        });
+
+        const tempEnergy = Users.map((user) => {
+          return user.energy;
+        });
+
+        io.emit('updateEnergy', tempEnergy);
+        io.emit('updateCards', tempCards);
+      // }
       
-      io.emit('updateEnergy', tempEnergy);
-      io.emit('updateCards', tempCards);
     });
 
     socket.on('preEndTurn', () => {

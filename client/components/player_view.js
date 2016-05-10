@@ -29,13 +29,15 @@ const Player = (props) => {
   //   let img = `../../client/images/cards/${card.name}.jpeg`;
   //   return <img key={card.name + Math.random()} src={img} style={cardStyle} />;
   // }) || null;
-
+  // let items = props.cards[props.player];
+  let show = () => { console.log(props) };
   return (
     <div style={divStyle}>
       <h5 style={headerStyle}>Player: {parseInt(props.player) + 1}</h5>
       <p style={textStyle}>Health Points: {props.healthPoints[props.player]}</p>
       <p style={textStyle}>Victory Points: {props.victoryPoints[props.player]}</p>
       <p style={textStyle}>Energy: {props.energy[props.player]}</p>
+      <p>{show()}</p>
     </div>
   );
 };
