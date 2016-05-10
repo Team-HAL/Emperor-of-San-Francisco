@@ -9,9 +9,6 @@ const PlayerActions = (props) => {
     display: 'table',
     float: 'left',
     clear: 'right',
-    position: 'relative',
-    top: 0,
-    left: 0,
     margin: '10px 0px',
     padding: 0,
   };
@@ -20,7 +17,7 @@ const PlayerActions = (props) => {
     display: 'block',
     width: 85,
     padding: '0px 2px',
-    margin: '0px auto',
+    margin: '2px auto',
   };
 
   let canYield = false;

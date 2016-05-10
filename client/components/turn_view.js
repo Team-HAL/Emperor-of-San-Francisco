@@ -25,8 +25,8 @@ const TurnView = (props) => {
 
   return (
     <div style={divStyle}>
-      <h3 style={textStyle}>Turn: Player {props.currentTurn + 1}</h3>
-      <h3 style={textStyle}>King: Player {KOTHView()}</h3>
+      <h3 style={textStyle}>Current Turn: Player {props.currentTurn + 1}</h3>
+      <h3 style={textStyle}>Current Emperor: Player {KOTHView()}</h3>
     </div>
   );
 };
