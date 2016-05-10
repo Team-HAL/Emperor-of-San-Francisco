@@ -19,16 +19,16 @@ const TurnView = (props) => {
 
   const textStyle = {
     margin: 0,
+    fontSize: '190%',
   };
 
 
   return (
     <div style={divStyle}>
-      <h3 style={textStyle}>Player {props.currentTurn + 1}'s Turn</h3>
-      <h3 style={textStyle}>King of the Hill: { KOTHView }</h3>
+      <h3 style={textStyle}>Turn: Player {props.currentTurn + 1}</h3>
+      <h3 style={textStyle}>King: Player {KOTHView()}</h3>
     </div>
-    );
-
+  );
 };
 
 export default TurnView;
