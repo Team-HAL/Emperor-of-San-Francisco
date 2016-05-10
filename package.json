@@ -37,6 +37,7 @@
     "morgan": "^1.7.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
+    "react-modal": "^1.2.1",
     "react-redux": "^4.0.0",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",

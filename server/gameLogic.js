@@ -22,6 +22,11 @@ class UserTemplate {
     this.attackModifier = 0;
     this.armorModifier = 0;
     this.isEmperor = true;
+    this.action = {
+      attackmodifier: {},
+      armormodifier: {},
+      healmodifier: {},
+    };
   }
 }
 
@@ -155,7 +160,7 @@ module.exports = (io) => {
       //     }
       //   }
       // }
-      
+
       e.onVPDiceIncrease(Users, player, data);
       e.onAttack(Users, player, data['4']);
       e.onHeal(Users, player, data['6']);
@@ -163,6 +168,8 @@ module.exports = (io) => {
       if (data['5']) {
         Users[player].energy += data['5'];
       }
+      
+      e.onVPEmperorIncrease(Users, player);
 
       const tempHP = Users.map((user) => {
         return user.HP;
