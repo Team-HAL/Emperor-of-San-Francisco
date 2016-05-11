@@ -21,7 +21,7 @@
 
 ## Usage
 
->Import your whole directory and let the program map it out for you.
+>This is a board game designed for 3-6 players, each game last about 30 minutes. Each player either try to get to 20 victory point or destroy all of his opponent to win. The game start with one player taken randomly and put into the center. Player from the center can attack everyone around. Player outside of the center can only attack the center. Attach (paw), healing (heart), energy (lightning bolt) and victory points (have to get at least 3 of a kind) can be earned by rolling the dices.
 
 
 
