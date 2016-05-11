@@ -33,9 +33,9 @@ module.exports = {
 
    // Monsters outside of Tokyo attack only Emperor
     } else {
-      Users.forEach((user) => {
+      Users.forEach((user, index) => {
         if (user.isEmperor) {
-          targets.push(user);
+          targets.push(index);
         }
       });
     }
@@ -91,7 +91,6 @@ module.exports = {
         }
       }
     }
-
     if (!targetuser.isEmperor) {
       if (targetuser.HP + amount <= targetuser.maxHP) {
         targetuser.HP += amount;
@@ -117,6 +116,23 @@ module.exports = {
     if (currentplayer.isEmperor) {
       currentplayer.VP ++;
     }
-  }
+  },
+
+  onGameStart: (Users) => {
+    // Randomize Emperor
+    let startingemperor = Math.floor(Math.random() * Users.length);
+    Users[startingemperor].isEmperor = true;
+
+  },
+
+  findEmperor: (Users) => {
+    let currentEmperor = -1;
+    Users.forEach(function (user, index) {
+      if (user.isEmperor) {
+        currentEmperor = index;
+      }
+    });
+    return currentEmperor;
+  },
 
 };
