@@ -4,6 +4,7 @@ import Players from './players.js';
 import PlayerActions from './player_actions.js';
 import TurnView from './turn_view.js';
 import Board from './board.js';
+import PregameView from './pregame_view.js';
 
 import _ from 'lodash';
 import Dices from './dices.js';
@@ -34,7 +35,6 @@ export default class App extends React.Component {
     socket.on('updateHP', this._updateHP.bind(this));
     socket.on('updateEnergy', this._updateEnergy.bind(this));
     socket.on('updateEmperor', this._updateEmperor.bind(this));
-    socket.on('stayOrLeave', this._updateEmperorView.bind(this));
     socket.on('updateCards', this._userCards.bind(this));
   }
 
@@ -53,7 +53,6 @@ export default class App extends React.Component {
   }
   // This update the common card pile, the 3 available card for buying
   _userCards(cardsIndividual) {
-    console.log(cardsIndividual);
     this.setState ({ cardsIndividual });
   }
 
@@ -77,9 +76,6 @@ export default class App extends React.Component {
     this.setState({ currentEmperor });
   }
 
-  _updateEmperorView(stayOrLeave) {
-    this.setState({ stayOrLeave });
-  }
 
   render() {
     return (

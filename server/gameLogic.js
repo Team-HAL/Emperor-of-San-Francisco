@@ -23,7 +23,7 @@ class UserTemplate {
     this.numberOfDice = 6;
     this.attackModifier = 0;
     this.armorModifier = 0;
-    this.isEmperor = true;
+    this.isEmperor = false;
     this.cards = [];
     this.action = {
       attackmodifier: {},
@@ -39,12 +39,6 @@ module.exports = (io) => {
     console.log('A user has connected!');
     // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
     // console.log('Just entered socket id: ', socket.id);
-
-    io.on('start', function(data) {
-      e.onGameStart(Users);
-      currentEmperor = e.findEmperor(Users);
-      io.emit("updateEmperor", currentEmperor);
-    });
 
     if (Users.length < 6) {
       let added = false;
@@ -66,6 +60,13 @@ module.exports = (io) => {
         socket.emit('getUser', i);
       }
     }
+
+    socket.on('start', (data) => {
+      console.log('starting');
+      e.onGameStart(Users);
+      currentEmperor = e.findEmperor(Users);
+      io.emit("updateEmperor", currentEmperor);
+    });
 
     // Update keep/unkeep
     socket.on('updateDice', data => {
@@ -227,6 +228,9 @@ module.exports = (io) => {
         nextUsersDice.push(0);
       }
 
+      currentEmperor = e.findEmperor(Users);
+
+      console.log(currentEmperor);
       let emitted = false;
       io.on('emperorYield', (data) => {
         if (data) {
@@ -247,8 +251,6 @@ module.exports = (io) => {
         io.emit('updateTurn', currentTurn);
       });
 
-      currentEmperor = e.findEmperor(Users);
-
       setTimeout(() => {
         if (!emitted) {
           io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
@@ -263,60 +265,6 @@ module.exports = (io) => {
     io.emit('loadUsers', Object.keys(Users).map((x) => {
       return parseInt(x, 10);
     }));
-
-    // if (users.length === 4) {
-    //   io.emit('gameStarts', 'GAME STARTS!');
-    // }
-
-    // socket.on('leaveTokyo', (data) => {
-    //   if (currentEmperor === data) { // Cheat check
-    //     currentEmperor = -1; // City is vacated
-    //   }
-    //   socket.emit('stayOrLeave', false);
-    //   io.emit('updateEmperor', currentEmperor);
-    // });
-
-    /*
-    //we do not need attackOne for now, until the card dictate we need it
-    socket.on('attackOne', (data) => {
-      // From data we have data.damage and data.currentUser
-      HP[currentEmperor] = HP[currentEmperor] - data.damage;
-      io.emit('updateHP', HP);
-
-      // Display option for the current emperor to leave San Francisco
-      users[currentEmperor].emit('stayOrLeave', true);
-    });
-    */
-    /*
-    socket.on('attackAll', (data) => {
-      // From data we have data.damage, data.otherPlayers, and data.currentUser
-      data.otherPlayers.forEach((item) => {
-        HP[item] = HP[item] - data.damage;
-      });
-      io.emit('updateHP', HP);
-    });
-    */
-
-    // socket.on('getEnergy', (data) => {
-    //   // Data here would be the amount of energy to be added
-    //   const i = users.indexOf(socket);
-    //   energy[i] = energy[i] + data;
-
-    //   io.emit('updateEnergy', energy);
-    // });
-
-    // not in used
-    // socket.on('getCard', (data) => {
-    //   // data here would be the number of cards you want to get
-    //   const cardsToSend = [];
-
-    //   for (let i = 0; i < data; i++) {
-    //     cardsToSend.push(cards.splice(Math.floor(Math.random() * cards.length), 1));
-    //   }
-
-    //   discardPile = discardPile.concat(cardsToSend);
-    //   socket.emit('loadCard', cardsToSend);
-    // });
 
     socket.on('disconnect', () => {
       console.log('A user has disconnected...');
