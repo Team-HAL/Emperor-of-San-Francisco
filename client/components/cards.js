@@ -65,7 +65,7 @@ export default class Cards extends React.Component {
 
     const style = {
       position: 'absolute',
-      top: 560,
+      bottom: 0,
       right: 0,
     };
 

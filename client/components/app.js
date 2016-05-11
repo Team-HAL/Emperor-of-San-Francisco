@@ -111,7 +111,7 @@ export default class App extends React.Component {
             healthPoints={this.state.healthPoints}
             victoryPoints={this.state.victoryPoints}
             energy={this.state.energy}
-            cards={this.state.cards}
+            cardsIndividual={this.state.cardsIndividual}
           />
         </div>
         <PlayerActions
