@@ -51,6 +51,7 @@ export default class App extends React.Component {
     this.setState({ currentUser });
     this.setState({ otherPlayers });
   }
+
   // This update the common card pile, the 3 available card for buying
   _userCards(cardsIndividual) {
     this.setState ({ cardsIndividual });
@@ -78,24 +79,41 @@ export default class App extends React.Component {
 
 
   render() {
+    const mainStyle = {
+      width: 'inherit',
+      height: 'inherit',
+    };
+
+    const playerViewStyle = {
+      display: 'inline-block',
+      position: 'relative',
+      margin: 0,
+      padding: 0,
+      top: 280,
+      left: 464,
+    };
+
     return (
-      <div>
+      <div style={mainStyle}>
         <Dices socket={socket} />
         <TurnView
           currentTurn={this.state.currentTurn}
           currentEmperor={this.state.currentEmperor}
         />
 
-        {/* Current Player View */}
-        <PlayerView
-          key={this.state.currentUser}
-          player={this.state.currentUser}
-          healthPoints={this.state.healthPoints}
-          victoryPoints={this.state.victoryPoints}
-          energy={this.state.energy}
-          cardsIndividual={this.state.cardsIndividual}
-        />
+        <Board />
 
+        {/* Current Player View */}
+        <div style={playerViewStyle}>
+          <PlayerView
+            key={this.state.currentUser}
+            player={this.state.currentUser}
+            healthPoints={this.state.healthPoints}
+            victoryPoints={this.state.victoryPoints}
+            energy={this.state.energy}
+            cards={this.state.cards}
+          />
+        </div>
         <PlayerActions
           socket={socket}
           player={this.state.currentUser}
@@ -104,19 +122,18 @@ export default class App extends React.Component {
           currentTurn={this.state.currentTurn}
         />
 
-        {/* Other Player View */}
-        <Board />
-        <CardsView socket={socket} currentUser={ this.state.currentUser } currentTurn={ this.state.currentTurn } />
-
+        {/* Other Players View */}
         <Players
+          player={this.state.currentUser}
           otherPlayers={this.state.otherPlayers}
           victoryPoints={this.state.victoryPoints}
           healthPoints={this.state.healthPoints}
           energy={this.state.energy}
           cardsIndividual={this.state.cardsIndividual}
         />
+
+        <CardsView socket={socket} currentUser={this.state.currentUser} currentTurn={this.state.currentTurn} />
       </div>
     );
   }
 }
-
