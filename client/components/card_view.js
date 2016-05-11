@@ -18,6 +18,7 @@ export default class Card extends React.Component {
   }
 
   afterOpenModal() {
+
     // For future expansion, useless right now
     // references are now sync'd and can be accessed.
     // this.refs.subtitle.style.color = '#f00';
