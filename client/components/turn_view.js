@@ -19,7 +19,7 @@ const TurnView = (props) => {
 
   const textStyle = {
     margin: 0,
-    fontSize: '190%',
+    fontSize: '170%',
   };
 
 
