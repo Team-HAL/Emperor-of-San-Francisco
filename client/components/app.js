@@ -85,6 +85,7 @@ export default class App extends React.Component {
         <Dices socket={socket} />
         <TurnView
           currentTurn={this.state.currentTurn}
+          currentEmperor={this.state.currentEmperor}
         />
 
         {/* Current Player View */}
