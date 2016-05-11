@@ -55,7 +55,7 @@ module.exports = {
     });
   },
 
-  onBuy: (Users, card, currentCards, player, currentTurn, from) => {
+  onBuy: (Users, card, currentCards, deck, player, currentTurn, from) => {
     if (player === currentTurn) {
       if (from) {
         console.log('buy from other people');
@@ -64,15 +64,17 @@ module.exports = {
           if (currentCards[i].name === card && Users[player].energy >= currentCards[i].cost) {
             Users[player].energy -= currentCards[i].cost;
             Users[player].cards.push(currentCards.splice(i, 1)[0]);
+            module.exports.onDraw(currentCards, deck, 1);
           }
         }
-        console.log(Users[player].cards);
       }      
     }
   },
 
-  onNewCard: () => {
-
+  onDraw: (currentCards, deck, data) => {
+    for (let i = 0; i < data; i++) {
+      currentCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
+    }
   },
 
   onReceive: (Users, target, damage) => {
