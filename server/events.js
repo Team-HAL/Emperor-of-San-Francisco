@@ -117,6 +117,15 @@ module.exports = {
     if (currentplayer.isEmperor) {
       currentplayer.VP ++;
     }
-  }
+  },
+
+  findEmperor: (Users) => {
+    Users.forEach(function (user, index) {
+      if (user.isEmperor) {
+        return index;
+      }
+    });
+    return -1;
+  },
 
 };

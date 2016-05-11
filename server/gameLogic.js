@@ -6,6 +6,7 @@ let currentCards = [];
 let discardPile = [];
 const Users = [];
 let currentTurn = 1;
+let currentEmperor = -1;
 
 class UserTemplate {
   constructor(socket) {
@@ -38,6 +39,12 @@ module.exports = (io) => {
     console.log('A user has connected!');
     // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
     // console.log('Just entered socket id: ', socket.id);
+
+    io.on('start', function(data) {
+      e.onGameStart(Users);
+      currentEmperor = e.findEmperor(Users);
+      io.emit("updateEmperor", currentEmperor);
+    });
 
     if (Users.length < 6) {
       let added = false;
@@ -236,9 +243,11 @@ module.exports = (io) => {
         io.emit('updateHP', tempHP);
         io.emit('updateVP', tempVP);
         io.emit('updateEnergy', tempEnergy);
+        io.emit('updateEmperor', currentEmperor);
         io.emit('updateTurn', currentTurn);
       });
 
+      currentEmperor = e.findEmperor(Users);
 
       setTimeout(() => {
         if (!emitted) {
@@ -246,6 +255,7 @@ module.exports = (io) => {
           io.emit('updateHP', tempHP);
           io.emit('updateVP', tempVP);
           io.emit('updateEnergy', tempEnergy);
+          io.emit('updateEmperor', currentEmperor);
           io.emit('updateTurn', currentTurn);
         }
       }, 5000);
