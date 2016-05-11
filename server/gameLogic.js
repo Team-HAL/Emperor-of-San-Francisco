@@ -100,9 +100,7 @@ module.exports = (io) => {
     });
 
     socket.on('draw', (data) => {
-      for (let i = 0; i < data; i++) {
-        currentCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
-      }
+      e.onDraw(currentCards, deck, data);
       io.emit('cardDisplay', currentCards);
     });
 
@@ -114,7 +112,7 @@ module.exports = (io) => {
         }
       });
       // if (player === currentTurn){
-        e.onBuy(Users, data, currentCards, player, currentTurn); 
+        e.onBuy(Users, data, currentCards, deck, player, currentTurn); 
 
         const tempCards = Users.map((user) => {
           return user.cards;
@@ -126,6 +124,7 @@ module.exports = (io) => {
 
         io.emit('updateEnergy', tempEnergy);
         io.emit('updateCards', tempCards);
+        io.emit('cardDisplay', currentCards);
       // }
       
     });
@@ -251,7 +250,6 @@ module.exports = (io) => {
         }
       }, 5000);
     });
-
     io.emit('loadUsers', Object.keys(Users).map((x) => {
       return parseInt(x, 10);
     }));

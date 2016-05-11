@@ -2,7 +2,7 @@ import React from 'react';
 import PlayerView from './player_view.js';
 
 const Players = (props) => {
-  let items = props.otherPlayers.map((userid) => {
+  let players = props.otherPlayers.map((userid) => {
     return (
       <PlayerView
         key={userid}
@@ -10,13 +10,15 @@ const Players = (props) => {
         victoryPoints={props.victoryPoints}
         healthPoints={props.healthPoints}
         energy={props.energy}
+        cardsIndividual={props.cardsIndividual}
       />
       );
   });
+
   return (
     <div>
       <h3>Other Players</h3>
-      {items}
+      {players}
     </div>
   );
 };

@@ -24,9 +24,9 @@ export default class App extends React.Component {
       currentTurn: 1,
       otherPlayers: [],
       currentEmperor: 0,
-      cards: [],
+      cards:[],
+      cardsIndividual: [[], [], [], [], [], []],
     };
-    socket.on('updateCards', this._currentUserCards.bind(this));
     socket.on('getUser', this._currentUser.bind(this));
     socket.on('loadUsers', this._userConnect.bind(this));
     socket.on('updateTurn', this._updateTurn.bind(this));
@@ -35,6 +35,7 @@ export default class App extends React.Component {
     socket.on('updateEnergy', this._updateEnergy.bind(this));
     socket.on('updateEmperor', this._updateEmperor.bind(this));
     socket.on('stayOrLeave', this._updateEmperorView.bind(this));
+    socket.on('updateCards', this._userCards.bind(this));
   }
 
   _userConnect(newPlayer) {
@@ -50,9 +51,10 @@ export default class App extends React.Component {
     this.setState({ currentUser });
     this.setState({ otherPlayers });
   }
-
-  _currentUserCards(cards){
-    this.setState ({ cards })
+  // This update the common card pile, the 3 available card for buying
+  _userCards(cardsIndividual) {
+    console.log(cardsIndividual);
+    this.setState ({ cardsIndividual });
   }
 
   _updateTurn(currentTurn) {
@@ -95,7 +97,7 @@ export default class App extends React.Component {
           healthPoints={this.state.healthPoints}
           victoryPoints={this.state.victoryPoints}
           energy={this.state.energy}
-          cards={this.state.cards}
+          cardsIndividual={this.state.cardsIndividual}
         />
 
         <PlayerActions
@@ -115,7 +117,7 @@ export default class App extends React.Component {
           victoryPoints={this.state.victoryPoints}
           healthPoints={this.state.healthPoints}
           energy={this.state.energy}
-          cards={this.state.cards}
+          cardsIndividual={this.state.cardsIndividual}
         />
       </div>
     );

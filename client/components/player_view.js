@@ -96,18 +96,21 @@ const Player = (props) => {
   };
 
   const cardStyle = {
-    width: 20,
-    height: 40,
+    width: 30,
+    height: 50,
   };
 
+  let items;
+  if (props.cardsIndividual) {
+    items = props.cardsIndividual[props.player].map((card) => {
+      let img = `../../client/images/cards/${card.name}.jpeg`;
+      return <img key={card.name + Math.random()} src={img} style={cardStyle} />;
+    });
+  } else {
+    items = <p>You have no card</p>;
+  }
 
-
-  // let items = props.cards[props.player].map((card) => {
-  //   let img = `../../client/images/cards/${card.name}.jpeg`;
-  //   return <img key={card.name + Math.random()} src={img} style={cardStyle} />;
-  // }) || null;
   // let items = props.cards[props.player];
-  let show = () => { console.log(props); };
   return (
     <div style={divStyle}>
       <h5 style={headerStyle}>Player: {parseInt(props.player) + 1}</h5>
@@ -135,7 +138,7 @@ const Player = (props) => {
           </div>
         </div>
       </div>
-      <p>{show()}</p>
+      {items}
     </div>
   );
 };
