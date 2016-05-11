@@ -48,8 +48,8 @@ export default class Card extends React.Component {
 
     const style = {
       display: 'inline-block',
-      width: 168,
-      height: 240,
+      width: 84,
+      height: 120,
       margin: 5,
       borderRadius: 10,
     };
