@@ -25,7 +25,7 @@ export default class App extends React.Component {
       currentTurn: 1,
       otherPlayers: [],
       currentEmperor: 0,
-      cards:[],
+      cards: [],
       cardsIndividual: [[], [], [], [], [], []],
     };
     socket.on('getUser', this._currentUser.bind(this));
@@ -120,6 +120,7 @@ export default class App extends React.Component {
           otherPlayers={this.state.otherPlayers}
           stayOrLeave={this.state.stayOrLeave}
           currentTurn={this.state.currentTurn}
+          currentEmperor={this.state.currentEmperor}
         />
 
         {/* Other Players View */}
@@ -132,7 +133,11 @@ export default class App extends React.Component {
           cardsIndividual={this.state.cardsIndividual}
         />
 
-        <CardsView socket={socket} currentUser={this.state.currentUser} currentTurn={this.state.currentTurn} />
+        <CardsView
+          socket={socket}
+          currentUser={this.state.currentUser}
+          currentTurn={this.state.currentTurn}
+        />
       </div>
     );
   }
