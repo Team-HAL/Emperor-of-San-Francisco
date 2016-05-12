@@ -44,7 +44,6 @@ export default class Cards extends React.Component {
   }
 
   start() {
-    console.log('starting');
     this.props.socket.emit('start', 'placeholder');
   }
 

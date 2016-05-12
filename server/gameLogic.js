@@ -7,9 +7,11 @@ let discardPile = [];
 const Users = [];
 let currentTurn = 1;
 let currentEmperor = -1;
+let selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
 
 class UserTemplate {
   constructor(socket) {
+    this.nickname = null;
     this.monster = null;
     this.HP = 10;
     this.maxHP = 10;
@@ -39,7 +41,7 @@ module.exports = (io) => {
     console.log('A user has connected!');
     // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
     // console.log('Just entered socket id: ', socket.id);
-
+    io.emit('updateSelectabledMonsters', selectableMonsters);
     if (Users.length < 6) {
       let added = false;
       for (let i = 0; i < Users.length; i++) {
@@ -63,7 +65,6 @@ module.exports = (io) => {
     }
 
     socket.on('start', (data) => {
-      console.log('starting');
       e.onGameStart(Users);
       currentEmperor = e.findEmperor(Users);
       io.emit("updateEmperor", currentEmperor);
@@ -208,37 +209,6 @@ module.exports = (io) => {
         }
       });
 
-      // if (data['1'] >= 3) {
-      //   Users[player].VP += data['1'] - 2;
-      // } else if (data['2'] >= 3) {
-      //   Users[player].VP += data['2'] - 1;
-      // } else if (data['3'] >= 3) {
-      //   Users[player].VP += data['3'];
-      // }
-
-      // if (Users[player].isEmperor) {
-      //   Users.forEach((user, index) => {
-      //     if (index !== player) {
-      //       if (data['4']) {
-      //         user.HP -= data['4'];
-      //       }
-      //     }
-      //   });
-      // } else {
-      //   Users.forEach((user) => {
-      //     if (user.isEmperor) {
-      //       if (data['4']) {
-      //         user.HP -= data['4'];
-      //       }
-      //     }
-      //   });
-      //   if (data['6']) {
-      //     if (Users[player].HP + data['6'] <= Users[player].maxHP) {
-      //       Users[player].HP += data['6'];
-      //     }
-      //   }
-      // }
-
       e.onVPDiceIncrease(Users, player, data);
       e.onAttack(Users, player, data['4']);
       e.onHeal(Users, player, data['6']);
@@ -295,5 +265,34 @@ module.exports = (io) => {
       delete Users[i];
       io.emit('loadUsers', Object.keys(Users));
     });
+
+    // Pregame Lobby 
+    socket.on('onPlayerSelect', (playerInfo) => {
+      let indexOfMonster = selectableMonsters.indexOf(playerInfo.monster);
+      selectableMonsters.splice(indexOfMonster, 1);
+
+      let player;
+      Users.forEach((user, index) => {
+        if (user.socket === socket) {
+          player = index;
+        }
+      });
+
+      Users[player].nickname = playerInfo.nickname;
+      Users[player].monster = playerInfo.monster;
+
+      const userMonsters = Users.map((user) => {
+        return user.monster;
+      });
+
+      const userNicknames = Users.map((user) => {
+        return user.nickname;
+      });
+
+      io.emit('updateSelectabledMonsters', selectableMonsters);
+      io.emit('updateUserMonsters', userMonsters);
+      io.emit('updateUserNicknames', userNicknames);
+
+    }); 
   });
 };
