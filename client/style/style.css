@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+body {
+  display: inline-block;
+  position: relative;
+}
+
 .gameTitle {
   display: table;
   margin: 3px auto;
@@ -16,4 +21,5 @@
   height: 900px;
   margin: 3px auto;
   padding: 0px;
+  overflow: auto;
 }

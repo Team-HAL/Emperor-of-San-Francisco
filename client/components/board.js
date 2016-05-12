@@ -5,14 +5,17 @@ const Board = (props) => {
     backgroundImage: 'url("../../client/images/board/esfBoard.jpg")',
     backgroundSize: 'cover',
     position: 'relative',
+    top: 228,
+    left: 356,
     zIndex: -1,
-    width: 1100,
-    height: 486,
+    width: 388,
+    height: 388,
     padding: 0,
-    margin: 0,
+    // margin: '229px auto', don't erase
+    borderRadius: 5,
   };
 
-  return <div style={divStyle}></div>;
+  return <div className="board" style={divStyle}></div>;
 };
 
 export default Board;

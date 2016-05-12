@@ -18,7 +18,6 @@ export default class Player extends React.Component {
   }
 
   afterOpenModal() {
-
     // For future expansion, useless right now
     // references are now sync'd and can be accessed.
     // this.refs.subtitle.style.color = '#f00';
@@ -29,7 +28,6 @@ export default class Player extends React.Component {
   }
 
   render() {
-
     const customStyles = {
       content: {
         top: '50%',
@@ -47,14 +45,15 @@ export default class Player extends React.Component {
     };
 
     const divStyle = {
-      display: 'table',
-      float: 'left',
-      margin: '13px 13px 10px 10px',
+      display: 'inline-block',
+      position: 'relative',
+      margin: 0,
       padding: 0,
     };
 
     const headerStyle = {
       margin: 0,
+      fontSize: '110%',
     };
 
     const textStyle = {
@@ -135,7 +134,7 @@ export default class Player extends React.Component {
     const statusText = {
       display: 'table',
       position: 'relative',
-      top: -4.5,
+      top: -7,
       margin: 'auto',
       color: 'white',
     };
@@ -149,16 +148,26 @@ export default class Player extends React.Component {
     if (this.props.cardsIndividual) {
       items = this.props.cardsIndividual[this.props.player].map((card) => {
         let img = `../../client/images/cards/${card.name}.jpeg`;
-        return <img key={card.name + Math.random()} src={img} style={cardStyle} onClick={()=>this.openModal(img)} />;
+        return <img key={card.name + Math.random()} src={img} style={cardStyle} onClick={() => this.openModal(img)} />;
       });
     } else {
       items = <p>You have no card</p>;
     }
 
+    // if (document.getElementsByClassName('board')[0]) {
+    //   console.log(document.getElementsByClassName('board')[0].getBoundingClientRect());
+    // }
+    // <div style={{ position: 'absolute', top: 422, left: 140, }}> don't erase
+    // let items = props.cards[props.player].map((card) => {
+    //   let img = `../../client/images/cards/${card.name}.jpeg`;
+    //   return <img key={card.name + Math.random()} src={img} style={cardStyle} />;
+    // }) || null;
     // let items = props.cards[props.player];
+
     return (
       <div style={divStyle}>
         <h5 style={headerStyle}>Player: {parseInt(this.props.player) + 1}</h5>
+
         <div style={statusBox}>
           <p style={textStyle}>HP:</p>
           <div style={hpProgressBar}>
@@ -167,6 +176,7 @@ export default class Player extends React.Component {
             </div>
           </div>
         </div>
+
         <div style={statusBox}>
           <p style={textStyle}>VP:</p>
           <div style={vpProgressBar}>
@@ -175,6 +185,7 @@ export default class Player extends React.Component {
             </div>
           </div>
         </div>
+
         <div style={statusBox}>
           <p style={textStyle}>En:</p>
           <div style={energyProgressBar}>
@@ -183,16 +194,17 @@ export default class Player extends React.Component {
             </div>
           </div>
         </div>
+
         {items}
+        
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
         >
-        <div><img src={this.state.modalImage} style={modalImageStyle} /></div>
+          <div><img src={this.state.modalImage} style={modalImageStyle} /></div>
         </Modal>
-
       </div>
     );
   }

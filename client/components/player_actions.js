@@ -6,11 +6,12 @@ const PlayerActions = (props) => {
   };
 
   const divStyle = {
-    display: 'table',
-    float: 'left',
-    clear: 'right',
-    margin: '10px 0px',
-    padding: 0,
+    display: 'inline-block',
+    position: 'relative',
+    marginTop: 0,
+    paddingTop: 0,
+    top: 265,
+    left: 467,
   };
 
   const buttonStyle = {
@@ -22,7 +23,7 @@ const PlayerActions = (props) => {
 
   let canYield = false;
 
-  props.socket.on('emperorAttack', data => {
+  props.socket.on('emperorAttack', (data) => {
     canYield = data.canYield;
   });
 

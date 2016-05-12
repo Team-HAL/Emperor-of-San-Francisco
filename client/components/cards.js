@@ -32,6 +32,7 @@ export default class Cards extends React.Component {
       // },
       // ],
       card: [],
+      gameStarted: false,
     };
     props.socket.on('cardDisplay', (data) => {
       this.setState({ card:data });
@@ -64,7 +65,7 @@ export default class Cards extends React.Component {
 
     const style = {
       position: 'absolute',
-      top: 560,
+      bottom: 0,
       right: 0,
     };
 
@@ -72,7 +73,15 @@ export default class Cards extends React.Component {
       <div style={style}>
         {items}
         {/*Deck image*/}
-        <button onClick={() => { this.start(); this.draw() }}>Start game!</button>
+        {this.state.gameStarted ? null :
+          <button onClick={() => {
+            this.start();
+            this.draw();
+            this.state.gameStarted = true;
+          }}>
+            Start game!
+          </button>
+        }
         <img src="" />
       </div>
     );
