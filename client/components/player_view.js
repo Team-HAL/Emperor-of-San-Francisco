@@ -126,7 +126,7 @@ export default class Player extends React.Component {
 
     const energyBar = {
       position: 'absolute',
-      width: this.props.victoryPoints[this.props.player] < 20 ? this.props.victoryPoints[this.props.player] * 5 + '%' : '100%',
+      width: this.props.energy[this.props.player] < 20 ? this.props.energy[this.props.player] * 5 + '%' : '100%',
       height: '100%',
       backgroundColor: '#0035CA',
     };
@@ -134,7 +134,7 @@ export default class Player extends React.Component {
     const statusText = {
       display: 'table',
       position: 'relative',
-      top: -7,
+      top: -5,
       margin: 'auto',
       color: 'white',
     };
@@ -196,7 +196,7 @@ export default class Player extends React.Component {
         </div>
 
         {items}
-        
+
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
