@@ -13,6 +13,7 @@ const Board = (props) => {
     padding: 0,
     // margin: '229px auto', don't erase
     borderRadius: 5,
+    boxShadow: '1px 1px 5px #888888',
   };
 
   return <div className="board" style={divStyle}></div>;
