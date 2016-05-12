@@ -55,6 +55,7 @@ module.exports = (io) => {
       }
     }
 
+    // this would only happen once (when the user connects)
     for (let i = 0; i < Users.length; i++) {
       if (Users[i].socket === socket) {
         socket.emit('getUser', i);
@@ -120,7 +121,7 @@ module.exports = (io) => {
         }
       });
       // if (player === currentTurn){
-        e.onBuy(Users, data, currentCards, deck, player, currentTurn); 
+        e.onBuy(Users, data, currentCards, deck, player, currentTurn);
 
         const tempCards = Users.map((user) => {
           return user.cards;
@@ -134,7 +135,51 @@ module.exports = (io) => {
         io.emit('updateCards', tempCards);
         io.emit('cardDisplay', currentCards);
       // }
-      
+    });
+
+    // emperor yield listerner should be outside endturn listener
+    let emitted = false;
+    socket.on('emperorYield', (data) => {
+      if (data) {
+        Users.forEach((user, i) => {
+          if (user.isEmperor) {
+            Users[i].isEmperor = false;
+            Users[currentTurn].isEmperor = true;
+            currentEmperor = e.findEmperor(Users);
+          }
+        });
+      }
+
+      const nextUsersDice = [];
+      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
+        nextUsersDice.push(0);
+      }
+
+      const tempHP = Users.map((user) => {
+        return user.HP;
+      });
+
+      const tempVP = Users.map((user) => {
+        return user.VP;
+      });
+
+      const tempEnergy = Users.map((user) => {
+        return user.energy;
+      });
+
+      currentTurn++;
+      if (currentTurn > Users.length - 1) {
+        currentTurn = 0;
+      }
+
+      emitted = true;
+      io.emit('emperorAttack', { canYield: false });
+      io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
+      io.emit('updateHP', tempHP);
+      io.emit('updateVP', tempVP);
+      io.emit('updateEnergy', tempEnergy);
+      io.emit('updateEmperor', currentEmperor);
+      io.emit('updateTurn', currentTurn);
     });
 
     socket.on('preEndTurn', () => {
@@ -218,41 +263,18 @@ module.exports = (io) => {
 
       Users[player].rollRemaining = Users[player].maxRoll;
 
-      currentTurn++;
-      if (currentTurn > Users.length - 1) {
-        currentTurn = 0;
-      }
-
       const nextUsersDice = [];
       for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
         nextUsersDice.push(0);
       }
 
-      currentEmperor = e.findEmperor(Users);
-
-      console.log(currentEmperor);
-      let emitted = false;
-      io.on('emperorYield', (data) => {
-        if (data) {
-          Users.forEach((user) => {
-            if (user.isEmperor) {
-              user.isEmperor = false;
-              Users[player].isEmperor = true;
-            }
-          });
-        }
-        emitted = true;
-        io.emit('emperorAttack', { canYield: false });
-        io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
-        io.emit('updateHP', tempHP);
-        io.emit('updateVP', tempVP);
-        io.emit('updateEnergy', tempEnergy);
-        io.emit('updateEmperor', currentEmperor);
-        io.emit('updateTurn', currentTurn);
-      });
-
       setTimeout(() => {
         if (!emitted) {
+          currentTurn++;
+          if (currentTurn > Users.length - 1) {
+            currentTurn = 0;
+          }
+
           io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
           io.emit('updateHP', tempHP);
           io.emit('updateVP', tempVP);
@@ -262,6 +284,7 @@ module.exports = (io) => {
         }
       }, 5000);
     });
+
     io.emit('loadUsers', Object.keys(Users).map((x) => {
       return parseInt(x, 10);
     }));
