@@ -2,17 +2,36 @@ import React from 'react';
 import PlayerView from './player_view.js';
 
 const Players = (props) => {
-  let players = props.otherPlayers.map((userid, i, array) => {
+  let arrangedOtherPlayers = [];
+
+  const arranger = () => {
+    let count = props.player;
+    for (let i = 0; i < props.otherPlayers.length; i++) {
+      if (count < props.otherPlayers.length) {
+        arrangedOtherPlayers.push(++count);
+      } else {
+        count = 0;
+        arrangedOtherPlayers.push(count);
+      }
+    }
+    arrangedOtherPlayers = arrangedOtherPlayers.reverse();
+  };
+
+  arranger();
+
+  let players = arrangedOtherPlayers.map((userid, i, array) => {
     const deg = 360 / (array.length + 1);
+
     const style = {
       display: 'inline-block',
       position: 'absolute',
       zIndex: 1,
       margin: 0,
       padding: 0,
-      top: 420 + 300 * Math.cos((userid + 1) * deg * (Math.PI / 180)),
-      left: 510 + 300 * Math.sin((userid + 1) * deg * (Math.PI / 180)),
+      top: 420 + 300 * Math.cos((i + 1) * deg * (Math.PI / 180)),
+      left: 510 + 300 * Math.sin((i + 1) * deg * (Math.PI / 180)),
     };
+
     return (
       <div style={style} key={userid}>
         <PlayerView
