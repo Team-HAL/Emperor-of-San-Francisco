@@ -63,7 +63,6 @@ module.exports = (io) => {
     }
 
     socket.on('start', (data) => {
-      console.log('starting');
       e.onGameStart(Users);
       currentEmperor = e.findEmperor(Users);
       io.emit("updateEmperor", currentEmperor);
