@@ -5,15 +5,175 @@ module.exports = [{
 }, {
   name: 'gas_refinery',
   cost: 6,
-  discard: true,              
+  discard: true,
 }, {
   name: 'rapid_healing',
   cost: 3,
-  discard: false,              
+  discard: false,
+}, {
+  name: 'regeneration',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'friend_of_children',
+  cost: 3,
+  discard: false,
+}, {
+  name: 'jets',
+  cost: 5,
+  discard: false,
+}, {
+  name: 'poison_spit',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
+}, {
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
+}, {
+  name: 'poison_quills',
+  cost: 3,
+  discard: false,
+}, {
+  name: 'burrowing',
+  cost: 5,
+  discard: false,
+}, {
+  name: 'frenzy',
+  cost: 7,
+  discard: true,
+}, {
+  name: 'urbavore',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'acid_attack',
+  cost: 6,
+  discard: false,
+}, {
+  name: 'even_bigger',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'fire_breathing',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'dedicated_news_team',
+  cost: 3,
+  discard: false,
+}, {
+  name: 'nova_breath',
+  cost: 7,
+  discard: false,
+}, {
+  name: 'alpha_monster',
+  cost: 5,
+  discard: false,
+}, {
+  name: 'telepath',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'omnivore',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'rooting_for_the_underdog',
+  cost: 3,
+  discard: false,
+}, {
+  name: 'herbivore',
+  cost: 5,
+  discard: false,
+}, {
+  name: 'complete_destruction',
+  cost: 3,
+  discard: false,
+}, {
+  name: 'gourmet',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'wings',
+  cost: 6,
+  discard: false,
+}, {
+  name: 'armor_plating',
+  cost: 4,
+  discard: false,
+}, {
+  name: 'energy_hoarder',
+  cost: 3,
+  discard: false,
+}, {
+  name: 'solar_powered',
+  cost: 2,
+  discard: false,
 }, {
   name: 'healing_ray',
   cost: 4,
   discard: false,
+}, {
+  name: 'vast_storm',
+  cost: 6,
+  discard: true,
+}, {
+  name: 'apartment_building',
+  cost: 5,
+  discard: true,
+}, {
+  name: 'jet_fighter',
+  cost: 5,
+  discard: true,
+}, {
+  name: 'skyscraper',
+  cost: 6,
+  discard: true,
+}, {
+  name: 'death_from_above',
+  cost: 5,
+  discard: true,
+}, {
+  name: 'tanks',
+  cost: 4,
+  discard: true,
+}, {
+  name: 'national_guard',
+  cost: 3,
+  discard: true,
+}, {
+  name: 'cornerstore',
+  cost: 3,
+  discard: true,
+}, {
+  name: 'fire_blast',
+  cost: 3,
+  discard: true,
+}, {
+  name: 'heal',
+  cost: 3,
+  discard: true,
+}, {
+  name: 'energize',
+  cost: 8,
+  discard: true,
+}, {
+  name: 'high-altitude_bombing',
+  cost: 4,
+  discard: true,
+}, {
+  name: 'evacuation_order',
+  cost: 7,
+  discard: true,
+}, {
+  name: 'evacuation_order',
+  cost: 7,
+  discard: true,
 }, {
   name: 'commuter_train',
   cost: 4,
