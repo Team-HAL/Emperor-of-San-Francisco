@@ -135,4 +135,8 @@ module.exports = {
     return currentEmperor;
   },
 
+  onMonsterSelect: (monster) => {
+    let selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
+  }
+
 };

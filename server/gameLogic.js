@@ -10,6 +10,7 @@ let currentEmperor = -1;
 
 class UserTemplate {
   constructor(socket) {
+    this.nickname = null;
     this.monster = null;
     this.HP = 10;
     this.maxHP = 10;
