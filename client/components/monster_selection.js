@@ -15,5 +15,12 @@ const MonsterSelection = (props) => {
       />
     );
   });
+
+  return (
+    <div>
+      {monsters}
+    </div>
+  );
 };
 
+export default MonsterSelection;

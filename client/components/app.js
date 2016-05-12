@@ -27,6 +27,9 @@ export default class App extends React.Component {
       currentEmperor: 0,
       cards: [],
       cardsIndividual: [[], [], [], [], [], []],
+      gameStart: false,
+      userMonsters: [],
+      userNicknames: [],
     };
     socket.on('getUser', this._currentUser.bind(this));
     socket.on('loadUsers', this._userConnect.bind(this));
@@ -36,6 +39,16 @@ export default class App extends React.Component {
     socket.on('updateEnergy', this._updateEnergy.bind(this));
     socket.on('updateEmperor', this._updateEmperor.bind(this));
     socket.on('updateCards', this._userCards.bind(this));
+    socket.on('updateUserMonsters', this._updateUserMonsters.bind(this));
+    socket.on('updateUserNicknames', this._updateUserNicknames.bind(this));
+  }
+
+  _updateUserMonsters(userMonsters) {
+    this.setState({ userMonsters });
+  }
+
+  _updateUserNicknames(userNicknames) {
+    this.setState({ userNicknames });
   }
 
   _userConnect(newPlayer) {
@@ -77,24 +90,9 @@ export default class App extends React.Component {
     this.setState({ currentEmperor });
   }
 
-
-  render() {
-    const mainStyle = {
-      width: 'inherit',
-      height: 'inherit',
-    };
-
-    const playerViewStyle = {
-      display: 'inline-block',
-      position: 'relative',
-      margin: 0,
-      padding: 0,
-      top: 280,
-      left: 464,
-    };
-
+  gameView(mainStyle, playerViewStyle) {
     return (
-      <div style={mainStyle}>
+            <div style={mainStyle}>
         <Dices socket={socket} />
         <TurnView
           currentTurn={this.state.currentTurn}
@@ -140,5 +138,37 @@ export default class App extends React.Component {
         />
       </div>
     );
+  }
+
+  lobbyView() {
+    return (
+      <PregameView
+        socket={socket}
+        users={this.state.users}
+        player={this.state.currentUser}
+        userMonsters={this.state.userMonsters}
+        userNicknames={this.state.userNicknames}
+        onGameStart={(button) => {
+          this.setState({ gameStart: button });
+        }}
+      />
+    );
+  }
+
+  render() {
+    const mainStyle = {
+      width: 'inherit',
+      height: 'inherit',
+    };
+
+    const playerViewStyle = {
+      display: 'inline-block',
+      position: 'relative',
+      margin: 0,
+      padding: 0,
+      top: 280,
+      left: 464,
+    };
+    return (this.state.gameStart ? this.gameView(mainStyle, playerViewStyle) : this.lobbyView());
   }
 }

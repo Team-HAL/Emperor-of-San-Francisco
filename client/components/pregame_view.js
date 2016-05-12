@@ -12,19 +12,34 @@ class PregameView extends React.Component {
       nickname: '',
       monster: '',
     };
+    this.props.socket.on('updateSelectabledMonsters', this._updateSelectabledMonsters.bind(this));
 
   }
 
-  handleSubmit() {
+  _updateSelectabledMonsters(selectableMonsters) {
+    this.setState({ selectableMonsters });
+  }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    const playerInfo = {
+      nickname: this.state.nickname,
+      monster: this.state.monster,
+      player: this.props.player,
+    }
+    this.props.socket.emit('onPlayerSelect', playerInfo);
+    this.setState({formCompleted: true});
+  }
 
+  startGame() {
+    this.props.onGameStart(true);
+    this.props.socket.emit('start', 'temp');
   }  
 
   loginPage() {
     return (
       <div className="loginForm center-block">
-        <h2>Welcome to Emperor of San Francisco</h2>
-        <h3></h3>
+        <h3>Select a Monster and Name</h3>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label>Nickname:</label>
@@ -55,19 +70,29 @@ class PregameView extends React.Component {
     );
   }
 
-  lobbyPage() {
+  lobbyPage() {   
+
     return (
       <div>
-
+        <div>
+          <li>{this.props.userNicknames[0]} - {this.props.userMonsters[0]}</li>
+          <li>{this.props.userNicknames[1]} - {this.props.userMonsters[1]}</li>
+          <li>{this.props.userNicknames[2]} - {this.props.userMonsters[2]}</li>
+          <li>{this.props.userNicknames[3]} - {this.props.userMonsters[3]}</li>
+          <li>{this.props.userNicknames[4]} - {this.props.userMonsters[4]}</li>
+          <li>{this.props.userNicknames[5]} - {this.props.userMonsters[5]}</li>
+        </div>
+        <div>
+          <button onClick={() => this.startGame()}> Start Game </button>
+        </div>
       </div>
     );
   }
 
   render() {
-    return (this.state.formCompleted ? this.lobbyPage() : this.loginPage() );
+    return (this.state.formCompleted ? this.lobbyPage() : this.loginPage());
   }
 }
 
-  // render() {
-  //   return (this.state.formCompleted ? this.lobbyPage() : this.loginPage() );
-  // }
+export default PregameView;
+    // return (this.state.formCompleted ? this.lobbyPage() : this.loginPage());
