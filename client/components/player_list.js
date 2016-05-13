@@ -2,14 +2,31 @@ import React from 'react';
 
 const PlayerList = (props) => {
   let items = props.userNicknames.map((name, key) => {
-    const url = `../../client/images/monster/${props.userMonsters[key]}.png`;
+    let url;
+    let monster;
+    if (!props.userMonsters[key]) {
+      monster = '';
+      url = `../../client/images/monster/Unknown.png`;
+    } else {
+      url = `../../client/images/monster/${props.userMonsters[key]}.png`;
+      monster = props.userMonsters[key];
+    }
+
+
+    let userName;
+    if (!name) {
+      userName = 'Waiting on player...'; 
+    } else {
+      userName = name;
+    }
+
     return (
       <tr>
         <td className="col-sm-1"><h5>{key + 1}</h5></td>
-        <td className="col-sm-5"><h5>{name}</h5></td>
+        <td className="col-sm-5"><h5>{userName}</h5></td>
         <td className="col-sm-6">
           <img src={url} height="150" width="150" />
-          <p>{props.userMonsters[key]}</p>
+          <p>{monster}</p>
         </td>
       </tr>
       );
