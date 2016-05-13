@@ -48,10 +48,12 @@ export default class Card extends React.Component {
 
     const style = {
       display: 'inline-block',
-      width: 84,
-      height: 120,
-      margin: 5,
+      width: 119,
+      height: 164,
+      padding: 0,
+      margin: 0,
       borderRadius: 10,
+      boxShadow: '1px 1px 5px #888888',
     };
 
     const buttonStyle = {
@@ -67,7 +69,7 @@ export default class Card extends React.Component {
     };
 
     return (
-      <div style={{ display: 'inline-block', margin: 5 }}>
+      <div style={{ display: 'inline-block', margin: 2 }}>
         <img onClick={this.openModal} style={style} src={img} />
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -80,8 +82,8 @@ export default class Card extends React.Component {
           <button
             style={buttonStyle}
             className="btn btn-primary"
-            onClick={() => { 
-              this.buyCard(); 
+            onClick={() => {
+              this.buyCard();
             }}
           >
             Buy card

@@ -28,7 +28,7 @@ const Players = (props) => {
       zIndex: 0,
       margin: 0,
       padding: 0,
-      top: 420 + 300 * Math.cos((i + 1) * deg * (Math.PI / 180)),
+      top: 470 + 300 * Math.cos((i + 1) * deg * (Math.PI / 180)),
       left: 510 + 300 * Math.sin((i + 1) * deg * (Math.PI / 180)),
     };
 
