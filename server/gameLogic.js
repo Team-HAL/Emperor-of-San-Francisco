@@ -41,13 +41,15 @@ module.exports = (io) => {
     console.log('A user has connected!');
     // console.log('These are the connected sockets: ', Object.keys(socket.nsp.connected));
     // console.log('Just entered socket id: ', socket.id);
+
     io.emit('updateSelectabledMonsters', selectableMonsters);
+
+    // allows someone to replace a disconnected user
     if (Users.length < 6) {
       let added = false;
       for (let i = 0; i < Users.length; i++) {
         if (!Users[i]) {
           Users[i] = new UserTemplate(socket);
-          Users[i].isEmperor = i > 0 ? false : true;
           added = true;
         }
       }
@@ -67,7 +69,8 @@ module.exports = (io) => {
     socket.on('start', (data) => {
       e.onGameStart(Users);
       currentEmperor = e.findEmperor(Users);
-      io.emit("updateEmperor", currentEmperor);
+      io.emit('updateEmperor', currentEmperor);
+      io.emit('startGame', true);
     });
 
     // Update keep/unkeep
@@ -216,7 +219,7 @@ module.exports = (io) => {
       if (data['5']) {
         Users[player].energy += data['5'];
       }
-      
+
       e.onVPEmperorIncrease(Users, player);
 
       const tempHP = Users.map((user) => {
@@ -266,7 +269,7 @@ module.exports = (io) => {
       io.emit('loadUsers', Object.keys(Users));
     });
 
-    // Pregame Lobby 
+    // Pregame Lobby
     socket.on('onPlayerSelect', (playerInfo) => {
       let indexOfMonster = selectableMonsters.indexOf(playerInfo.monster);
       selectableMonsters.splice(indexOfMonster, 1);
@@ -293,6 +296,6 @@ module.exports = (io) => {
       io.emit('updateUserMonsters', userMonsters);
       io.emit('updateUserNicknames', userNicknames);
 
-    }); 
+    });
   });
 };

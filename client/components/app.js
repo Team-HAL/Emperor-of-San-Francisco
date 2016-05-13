@@ -31,6 +31,7 @@ export default class App extends React.Component {
       userMonsters: [],
       userNicknames: [],
     };
+
     socket.on('getUser', this._currentUser.bind(this));
     socket.on('loadUsers', this._userConnect.bind(this));
     socket.on('updateTurn', this._updateTurn.bind(this));
@@ -90,9 +91,10 @@ export default class App extends React.Component {
     this.setState({ currentEmperor });
   }
 
+
   gameView(mainStyle, playerViewStyle) {
     return (
-            <div style={mainStyle}>
+      <div style={mainStyle}>
         <Dices socket={socket} />
         <TurnView
           currentTurn={this.state.currentTurn}
@@ -166,9 +168,10 @@ export default class App extends React.Component {
       position: 'relative',
       margin: 0,
       padding: 0,
-      top: 280,
+      top: 310,
       left: 464,
     };
+    
     return (this.state.gameStart ? this.gameView(mainStyle, playerViewStyle) : this.lobbyView());
   }
 }

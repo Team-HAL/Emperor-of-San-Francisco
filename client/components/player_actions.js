@@ -31,7 +31,7 @@ export default class PlayerActions extends React.Component {
       position: 'relative',
       marginTop: 0,
       paddingTop: 0,
-      top: 270,
+      top: 300,
       left: 467,
     };
 
