@@ -8,6 +8,8 @@ const Users = [];
 let currentTurn = 1;
 let currentEmperor = -1;
 let selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
+let userMonsters = [];
+let userNicknames = [];
 
 class UserTemplate {
   constructor(socket) {
@@ -43,6 +45,12 @@ module.exports = (io) => {
     // console.log('Just entered socket id: ', socket.id);
 
     io.emit('updateSelectabledMonsters', selectableMonsters);
+
+    // Update pregame lobby list
+    userMonsters.push(null);
+    userNicknames.push(null);
+    io.emit('updateUserMonsters', userMonsters);
+    io.emit('updateUserNicknames', userNicknames);
 
     // allows someone to replace a disconnected user
     if (Users.length < 6) {
@@ -284,11 +292,11 @@ module.exports = (io) => {
       Users[player].nickname = playerInfo.nickname;
       Users[player].monster = playerInfo.monster;
 
-      const userMonsters = Users.map((user) => {
+      userMonsters = Users.map((user) => {
         return user.monster;
       });
 
-      const userNicknames = Users.map((user) => {
+      userNicknames = Users.map((user) => {
         return user.nickname;
       });
 
