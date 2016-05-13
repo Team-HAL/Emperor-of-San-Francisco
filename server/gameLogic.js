@@ -1,6 +1,6 @@
 'use strict';
 const e = require('./events.js');
-const cards = require('./cardData.js');
+const cards = require('./testCardData1.js');
 const deck = cards.slice();
 let currentCards = [];
 let discardPile = [];
