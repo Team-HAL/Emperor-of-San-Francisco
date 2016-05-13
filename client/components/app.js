@@ -42,10 +42,15 @@ export default class App extends React.Component {
     socket.on('updateCards', this._userCards.bind(this));
     socket.on('updateUserMonsters', this._updateUserMonsters.bind(this));
     socket.on('updateUserNicknames', this._updateUserNicknames.bind(this));
+    socket.on('startGame', this._onGameStart.bind(this));
   }
 
   _updateUserMonsters(userMonsters) {
     this.setState({ userMonsters });
+  }
+
+  _onGameStart(gameStart) {
+    this.setState({ gameStart });
   }
 
   _updateUserNicknames(userNicknames) {
@@ -150,9 +155,6 @@ export default class App extends React.Component {
         player={this.state.currentUser}
         userMonsters={this.state.userMonsters}
         userNicknames={this.state.userNicknames}
-        onGameStart={(button) => {
-          this.setState({ gameStart: button });
-        }}
       />
     );
   }

@@ -33,8 +33,7 @@ class PregameView extends React.Component {
   }
 
   startGame() {
-    this.props.onGameStart(true);
-    this.props.socket.emit('start', 'temp');
+    this.props.socket.emit('start');
   }  
 
   loginPage() {
