@@ -1,5 +1,6 @@
 import React from 'react';
 import MonsterSelection from './monster_selection.js';
+import PlayerList from './player_list.js';
 
 class PregameView extends React.Component {
   constructor(props) {
@@ -32,8 +33,7 @@ class PregameView extends React.Component {
   }
 
   startGame() {
-    this.props.onGameStart(true);
-    this.props.socket.emit('start', 'temp');
+    this.props.socket.emit('start');
   }  
 
   loginPage() {
@@ -70,27 +70,22 @@ class PregameView extends React.Component {
     );
   }
 
-  lobbyPage() {   
-
+  lobbyPage() {
     return (
       <div>
+        <PlayerList
+          userNicknames={this.props.userNicknames}
+          userMonsters={this.props.userMonsters}
+        />
         <div>
-          <li>{this.props.userNicknames[0]} - {this.props.userMonsters[0]}</li>
-          <li>{this.props.userNicknames[1]} - {this.props.userMonsters[1]}</li>
-          <li>{this.props.userNicknames[2]} - {this.props.userMonsters[2]}</li>
-          <li>{this.props.userNicknames[3]} - {this.props.userMonsters[3]}</li>
-          <li>{this.props.userNicknames[4]} - {this.props.userMonsters[4]}</li>
-          <li>{this.props.userNicknames[5]} - {this.props.userMonsters[5]}</li>
-        </div>
-        <div>
-          <button onClick={() => this.startGame()}> Start Game </button>
+          <button onClick={() => this.startGame().bind(this) }> Start Game </button>
         </div>
       </div>
     );
   }
 
   render() {
-    return (this.state.formCompleted ? this.lobbyPage() : this.loginPage());
+    return (this.state.formCompleted ? this.lobbyPage.bind(this)() : this.loginPage());
   }
 }
 

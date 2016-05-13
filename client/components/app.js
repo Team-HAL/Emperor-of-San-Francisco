@@ -42,10 +42,15 @@ export default class App extends React.Component {
     socket.on('updateCards', this._userCards.bind(this));
     socket.on('updateUserMonsters', this._updateUserMonsters.bind(this));
     socket.on('updateUserNicknames', this._updateUserNicknames.bind(this));
+    socket.on('startGame', this._onGameStart.bind(this));
   }
 
   _updateUserMonsters(userMonsters) {
     this.setState({ userMonsters });
+  }
+
+  _onGameStart(gameStart) {
+    this.setState({ gameStart });
   }
 
   _updateUserNicknames(userNicknames) {
@@ -99,6 +104,7 @@ export default class App extends React.Component {
         <TurnView
           currentTurn={this.state.currentTurn}
           currentEmperor={this.state.currentEmperor}
+          userNicknames={this.state.userNicknames}
         />
 
         <Board />
@@ -112,6 +118,7 @@ export default class App extends React.Component {
             victoryPoints={this.state.victoryPoints}
             energy={this.state.energy}
             cardsIndividual={this.state.cardsIndividual}
+            userNicknames={this.state.userNicknames}
           />
         </div>
         <PlayerActions
@@ -131,6 +138,7 @@ export default class App extends React.Component {
           healthPoints={this.state.healthPoints}
           energy={this.state.energy}
           cardsIndividual={this.state.cardsIndividual}
+          userNicknames={this.state.userNicknames}
         />
 
         <CardsView
@@ -150,9 +158,6 @@ export default class App extends React.Component {
         player={this.state.currentUser}
         userMonsters={this.state.userMonsters}
         userNicknames={this.state.userNicknames}
-        onGameStart={(button) => {
-          this.setState({ gameStart: button });
-        }}
       />
     );
   }

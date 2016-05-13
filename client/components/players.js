@@ -40,6 +40,7 @@ const Players = (props) => {
           healthPoints={props.healthPoints}
           energy={props.energy}
           cardsIndividual={props.cardsIndividual}
+          userNicknames={props.userNicknames}
         />
       </div>
     );

@@ -166,7 +166,7 @@ export default class Player extends React.Component {
 
     return (
       <div style={divStyle}>
-        <h5 style={headerStyle}>Player: {parseInt(this.props.player) + 1}</h5>
+        <h5 style={headerStyle}>{this.props.userNicknames[this.props.player]}</h5>
 
         <div style={statusBox}>
           <p style={textStyle}>HP:</p>

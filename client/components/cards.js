@@ -67,7 +67,7 @@ export default class Cards extends React.Component {
             className='btn btn-primary'
             style={buttonStyle}
           >
-            Start<br />Game!
+            Draw Card
           </button>
         }
       </div>
