@@ -63,11 +63,16 @@ module.exports = {
         for (let i = 0; i < currentCards.length; i++) {
           if (currentCards[i].name === card && Users[player].energy >= currentCards[i].cost) {
             Users[player].energy -= currentCards[i].cost;
-            Users[player].cards.push(currentCards.splice(i, 1)[0]);
+            if (currentCards[i].discard) {
+              currentCards[i].func(Users, player);
+              currentCards.splice(i, 1);
+            } else {
+              Users[player].cards.push(currentCards.splice(i, 1)[0]);
+            }
             module.exports.onDraw(currentCards, deck, 1);
           }
         }
-      }      
+      }
     }
   },
 
