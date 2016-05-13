@@ -1,13 +1,6 @@
 import React from 'react';
 
 const TurnView = (props) => {
-  const KOTHView = () => {
-    if (props.currentEmperor > -1) {
-      return props.currentEmperor +  1;
-    }
-    return 'No one';
-  };
-
   const divStyle = {
     display: 'table',
     position: 'relative',
@@ -25,8 +18,8 @@ const TurnView = (props) => {
 
   return (
     <div style={divStyle}>
-      <h3 style={textStyle}>Current Turn: Player {props.currentTurn + 1}</h3>
-      <h3 style={textStyle}>Current Emperor: Player {KOTHView()}</h3>
+      <h3 style={textStyle}>Current Turn: {props.userNicknames[props.currentTurn]}</h3>
+      <h3 style={textStyle}>Current Emperor: {props.userNicknames[props.currentEmperor]}</h3>
     </div>
   );
 };

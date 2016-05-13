@@ -104,6 +104,7 @@ export default class App extends React.Component {
         <TurnView
           currentTurn={this.state.currentTurn}
           currentEmperor={this.state.currentEmperor}
+          userNicknames={this.state.userNicknames}
         />
 
         <Board />
