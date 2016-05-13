@@ -62,6 +62,13 @@ module.exports = [{
   name: 'fire_breathing',
   cost: 4,
   discard: false,
+  func(Users, player){
+    Users[player].actions[attackmodifier].fire_breathing = (Users, targets, player) => {
+      if(player ===0)
+      else if (player === Users.length - 1)
+      else
+    }
+  }
 }, {
   name: 'dedicated_news_team',
   cost: 3,
