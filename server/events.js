@@ -176,7 +176,7 @@ module.exports = {
     }
     Users[player].energy += amount;
   },
-
+  
   onGameStart: (Users) => {
     // Randomize Emperor
     let startingemperor = Math.floor(Math.random() * Users.length);

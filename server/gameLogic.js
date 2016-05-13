@@ -26,8 +26,6 @@ class UserTemplate {
     this.rollRemaining = 3;
     this.maxRoll = 3;
     this.numberOfDice = 6;
-    this.attackModifier = 0;
-    this.armorModifier = 0;
     this.isEmperor = false;
     this.cards = [];
     this.action = {
