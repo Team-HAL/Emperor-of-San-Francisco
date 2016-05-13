@@ -30,7 +30,13 @@ class UserTemplate {
     this.isEmperor = false;
     this.cards = [];
     this.action = {
-      attackmodifier: {},
+      attackmodifier: {
+        // SpikedTail: (Users, targets) => {
+        //   targets.forEach((target) => {
+        //     Users[target].HP -= 1;
+        //   });
+        // },
+      },
       armormodifier: {},
       healmodifier: {},
     };

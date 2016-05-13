@@ -67,6 +67,7 @@ module.exports = {
               currentCards[i].func(Users, player);
               currentCards.splice(i, 1);
             } else {
+              currentCards[i].func(Users, player);
               Users[player].cards.push(currentCards.splice(i, 1)[0]);
             }
             module.exports.onDraw(currentCards, deck, 1);
