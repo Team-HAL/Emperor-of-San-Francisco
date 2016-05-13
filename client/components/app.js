@@ -117,6 +117,7 @@ export default class App extends React.Component {
             victoryPoints={this.state.victoryPoints}
             energy={this.state.energy}
             cardsIndividual={this.state.cardsIndividual}
+            userNicknames={this.state.userNicknames}
           />
         </div>
         <PlayerActions
@@ -136,6 +137,7 @@ export default class App extends React.Component {
           healthPoints={this.state.healthPoints}
           energy={this.state.energy}
           cardsIndividual={this.state.cardsIndividual}
+          userNicknames={this.state.userNicknames}
         />
 
         <CardsView
