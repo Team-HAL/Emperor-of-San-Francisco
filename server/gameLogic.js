@@ -267,6 +267,10 @@ module.exports = (io) => {
 
       Users[player].rollRemaining = Users[player].maxRoll;
 
+      let timeout = 5000;
+      if (Users[player].isEmperor) {
+        timeout = 1;
+      }
 
       setTimeout(() => {
         if (!emitted) {
@@ -288,7 +292,7 @@ module.exports = (io) => {
           io.emit('updateTurn', currentTurn);
         }
         emitted = false;
-      }, 5000);
+      }, timeout);
     });
 
     io.emit('loadUsers', Object.keys(Users).map((x) => {

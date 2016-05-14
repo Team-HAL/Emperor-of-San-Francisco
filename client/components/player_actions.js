@@ -71,7 +71,7 @@ export default class PlayerActions extends React.Component {
           disabled={!this.state.canYield || (this.props.player !== this.props.currentEmperor)}
           onClick={() => { this.props.socket.emit('emperorYield', false); }}
         >
-          No Yield
+          Stay
         </button>
       </div>
     );

@@ -106,8 +106,9 @@ export default class Player extends React.Component {
 
     const hpDifference = {
       position: 'absolute',
-      top: -6,
+      top: -11,
       left: -20,
+      fontSize: 20,
       color: this.state.hpDifference > 0 ? '#00EF31' : 'red',
       zIndex: 1,
     };
@@ -134,8 +135,9 @@ export default class Player extends React.Component {
 
     const vpDifference = {
       position: 'absolute',
-      top: -6,
+      top: -11,
       left: -20,
+      fontSize: 20,
       color: this.state.vpDifference > 0 ? '#EFCA00' : 'red',
       zIndex: 1,
     };
@@ -162,8 +164,9 @@ export default class Player extends React.Component {
 
     const energyDifference = {
       position: 'absolute',
-      top: -6,
+      top: -11,
       left: -20,
+      fontSize: 20,
       color: this.state.energyDifference > 0 ? '#0035CA' : 'red',
       zIndex: 1,
     };
@@ -208,7 +211,7 @@ export default class Player extends React.Component {
         <div style={statusBox}>
           <p style={textStyle}>HP:</p>
           <div style={hpProgressBar}>
-            <ReactCSSTransitionGroup transitionName="hp" transitionEnterTimeout={1000} transitionLeaveTimeout={1}>
+            <ReactCSSTransitionGroup transitionName="hp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
               {[<span key={this.state.hpDifference} style={hpDifference}>
                 {this.state.hpDifference !== 0 ? this.state.hpDifference : null}
               </span>]}
@@ -222,7 +225,7 @@ export default class Player extends React.Component {
         <div style={statusBox}>
           <p style={textStyle}>VP:</p>
           <div style={vpProgressBar}>
-            <ReactCSSTransitionGroup transitionName="vp" transitionEnterTimeout={1000} transitionLeaveTimeout={1}>
+            <ReactCSSTransitionGroup transitionName="vp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
               {[<span key={this.state.vpDifference} style={vpDifference}>
                 {this.state.vpDifference !== 0 ? this.state.vpDifference : null}
               </span>]}
@@ -236,7 +239,7 @@ export default class Player extends React.Component {
         <div style={statusBox}>
           <p style={textStyle}>En:</p>
           <div style={energyProgressBar}>
-            <ReactCSSTransitionGroup transitionName="energy" transitionEnterTimeout={1000} transitionLeaveTimeout={1}>
+            <ReactCSSTransitionGroup transitionName="energy" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
               {[<span key={this.state.energyDifference} style={energyDifference}>
                 {this.state.energyDifference !== 0 ? this.state.energyDifference : null}
               </span>]}
