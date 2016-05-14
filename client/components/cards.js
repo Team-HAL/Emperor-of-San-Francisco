@@ -33,7 +33,7 @@ export default class Cards extends React.Component {
     const items = this.state.card.map((item) => {
       return (
         <Card
-          key={item.name}
+          key={item.name + Math.random()}
           item={item}
           socket={this.props.socket}
           currentUser={this.props.currentUser}

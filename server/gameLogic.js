@@ -1,6 +1,6 @@
 'use strict';
 const e = require('./events.js');
-const cards = require('./testCardData1.js');
+const cards = require('./test2.js');
 const deck = cards.slice();
 let currentCards = [];
 let discardPile = [];
@@ -39,6 +39,7 @@ class UserTemplate {
       },
       armormodifier: {},
       healmodifier: {},
+      energymodifier: {},
     };
   }
 }
@@ -139,19 +140,28 @@ module.exports = (io) => {
         }
       });
       // if (player === currentTurn){
-        e.onBuy(Users, data, currentCards, deck, player, currentTurn);
+      e.onBuy(Users, data, currentCards, deck, player, currentTurn);
 
-        const tempCards = Users.map((user) => {
-          return user.cards;
-        });
+      const tempCards = Users.map((user) => {
+        return user.cards;
+      });
 
-        const tempEnergy = Users.map((user) => {
-          return user.energy;
-        });
+      const tempEnergy = Users.map((user) => {
+        return user.energy;
+      });
+      const tempHP = Users.map((user) => {
+        return user.HP;
+      });
 
-        io.emit('updateEnergy', tempEnergy);
-        io.emit('updateCards', tempCards);
-        io.emit('cardDisplay', currentCards);
+      const tempVP = Users.map((user) => {
+        return user.VP;
+      });
+      io.emit('updateHP', tempHP);
+      io.emit('updateVP', tempVP);
+      io.emit('updateEnergy', tempEnergy);
+      io.emit('updateCards', tempCards);
+      io.emit('cardDisplay', currentCards);
+      io.emit('updateEmperor', currentEmperor);
       // }
     });
 
@@ -166,11 +176,6 @@ module.exports = (io) => {
             currentEmperor = e.findEmperor(Users);
           }
         });
-      }
-
-      const nextUsersDice = [];
-      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
-        nextUsersDice.push(0);
       }
 
       const tempHP = Users.map((user) => {
@@ -190,6 +195,11 @@ module.exports = (io) => {
         currentTurn = 0;
       }
 
+      const nextUsersDice = [];
+      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
+        nextUsersDice.push(0);
+      }
+
       emitted = true;
       io.emit('emperorAttack', { canYield: false });
       io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
@@ -198,6 +208,12 @@ module.exports = (io) => {
       io.emit('updateEnergy', tempEnergy);
       io.emit('updateEmperor', currentEmperor);
       io.emit('updateTurn', currentTurn);
+      // onDeath
+      // tempHP.forEach((HP, index)=>{
+      //   if (HP<=0){
+      //     Users[index]
+      //   }
+      // })
     });
 
     socket.on('preEndTurn', () => {
@@ -229,11 +245,7 @@ module.exports = (io) => {
       e.onVPDiceIncrease(Users, player, data);
       e.onAttack(Users, player, data['4']);
       e.onHeal(Users, player, data['6']);
-
-      if (data['5']) {
-        Users[player].energy += data['5'];
-      }
-
+      e.onEnergyIncrease(Users, player, data['5']);
       e.onVPEmperorIncrease(Users, player);
 
       const tempHP = Users.map((user) => {
@@ -250,16 +262,17 @@ module.exports = (io) => {
 
       Users[player].rollRemaining = Users[player].maxRoll;
 
-      const nextUsersDice = [];
-      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
-        nextUsersDice.push(0);
-      }
 
       setTimeout(() => {
         if (!emitted) {
           currentTurn++;
           if (currentTurn > Users.length - 1) {
             currentTurn = 0;
+          }
+
+          const nextUsersDice = [];
+          for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
+            nextUsersDice.push(0);
           }
 
           io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
@@ -269,6 +282,7 @@ module.exports = (io) => {
           io.emit('updateEmperor', currentEmperor);
           io.emit('updateTurn', currentTurn);
         }
+        emitted = false;
       }, 5000);
     });
 

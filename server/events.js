@@ -67,6 +67,8 @@ module.exports = {
               currentCards[i].func(Users, player);
               currentCards.splice(i, 1);
             } else {
+              console.log(player);
+              console.log(Users);
               currentCards[i].func(Users, player);
               Users[player].cards.push(currentCards.splice(i, 1)[0]);
             }
@@ -122,6 +124,16 @@ module.exports = {
     if (currentplayer.isEmperor) {
       currentplayer.VP ++;
     }
+  },
+
+  onEnergyIncrease: (Users, player, amount) => {
+    let playercards = Users[player].action.energymodifier;
+    if (playercards) {
+      for (let card in playercards) {
+        playercards[card](amount);
+      }
+    }
+    Users[player].energy += amount;
   },
 
   onGameStart: (Users) => {
