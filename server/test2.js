@@ -1,29 +1,57 @@
 module.exports = [{
-  name: 'cornerstore',
-  cost: 3,
-  discard: true,
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
   func(Users, player) {
-    Users[player].VP += 1;
+    Users[player].numberOfDice++;
   },
 }, {
-  name: 'cornerstore',
-  cost: 3,
-  discard: true,
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
   func(Users, player) {
-    Users[player].VP += 1;
+    Users[player].numberOfDice++;
   },
 }, {
-  name: 'cornerstore',
-  cost: 3,
-  discard: true,
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
   func(Users, player) {
-    Users[player].VP += 1;
+    Users[player].numberOfDice++;
   },
 }, {
-  name: 'cornerstore',
-  cost: 3,
-  discard: true,
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
   func(Users, player) {
-    Users[player].VP += 1;
+    Users[player].numberOfDice++;
+  },
+}, {
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
+  func(Users, player) {
+    Users[player].numberOfDice++;
+  },
+}, {
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
+  func(Users, player) {
+    Users[player].numberOfDice++;
+  },
+}, {
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
+  func(Users, player) {
+    Users[player].numberOfDice++;
+  },
+}, {
+  name: 'extra_head',
+  cost: 7,
+  discard: false,
+  func(Users, player) {
+    Users[player].numberOfDice++;
   },
 }];

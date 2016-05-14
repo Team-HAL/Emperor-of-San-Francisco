@@ -57,6 +57,9 @@ module.exports = [{
   name: 'death_from_above',
   cost: 5,
   discard: true,
+  func(Users,player) {
+
+  }
 }, {
   name: 'tanks',
   cost: 4,
@@ -121,7 +124,7 @@ module.exports = [{
   func(Users, player) {
     for (let i = 0; i < Users.length; i++) {
       if (i !== player) {
-        if (User[i].VP <= 5) {
+        if (Users[i].VP <= 5) {
           Users[i].VP = 0;
         } else {
           Users[i].VP -= 5;        
@@ -136,7 +139,7 @@ module.exports = [{
   func(Users, player) {
     for (let i = 0; i < Users.length; i++) {
       if (i !== player) {
-        if (User[i].VP <= 5) {
+        if (Users[i].VP <= 5) {
           Users[i].VP = 0;
         } else {
           Users[i].VP -= 5;        
