@@ -171,12 +171,12 @@ module.exports = {
     let playercards = Users[player].action.energymodifier;
     if (playercards) {
       for (let card in playercards) {
-        playercards[card](amount);
+        amount = playercards[card](amount);
       }
     }
     Users[player].energy += amount;
   },
-  
+
   onGameStart: (Users) => {
     // Randomize Emperor
     let startingemperor = Math.floor(Math.random() * Users.length);
