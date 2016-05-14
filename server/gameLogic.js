@@ -82,9 +82,11 @@ module.exports = (io) => {
     }
 
     socket.on('start', (data) => {
-      e.onGameStart(Users);
-      currentEmperor = e.findEmperor(Users);
-      io.emit('updateEmperor', currentEmperor);
+      if(!data.draw){
+        e.onGameStart(Users);
+        currentEmperor = e.findEmperor(Users);
+        io.emit('updateEmperor', currentEmperor);        
+      }
       io.emit('startGame', true);
     });
 

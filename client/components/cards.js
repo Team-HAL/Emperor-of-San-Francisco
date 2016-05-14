@@ -22,7 +22,7 @@ export default class Cards extends React.Component {
   }
 
   start() {
-    this.props.socket.emit('start', 'placeholder');
+    this.props.socket.emit('start', {draw:true});
   }
 
   draw() {
