@@ -145,6 +145,7 @@ export default class App extends React.Component {
           socket={socket}
           currentUser={this.state.currentUser}
           currentTurn={this.state.currentTurn}
+          gameStart={this.state.gameStart}
         />
       </div>
     );

@@ -83,12 +83,15 @@ module.exports = (io) => {
     }
 
     socket.on('start', (data) => {
-      if(!data.draw){
-        e.onGameStart(Users);
-        currentEmperor = e.findEmperor(Users);
-        io.emit('updateEmperor', currentEmperor);        
-      }
+      e.onGameStart(Users);
+      currentEmperor = e.findEmperor(Users);
+      io.emit('updateEmperor', currentEmperor);
+      e.onDraw(currentCards, deck, 3);
       io.emit('startGame', true);
+      
+      setTimeout(() => {
+        io.emit('cardDisplay', currentCards);
+      }, 1000);
     });
 
     // Update keep/unkeep
