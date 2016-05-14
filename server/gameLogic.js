@@ -10,6 +10,7 @@ let currentEmperor = -1;
 let selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
 let userMonsters = [];
 let userNicknames = [];
+let emitted = false;
 
 class UserTemplate {
   constructor(socket) {
@@ -168,7 +169,6 @@ module.exports = (io) => {
     });
 
     // emperor yield listerner should be outside endturn listener
-    let emitted = false;
     socket.on('emperorYield', (data) => {
       if (data) {
         Users.forEach((user, i) => {
@@ -180,34 +180,34 @@ module.exports = (io) => {
         });
       }
 
-      // const tempHP = Users.map((user) => {
-      //   return user.HP;
-      // });
+      const tempHP = Users.map((user) => {
+        return user.HP;
+      });
 
-      // const tempVP = Users.map((user) => {
-      //   return user.VP;
-      // });
+      const tempVP = Users.map((user) => {
+        return user.VP;
+      });
 
-      // const tempEnergy = Users.map((user) => {
-      //   return user.energy;
-      // });
+      const tempEnergy = Users.map((user) => {
+        return user.energy;
+      });
 
-      // currentTurn++;
-      // if (currentTurn > Users.length - 1) {
-      //   currentTurn = 0;
-      // }
+      currentTurn++;
+      if (currentTurn > Users.length - 1) {
+        currentTurn = 0;
+      }
 
-      // const nextUsersDice = [];
-      // for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
-      //   nextUsersDice.push(0);
-      // }
+      const nextUsersDice = [];
+      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
+        nextUsersDice.push(0);
+      }
 
       emitted = true;
       io.emit('emperorAttack', { canYield: false });
       io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
-      // io.emit('updateHP', tempHP);
-      // io.emit('updateVP', tempVP);
-      // io.emit('updateEnergy', tempEnergy);
+      io.emit('updateHP', tempHP);
+      io.emit('updateVP', tempVP);
+      io.emit('updateEnergy', tempEnergy);
       io.emit('updateEmperor', currentEmperor);
       io.emit('updateTurn', currentTurn);
       // onDeath
