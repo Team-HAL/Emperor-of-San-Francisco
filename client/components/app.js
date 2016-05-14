@@ -20,7 +20,7 @@ export default class App extends React.Component {
       users: [],
       victoryPoints: [0, 0, 0, 0],
       healthPoints: [10, 10, 10, 10, 10, 10],
-      energy: [0, 0, 0, 0],
+      energy: [10, 10, 10, 10, 10, 10],
       currentUser: 0,
       currentTurn: 1,
       otherPlayers: [],
