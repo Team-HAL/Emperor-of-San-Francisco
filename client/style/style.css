@@ -31,9 +31,9 @@ body {
 
 .hp-enter-active {
   opacity: 1;
-  transform: translate(-10px, 0px);
+  transform: translate(-12px, 0px);
   transition-property: transform, opacity;
-  transition-duration: 750ms;
+  transition-duration: 1000ms;
   transition-timing-function: ease-out;
 }
 
@@ -44,9 +44,9 @@ body {
 
 .vp-enter-active {
   opacity: 1;
-  transform: translate(-10px, 0px);
+  transform: translate(-12px, 0px);
   transition-property: transform, opacity;
-  transition-duration: 750ms;
+  transition-duration: 1000ms;
   transition-timing-function: ease-out;
 }
 
@@ -57,8 +57,8 @@ body {
 
 .energy-enter-active {
   opacity: 1;
-  transform: translate(-10px, 0px);
+  transform: translate(-12px, 0px);
   transition-property: transform, opacity;
-  transition-duration: 750ms;
+  transition-duration: 1000ms;
   transition-timing-function: ease-out;
 }
