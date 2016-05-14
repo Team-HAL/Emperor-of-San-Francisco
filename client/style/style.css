@@ -23,3 +23,42 @@ body {
   padding: 0px;
   overflow: auto;
 }
+
+.hp-enter {
+  opacity: 0;
+  transform: translate(0, 0);
+}
+
+.hp-enter-active {
+  opacity: 1;
+  transform: translate(-10px, 0px);
+  transition-property: transform, opacity;
+  transition-duration: 750ms;
+  transition-timing-function: ease-out;
+}
+
+.vp-enter {
+  opacity: 0;
+  transform: translate(0, 0);
+}
+
+.vp-enter-active {
+  opacity: 1;
+  transform: translate(-10px, 0px);
+  transition-property: transform, opacity;
+  transition-duration: 750ms;
+  transition-timing-function: ease-out;
+}
+
+.energy-enter {
+  opacity: 0;
+  transform: translate(0, 0);
+}
+
+.energy-enter-active {
+  opacity: 1;
+  transform: translate(-10px, 0px);
+  transition-property: transform, opacity;
+  transition-duration: 750ms;
+  transition-timing-function: ease-out;
+}
