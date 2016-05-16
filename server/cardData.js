@@ -26,10 +26,20 @@ module.exports = [{
   name: 'regeneration',
   cost: 4,
   discard: false,
+  func(Users, player, amount) {
+    if (amount > 0 ){
+      amount++;
+    }
+  }
 }, {
   name: 'friend_of_children',
   cost: 3,
   discard: false,
+  func(Users, player, amount) {
+    if (amount > 0 ){
+      amount++;
+    }
+  }
 }, {
   name: 'jets',
   cost: 5,
@@ -75,7 +85,11 @@ module.exports = [{
 }, {
   name: 'even_bigger',
   cost: 4,
-  discard: false,
+  discard: true,
+  func(Users, player){
+    Users[player].maxHP = 12;
+    Users[player].HP +=2;
+  }
 }, {
   name: 'fire_breathing',
   cost: 4,
