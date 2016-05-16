@@ -150,6 +150,13 @@ module.exports = {
   },
 
   onVPDiceIncrease: (Users, target, dice) => {
+    let playercards = Users[player].action.dicemodifier;
+    if (playercards) {
+      for (let card in playercards) {
+        playercards[card](Users, target, dice);
+      }
+    }
+
     let targetuser = Users[target];
     if (dice['1'] >= 3) {
       targetuser.VP += dice['1'] - 2;
@@ -171,7 +178,7 @@ module.exports = {
     let playercards = Users[player].action.energymodifier;
     if (playercards) {
       for (let card in playercards) {
-        playercards[card](amount);
+        amount = playercards[card](amount);
       }
     }
     Users[player].energy += amount;

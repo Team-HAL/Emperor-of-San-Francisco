@@ -149,10 +149,28 @@ module.exports = [{
   name: 'energy_hoarder',
   cost: 3,
   discard: false,
+  func(Users, player) {
+    Users[player].actions[energymodifier].energy_hoarder = (Users, player, amount) => {
+      const totalEnergy = amount + Users[player].energy;
+      if (totalEnergy >= 6) {
+        Users[player].VP += parseInt(totalEnergy / 6);
+      }
+      return amount;
+    }
+  }
 }, {
   name: 'solar_powered',
   cost: 2,
   discard: false,
+  func(Users, player){
+    Users[player].actions[energymodifier].solar_powered = (Users, player, amount) => {
+      if (amount === 0 && Users[player].energy === 0) {
+        return 1;
+      } else {
+        return amount;
+      }
+    }
+  }
 }, {
   name: 'healing_ray',
   cost: 4,
