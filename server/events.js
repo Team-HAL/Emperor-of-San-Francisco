@@ -99,7 +99,7 @@ module.exports = {
     }));
   },
 
-  getUser: (Users) => {
+  getUser: (Users, socket) => {
     for (let i = 0; i < Users.length; i++) {
       if (Users[i].socket === socket) {
         Users[i].socket.emit('getUser', i);
@@ -118,7 +118,7 @@ module.exports = {
   },
 
   onDeath: (Users, player, io) => {
-    let targetuser = Users[target];
+    let targetuser = Users[player];
     if (targetuser.action.deathmodifier) {
       let playercards = targetuser.action.deathmodifier;
       if (playercards) {
@@ -127,10 +127,10 @@ module.exports = {
         }
       }
     } else {
-      Users[player].socket.emit("lose", 'You lost!')
-      Users.splice(player,1);
+      Users[player].socket.emit("lose", 'You lost!');
+      // Users.splice(player,1);
       module.exports.getUser(Users);
-      module.exports.loadUsers(Users, io)
+      module.exports.loadUsers(Users, io);
     }
   },
 
@@ -168,7 +168,7 @@ module.exports = {
   },
 
   onVPDiceIncrease: (Users, target, dice) => {
-    let playercards = Users[player].action.dicemodifier;
+    let playercards = Users[target].action.dicemodifier;
     if (playercards) {
       for (let card in playercards) {
         playercards[card](Users, target, dice);

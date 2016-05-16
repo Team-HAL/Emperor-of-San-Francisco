@@ -1,6 +1,6 @@
 'use strict';
 const e = require('./events.js');
-const cards = require('./test2.js');
+const cards = require('./cardData.js');
 const deck = cards.slice();
 let currentCards = [];
 let discardPile = [];
@@ -70,7 +70,7 @@ module.exports = (io) => {
     }
 
     // this would only happen once (when the user connects)
-    e.getUser(Users);
+    e.getUser(Users, socket);
     e.loadUsers(Users, io);
 
     socket.on('start', (data) => {
@@ -138,7 +138,7 @@ module.exports = (io) => {
       });
       // if (player === currentTurn){
 
-      e.onBuy(Users, data, currentCards, deck, player, currentTurn);
+      e.onBuy(Users, card, currentCards, deck, player, currentTurn);
       
       Users.forEach((user)=>{
         if(user.HP<=0){
