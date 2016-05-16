@@ -117,9 +117,10 @@ module.exports = {
     })
   },
 
-  onDeath: (Users, player, io) => {
+  onDeath: (Users, player, currentTurn, io, socket) => {
     let targetuser = Users[player];
-    if (targetuser.action.deathmodifier) {
+    console.log(Object.keys(Users).length)
+    if (Object.keys(Users).length===0) {
       let playercards = targetuser.action.deathmodifier;
       if (playercards) {
         for (let card in playercards) {
@@ -128,8 +129,23 @@ module.exports = {
       }
     } else {
       Users[player].socket.emit("lose", 'You lost!');
-      // Users.splice(player,1);
-      module.exports.getUser(Users);
+      console.log('You lose, player ' + player);
+      if (Users[player].isEmperor) {
+        Users[player].isEmperor = false;
+        Users[currentTurn].isEmperor = true;      
+      }
+      if (player === currentTurn && Users[player]){      
+        Users[player].isEmperor = false;
+        do {
+          currentTurn--;
+          if(currentTurn < 0) {
+            currentTurn = Users.length - 1;
+          }
+        } while(!Users[currentTurn].isAlive);
+        Users[currentTurn].isEmperor = true;
+      }
+      Users[player].isAlive = false;
+      module.exports.getUser(Users, socket);
       module.exports.loadUsers(Users, io);
     }
   },
