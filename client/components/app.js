@@ -51,10 +51,12 @@ export default class App extends React.Component {
   }
   
   _win(msg) {
+    console.log(msg);
     alert(msg);
   }
   
   _lose(msg) {
+    console.log(msg);
     alert(msg);
   }
 

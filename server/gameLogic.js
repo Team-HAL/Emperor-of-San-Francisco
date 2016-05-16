@@ -16,7 +16,7 @@ class UserTemplate {
   constructor(socket) {
     this.nickname = null;
     this.monster = null;
-    this.HP = 10;
+    this.HP = 2;
     this.maxHP = 10;
     this.VP = 0;
     this.maxVP = 20;
@@ -28,6 +28,7 @@ class UserTemplate {
     this.numberOfDice = 6;
     this.isEmperor = false;
     this.cards = [];
+    this.isAlive = true;
     this.action = {
       attackmodifier: {},
       armormodifier: {},
@@ -140,9 +141,10 @@ module.exports = (io) => {
 
       e.onBuy(Users, card, currentCards, deck, player, currentTurn);
       
-      Users.forEach((user)=>{
+      Users.forEach((user, index)=>{
         if(user.HP<=0){
-          e.onDeath(Users, user, io);
+          e.onDeath(Users, index, currentTurn, io, socket);
+          currentEmperor = e.findEmperor(Users);
         } else if ( user.VP >=20){
           e.onVictory(Users, user)
         }
@@ -163,6 +165,7 @@ module.exports = (io) => {
       const tempVP = Users.map((user) => {
         return user.VP;
       });
+      currentEmperor = e.findEmperor(Users);
       io.emit('updateHP', tempHP);
       io.emit('updateVP', tempVP);
       io.emit('updateEnergy', tempEnergy);
@@ -184,13 +187,15 @@ module.exports = (io) => {
         });
       }
 
-      Users.forEach((user)=>{
+      Users.forEach((user, index)=>{
         if(user.HP<=0){
-          e.onDeath(Users, user, io);
+          e.onDeath(Users, index, currentTurn, io, socket);
+          currentEmperor = e.findEmperor(Users);
         } else if ( user.VP >=20){
           e.onVictory(Users, user)
         }
-      })
+      });
+
 
       const tempHP = Users.map((user) => {
         return user.HP;
@@ -203,11 +208,14 @@ module.exports = (io) => {
       const tempEnergy = Users.map((user) => {
         return user.energy;
       });
+      
 
-      currentTurn++;
-      if (currentTurn > Users.length - 1) {
-        currentTurn = 0;
-      }
+      do {
+        currentTurn++;        
+        if (currentTurn > Users.length - 1) {
+          currentTurn = 0;
+        }
+      } while(!Users[currentTurn].isAlive) 
 
       const nextUsersDice = [];
       for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
@@ -261,13 +269,15 @@ module.exports = (io) => {
       e.onHeal(Users, player, data['6']);
       e.onEnergyIncrease(Users, player, data['5']);
       e.onVPEmperorIncrease(Users, player);
-      Users.forEach((user)=>{
-        if(user.HP<=0){
-          e.onDeath(Users, user, io);
-        } else if ( user.VP >=20){
-          e.onVictory(Users, user)
+      Users.forEach((user, index) => {
+        if (user.HP <= 0) {
+          e.onDeath(Users, index, currentTurn, io, socket);
+          currentEmperor = e.findEmperor(Users);
+        } else if (user.VP >= 20) {
+          e.onVictory(Users, user);
         }
-      })
+      });
+      
       const tempHP = Users.map((user) => {
         return user.HP;
       });
@@ -289,10 +299,14 @@ module.exports = (io) => {
 
       setTimeout(() => {
         if (!emitted) {
-          currentTurn++;
-          if (currentTurn > Users.length - 1) {
-            currentTurn = 0;
-          }
+
+          do {
+            currentTurn++;        
+            if (currentTurn > Users.length - 1) {
+              currentTurn = 0;
+            }
+          } while(!Users[currentTurn].isAlive) 
+
 
           const nextUsersDice = [];
           for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {

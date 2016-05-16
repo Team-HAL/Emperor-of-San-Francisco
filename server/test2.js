@@ -1,57 +1,65 @@
 module.exports = [{
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }, {
-  name: 'extra_head',
-  cost: 7,
-  discard: false,
+  name: 'tanks',
+  cost: 4,
+  discard: true,
   func(Users, player) {
-    Users[player].numberOfDice++;
+    Users[player].HP -= 3;
+    Users[player].VP += 4;
   },
 }];
