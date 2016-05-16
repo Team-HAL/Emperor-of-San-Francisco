@@ -78,10 +78,30 @@ module.exports = [{
   name: 'urbavore',
   cost: 4,
   discard: false,
+  func(Users, player) {
+    Users[player].action.attackmodifier.urbavore = (Users, player, targets, damage) => {
+      if (Users[player].isEmperor) {
+        Users[player].VP += 1;
+      }
+
+      if (Users[player].isEmperor && damage > 0) {
+        damage = damage + 1;
+      }
+
+      return [targets, damage];
+    };
+  },
 }, {
   name: 'acid_attack',
   cost: 6,
   discard: false,
+  func(Users, player) {
+    Users[player].action.attackmodifier.acid_attack = (Users, player, targets, damage) => {
+      damage = typeof damage !== 'number' ? 1 : damage + 1;
+
+      return [targets, damage];
+    };
+  },
 }, {
   name: 'even_bigger',
   cost: 4,
@@ -94,13 +114,31 @@ module.exports = [{
   name: 'fire_breathing',
   cost: 4,
   discard: false,
-  func(Users, player){
-    Users[player].actions[attackmodifier].fire_breathing = (Users, targets, player) => {
-      if(player ===0)
-      else if (player === Users.length - 1)
-      else
-    }
-  }
+  func(Users, player) {
+    Users[player].action.attackmodifier.fire_breathing = (Users, player, targets, damage) => {
+      if (Users.length > 3) {
+        const neighBorRight = Users.length - 1 === player ? 0 : player + 1;
+        Users[neighBorRight].isNeighborOfFireBreather = true;
+        const neighBorLeft = player === 0 ? Users.length - 1 : player - 1;
+        Users[neighBorLeft].isNeighborOfFireBreather = true;
+      } else {
+        for (let i = 0; i < Users.length; i++) {
+          if (i !== player) {
+            Users[i].isNeighborOfFireBreather = true;
+          }
+        }
+      }
+
+      // push the neighbor(s) inside the targets for fire breather
+      for (let i = 0; i < Users.length; i++) {
+        if (Users[i].isNeighborOfFireBreather && targets.indexOf(i) === -1) {
+          targets.push(i);
+        }
+      }
+
+      return [targets, damage];
+    };
+  },
 }, {
   name: 'dedicated_news_team',
   cost: 3,
@@ -109,10 +147,32 @@ module.exports = [{
   name: 'nova_breath',
   cost: 7,
   discard: false,
+  func(Users, player) {
+    Users[player].action.attackmodifier.nova_breath = (Users, player, targets, damage) => {
+      if (!Users[player].isEmperor) {
+        Users.forEach(function(user, index) {
+          if (index !== player && targets.indexOf(index) === -1) {
+            targets.push(index);
+          }
+        });
+      }
+
+      return [targets, damage];
+    };
+  },
 }, {
   name: 'alpha_monster',
   cost: 5,
   discard: false,
+  func(Users, player) {
+    Users[player].action.attackmodifier.alpha_monster = (Users, player, targets, damage) => {
+      if (damage > 0) {
+        Users[player].VP += 1;
+      }
+
+      return [targets, damage];
+    };
+  },
 }, {
   name: 'telepath',
   cost: 4,
@@ -287,22 +347,7 @@ module.exports = [{
   func(Users, player) {
     for (let i = 0; i < Users.length; i++) {
       if (i !== player) {
-        if (User[i].VP <= 5) {
-          Users[i].VP = 0;
-        } else {
-          Users[i].VP -= 5;
-        }
-      }
-    }
-  },
-}, {
-  name: 'evacuation_order',
-  cost: 7,
-  discard: true,
-  func(Users, player) {
-    for (let i = 0; i < Users.length; i++) {
-      if (i !== player) {
-        if (User[i].VP <= 5) {
+        if (Users[i].VP <= 5) {
           Users[i].VP = 0;
         } else {
           Users[i].VP -= 5;
@@ -316,5 +361,18 @@ module.exports = [{
   discard: true,
   func(Users, player) {
     Users[player].VP += 2;
+  },
+}, {
+  name: 'spiked_tail',
+  cost: 5,
+  discard: false,
+  func(Users, player) {
+    Users[player].action.attackmodifier.spiked_tail = (Users, player, targets, damage) => {
+      if (damage > 0) {
+        damage = damage + 1;
+      }
+
+      return [targets, damage];
+    };
   },
 }];
