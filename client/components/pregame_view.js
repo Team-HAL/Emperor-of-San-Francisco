@@ -78,7 +78,7 @@ class PregameView extends React.Component {
           userMonsters={this.props.userMonsters}
         />
         <div>
-          <button onClick={() => this.startGame().bind(this) }> Start Game </button>
+          <button onClick={() => this.startGame() }> Start Game </button>
         </div>
       </div>
     );

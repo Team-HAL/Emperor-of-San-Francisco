@@ -31,7 +31,8 @@ export default class App extends React.Component {
       userMonsters: [],
       userNicknames: [],
     };
-
+    socket.on("win", this._win);
+    socket.on("lose", this._lose);    
     socket.on('getUser', this._currentUser.bind(this));
     socket.on('loadUsers', this._userConnect.bind(this));
     socket.on('updateTurn', this._updateTurn.bind(this));
@@ -47,6 +48,14 @@ export default class App extends React.Component {
 
   _updateUserMonsters(userMonsters) {
     this.setState({ userMonsters });
+  }
+  
+  _win(msg) {
+    alert(msg);
+  }
+  
+  _lose(msg) {
+    alert(msg);
   }
 
   _onGameStart(gameStart) {
