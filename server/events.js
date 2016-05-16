@@ -31,7 +31,7 @@ module.exports = {
         }
       });
 
-   // Monsters outside of Tokyo attack only Emperor
+    // Monsters outside of Tokyo attack only Emperor
     } else {
       Users.forEach((user, index) => {
         if (user.isEmperor) {
@@ -42,16 +42,32 @@ module.exports = {
 
     // Invoke attack modifier actions to targets
     let playercards = Users[player].action.attackmodifier;
-      if (playercards) {
-        for (let card in playercards) {
-          playercards[card](Users, targets);
-        }
+    if (playercards) {
+      for (let card in playercards) {
+        let results = [];
+        results = playercards[card](Users, player, targets, damage);
+        targets = results[0];
+        damage = results[1];
       }
+    }
 
     targets.forEach(function(target) {
-      // Users[target].HP -= damage;
+      const originalDamage = damage; // checks if player is fire breathing
+      if (Users[target].isNeighborOfFireBreather && damage > 0 &&
+          Users[player].action.attackmodifier.fire_breathing) {
+        if (Users[player].isEmperor || Users[target].isEmperor) {
+          damage = damage + 1;
+        } else {
+          damage = 1;
+        }
+      }
+      // } else if (Users[target].isNeighborOfFireBreather && Users[target].isEmperor &&
+      //            damage > 0 && Users[player].action.attackmodifier.fire_breathing) {
+      //   damage++;
+      // }
 
       onReceiveHelper(Users, target, damage);
+      damage = originalDamage;
     });
   },
 
@@ -67,8 +83,6 @@ module.exports = {
               currentCards[i].func(Users, player);
               currentCards.splice(i, 1);
             } else {
-              console.log(player);
-              console.log(Users);
               currentCards[i].func(Users, player);
               Users[player].cards.push(currentCards.splice(i, 1)[0]);
             }
@@ -121,8 +135,10 @@ module.exports = {
   },
 
   onDraw: (currentCards, deck, data) => {
-    for (let i = 0; i < data; i++) {
-      currentCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
+    if (deck.length) {
+      for (let i = 0; i < data; i++) {
+        currentCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
+      }
     }
   },
 
@@ -141,10 +157,12 @@ module.exports = {
       }
     }
     if (!targetuser.isEmperor) {
-      if (targetuser.HP + amount <= targetuser.maxHP) {
-        targetuser.HP += amount;
-      } else {
-        targetuser.HP = targetuser.maxHP;
+      if (amount) {
+        if (targetuser.HP + amount <= targetuser.maxHP) {
+          targetuser.HP += amount;
+        } else {
+          targetuser.HP = targetuser.maxHP;
+        }
       }
     }
   },
@@ -181,7 +199,10 @@ module.exports = {
         amount = playercards[card](amount);
       }
     }
-    Users[player].energy += amount;
+
+    if (amount) {
+      Users[player].energy += amount;
+    }
   },
 
   onGameStart: (Users) => {

@@ -79,7 +79,7 @@ module.exports = (io) => {
       io.emit('updateEmperor', currentEmperor);
       e.onDraw(currentCards, deck, 3);
       io.emit('startGame', true);
-      
+
       setTimeout(() => {
         io.emit('cardDisplay', currentCards);
       }, 1000);
@@ -129,7 +129,7 @@ module.exports = (io) => {
       io.emit('cardDisplay', currentCards);
     });
 
-    socket.on('buyCard', (data) => {
+    socket.on('buyCard', (card) => {
       let player;
       Users.forEach((user, index) => {
         if (user.socket === socket) {
@@ -137,6 +137,7 @@ module.exports = (io) => {
         }
       });
       // if (player === currentTurn){
+
       e.onBuy(Users, data, currentCards, deck, player, currentTurn);
       
       Users.forEach((user)=>{
