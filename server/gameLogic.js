@@ -38,6 +38,7 @@ class UserTemplate {
         //   });
         // },
       },
+      deathmodifier:{},
       armormodifier: {},
       healmodifier: {},
       energymodifier: {},
@@ -76,11 +77,8 @@ module.exports = (io) => {
     }
 
     // this would only happen once (when the user connects)
-    for (let i = 0; i < Users.length; i++) {
-      if (Users[i].socket === socket) {
-        socket.emit('getUser', i);
-      }
-    }
+    e.getUser(Users);
+    e.loadUsers(Users, io);
 
     socket.on('start', (data) => {
       e.onGameStart(Users);
@@ -147,6 +145,18 @@ module.exports = (io) => {
       });
       // if (player === currentTurn){
       e.onBuy(Users, data, currentCards, deck, player, currentTurn);
+      
+      Users.forEach((user)=>{
+        if(user.HP<=0){
+          e.onDeath(Users, user, io);
+        } else if ( user.VP >=20){
+          e.onVictory(Users, user)
+        }
+      })
+
+      const tempHP = Users.map((user) => {
+        return user.HP;
+      });
 
       const tempCards = Users.map((user) => {
         return user.cards;
@@ -154,9 +164,6 @@ module.exports = (io) => {
 
       const tempEnergy = Users.map((user) => {
         return user.energy;
-      });
-      const tempHP = Users.map((user) => {
-        return user.HP;
       });
 
       const tempVP = Users.map((user) => {
@@ -182,6 +189,14 @@ module.exports = (io) => {
           }
         });
       }
+
+      Users.forEach((user)=>{
+        if(user.HP<=0){
+          e.onDeath(Users, user, io);
+        } else if ( user.VP >=20){
+          e.onVictory(Users, user)
+        }
+      })
 
       const tempHP = Users.map((user) => {
         return user.HP;
@@ -252,7 +267,13 @@ module.exports = (io) => {
       e.onHeal(Users, player, data['6']);
       e.onEnergyIncrease(Users, player, data['5']);
       e.onVPEmperorIncrease(Users, player);
-
+      Users.forEach((user)=>{
+        if(user.HP<=0){
+          e.onDeath(Users, user, io);
+        } else if ( user.VP >=20){
+          e.onVictory(Users, user)
+        }
+      })
       const tempHP = Users.map((user) => {
         return user.HP;
       });
@@ -295,9 +316,6 @@ module.exports = (io) => {
       }, timeout);
     });
 
-    io.emit('loadUsers', Object.keys(Users).map((x) => {
-      return parseInt(x, 10);
-    }));
 
     socket.on('disconnect', () => {
       console.log('A user has disconnected...');

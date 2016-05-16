@@ -79,6 +79,47 @@ module.exports = {
     }
   },
 
+  loadUsers: (Users, io) => {
+    io.emit('loadUsers', Object.keys(Users).map((x) => {
+      return parseInt(x, 10);
+    }));
+  },
+
+  getUser: (Users) => {
+    for (let i = 0; i < Users.length; i++) {
+      if (Users[i].socket === socket) {
+        Users[i].socket.emit('getUser', i);
+      }
+    }
+  },
+
+  onVictory: (Users, player) =>{
+    Users.forEach((user, index)=>{
+      if(player === index){
+        Users[player].socket.emit("win", 'You won!')
+      } else {
+        Users[index].socket.emit("lose", 'You lost!')
+      }
+    })
+  },
+
+  onDeath: (Users, player, io) => {
+    let targetuser = Users[target];
+    if (targetuser.action.deathmodifier) {
+      let playercards = targetuser.action.deathmodifier;
+      if (playercards) {
+        for (let card in playercards) {
+          playercards[card](targetuser);
+        }
+      }
+    } else {
+      Users[player].socket.emit("lose", 'You lost!')
+      Users.splice(player,1);
+      module.exports.getUser(Users);
+      module.exports.loadUsers(Users, io)
+    }
+  },
+
   onDraw: (currentCards, deck, data) => {
     for (let i = 0; i < data; i++) {
       currentCards.push(deck.splice(Math.floor(Math.random() * deck.length), 1)[0]);
