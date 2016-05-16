@@ -33,6 +33,7 @@ export default class Cards extends React.Component {
     });
 
     const buttonStyle = {
+      float: 'right',
       width: 50,
       height: 50,
       margin: '1px 1px',
