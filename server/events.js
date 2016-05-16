@@ -150,6 +150,13 @@ module.exports = {
   },
 
   onVPDiceIncrease: (Users, target, dice) => {
+    let playercards = Users[player].action.dicemodifier;
+    if (playercards) {
+      for (let card in playercards) {
+        playercards[card](Users, target, dice);
+      }
+    }
+
     let targetuser = Users[target];
     if (dice['1'] >= 3) {
       targetuser.VP += dice['1'] - 2;
