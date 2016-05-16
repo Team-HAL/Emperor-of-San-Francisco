@@ -83,12 +83,15 @@ module.exports = (io) => {
     }
 
     socket.on('start', (data) => {
-      if(!data.draw){
-        e.onGameStart(Users);
-        currentEmperor = e.findEmperor(Users);
-        io.emit('updateEmperor', currentEmperor);        
-      }
+      e.onGameStart(Users);
+      currentEmperor = e.findEmperor(Users);
+      io.emit('updateEmperor', currentEmperor);
+      e.onDraw(currentCards, deck, 3);
       io.emit('startGame', true);
+      
+      setTimeout(() => {
+        io.emit('cardDisplay', currentCards);
+      }, 1000);
     });
 
     // Update keep/unkeep
@@ -264,6 +267,10 @@ module.exports = (io) => {
 
       Users[player].rollRemaining = Users[player].maxRoll;
 
+      let timeout = 5000;
+      if (Users[player].isEmperor) {
+        timeout = 1;
+      }
 
       setTimeout(() => {
         if (!emitted) {
@@ -285,7 +292,7 @@ module.exports = (io) => {
           io.emit('updateTurn', currentTurn);
         }
         emitted = false;
-      }, 5000);
+      }, timeout);
     });
 
     io.emit('loadUsers', Object.keys(Users).map((x) => {

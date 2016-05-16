@@ -18,13 +18,13 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       users: [],
-      victoryPoints: [0, 0, 0, 0],
+      victoryPoints: [0, 0, 0, 0, 0, 0],
       healthPoints: [10, 10, 10, 10, 10, 10],
-      energy: [0, 0, 0, 0],
+      energy: [10, 10, 10, 10, 10, 10],
       currentUser: 0,
       currentTurn: 1,
       otherPlayers: [],
-      currentEmperor: 0,
+      currentEmperor: -1,
       cards: [],
       cardsIndividual: [[], [], [], [], [], []],
       gameStart: false,
@@ -145,6 +145,7 @@ export default class App extends React.Component {
           socket={socket}
           currentUser={this.state.currentUser}
           currentTurn={this.state.currentTurn}
+          gameStart={this.state.gameStart}
         />
       </div>
     );
@@ -176,7 +177,7 @@ export default class App extends React.Component {
       top: 310,
       left: 464,
     };
-    
+
     return (this.state.gameStart ? this.gameView(mainStyle, playerViewStyle) : this.lobbyView());
   }
 }

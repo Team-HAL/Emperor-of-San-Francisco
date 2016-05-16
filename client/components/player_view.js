@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export default class Player extends React.Component {
   constructor(props) {
@@ -7,10 +8,21 @@ export default class Player extends React.Component {
     this.state = {
       modalIsOpen: false,
       modalImage: 'None',
+      hpDifference: 0,
+      vpDifference: 0,
+      energyDifference: 0,
     };
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      hpDifference: nextProps.healthPoints[nextProps.player] - this.props.healthPoints[this.props.player],
+      vpDifference: nextProps.victoryPoints[nextProps.player] - this.props.victoryPoints[this.props.player],
+      energyDifference: nextProps.energy[nextProps.player] - this.props.energy[this.props.player],
+    });
   }
 
   openModal(img) {
@@ -26,6 +38,7 @@ export default class Player extends React.Component {
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
+
 
   render() {
     const customStyles = {
@@ -91,6 +104,15 @@ export default class Player extends React.Component {
       backgroundColor: '#00EF31',
     };
 
+    const hpDifference = {
+      position: 'absolute',
+      top: -11,
+      left: -20,
+      fontSize: 20,
+      color: this.state.hpDifference > 0 ? '#00EF31' : 'red',
+      zIndex: 1,
+    };
+
     const vpProgressBar = {
       display: 'inline-block',
       position: 'relative',
@@ -111,6 +133,15 @@ export default class Player extends React.Component {
       backgroundColor: '#EFCA00',
     };
 
+    const vpDifference = {
+      position: 'absolute',
+      top: -11,
+      left: -20,
+      fontSize: 20,
+      color: this.state.vpDifference > 0 ? '#EFCA00' : 'red',
+      zIndex: 1,
+    };
+
     const energyProgressBar = {
       display: 'inline-block',
       position: 'relative',
@@ -129,6 +160,15 @@ export default class Player extends React.Component {
       width: this.props.energy[this.props.player] < 20 ? this.props.energy[this.props.player] * 5 + '%' : '100%',
       height: '100%',
       backgroundColor: '#0035CA',
+    };
+
+    const energyDifference = {
+      position: 'absolute',
+      top: -11,
+      left: -20,
+      fontSize: 20,
+      color: this.state.energyDifference > 0 ? '#0035CA' : 'red',
+      zIndex: 1,
     };
 
     const statusText = {
@@ -171,6 +211,11 @@ export default class Player extends React.Component {
         <div style={statusBox}>
           <p style={textStyle}>HP:</p>
           <div style={hpProgressBar}>
+            <ReactCSSTransitionGroup transitionName="hp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
+              {[<span key={this.state.hpDifference} style={hpDifference}>
+                {this.state.hpDifference !== 0 ? this.state.hpDifference : null}
+              </span>]}
+            </ReactCSSTransitionGroup>
             <div style={hpBar}>
               <div style={statusText}>{this.props.healthPoints[this.props.player]}</div>
             </div>
@@ -180,6 +225,11 @@ export default class Player extends React.Component {
         <div style={statusBox}>
           <p style={textStyle}>VP:</p>
           <div style={vpProgressBar}>
+            <ReactCSSTransitionGroup transitionName="vp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
+              {[<span key={this.state.vpDifference} style={vpDifference}>
+                {this.state.vpDifference !== 0 ? this.state.vpDifference : null}
+              </span>]}
+            </ReactCSSTransitionGroup>
             <div style={vpBar}>
               <div style={statusText}>{this.props.victoryPoints[this.props.player]}</div>
             </div>
@@ -189,6 +239,11 @@ export default class Player extends React.Component {
         <div style={statusBox}>
           <p style={textStyle}>En:</p>
           <div style={energyProgressBar}>
+            <ReactCSSTransitionGroup transitionName="energy" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
+              {[<span key={this.state.energyDifference} style={energyDifference}>
+                {this.state.energyDifference !== 0 ? this.state.energyDifference : null}
+              </span>]}
+            </ReactCSSTransitionGroup>
             <div style={energyBar}>
               <div style={statusText}>{this.props.energy[this.props.player]}</div>
             </div>

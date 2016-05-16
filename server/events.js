@@ -122,7 +122,7 @@ module.exports = {
   onVPEmperorIncrease: (Users, player) => {
     let currentplayer = Users[player];
     if (currentplayer.isEmperor) {
-      currentplayer.VP ++;
+      currentplayer.VP++;
     }
   },
 
@@ -140,7 +140,6 @@ module.exports = {
     // Randomize Emperor
     let startingemperor = Math.floor(Math.random() * Users.length);
     Users[startingemperor].isEmperor = true;
-
   },
 
   findEmperor: (Users) => {
@@ -152,6 +151,4 @@ module.exports = {
     });
     return currentEmperor;
   },
-
-
 };

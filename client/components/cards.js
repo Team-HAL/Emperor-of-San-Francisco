@@ -6,23 +6,13 @@ export default class Cards extends React.Component {
     super(props);
     this.state = {
       card: [],
-      gameStarted: false,
     };
 
     props.socket.on('cardDisplay', (data) => {
-      this.setState({ card:data });
+      this.setState({ card: data });
     });
 
-    props.socket.on('startGame', () => {
-      this.state.gameStarted = true;
-    });
-
-    this.start = this.start.bind(this);
     this.draw = this.draw.bind(this);
-  }
-
-  start() {
-    this.props.socket.emit('start', {draw:true});
   }
 
   draw() {
@@ -58,16 +48,15 @@ export default class Cards extends React.Component {
     return (
       <div style={style}>
         {items}
-        {this.state.gameStarted ? null :
-          <button 
+        {this.state.card.length >= 3 ? null :
+          <button
             onClick={() => {
-              this.start();
               this.draw();
             }}
             className='btn btn-primary'
             style={buttonStyle}
           >
-            Draw Card
+            Draw<br />Card
           </button>
         }
       </div>
