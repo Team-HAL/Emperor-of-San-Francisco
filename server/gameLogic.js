@@ -140,7 +140,7 @@ module.exports = (io) => {
       // if (player === currentTurn){
 
       e.onBuy(Users, card, currentCards, deck, player, currentTurn);
-      
+
       Users.forEach((user, index)=>{
         if(user.HP<=0){
           e.onDeath(Users, index, currentTurn, io, socket);
@@ -208,14 +208,14 @@ module.exports = (io) => {
       const tempEnergy = Users.map((user) => {
         return user.energy;
       });
-      
+
 
       do {
-        currentTurn++;        
+        currentTurn++;
         if (currentTurn > Users.length - 1) {
           currentTurn = 0;
         }
-      } while(!Users[currentTurn].isAlive) 
+      } while(!Users[currentTurn].isAlive)
 
       const nextUsersDice = [];
       for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
@@ -277,7 +277,7 @@ module.exports = (io) => {
           e.onVictory(Users, user);
         }
       });
-      
+
       const tempHP = Users.map((user) => {
         return user.HP;
       });
@@ -301,11 +301,11 @@ module.exports = (io) => {
         if (!emitted) {
 
           do {
-            currentTurn++;        
+            currentTurn++;
             if (currentTurn > Users.length - 1) {
               currentTurn = 0;
             }
-          } while(!Users[currentTurn].isAlive) 
+          } while(!Users[currentTurn].isAlive)
 
 
           const nextUsersDice = [];
@@ -327,9 +327,34 @@ module.exports = (io) => {
 
     socket.on('disconnect', () => {
       console.log('A user has disconnected...');
-      const i = Users.indexOf(socket);
-      delete Users[i];
-      io.emit('loadUsers', Object.keys(Users));
+      Users.forEach((user, index) => {
+        if (user.socket === socket) {
+          user.isAlive = false;
+          if (index === currentTurn) {
+            do {
+              currentTurn++;
+              if (currentTurn > Users.length - 1) {
+                currentTurn = 0;
+              }
+            } while (!Users[currentTurn].isAlive);
+            io.emit('updateTurn', currentTurn);
+          }
+
+          if(user.isEmperor) {
+            user.isEmperor = false;
+            let newEmperor = index;
+            do {
+              newEmperor--;
+              if (newEmperor < 0) {
+                newEmperor = Users.length - 1;
+              }
+            } while (!Users[newEmperor].isAlive);
+            Users[newEmperor].isEmperor = true;
+            currentEmperor = e.findEmperor(Users);
+            io.emit('updateEmperor', currentEmperor);
+          }
+        }
+      });
     });
 
     // Pregame Lobby
