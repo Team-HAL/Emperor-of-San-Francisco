@@ -204,7 +204,7 @@ module.exports = {
   onVPEmperorIncrease: (Users, player) => {
     let currentplayer = Users[player];
     if (currentplayer.isEmperor) {
-      currentplayer.VP++;
+      currentplayer.VP += 2;
     }
   },
 
@@ -212,7 +212,7 @@ module.exports = {
     let playercards = Users[player].action.energymodifier;
     if (playercards) {
       for (let card in playercards) {
-        amount = playercards[card](amount);
+        amount = playercards[card](Users, player, amount);
       }
     }
 

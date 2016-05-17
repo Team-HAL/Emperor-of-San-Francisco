@@ -16,7 +16,7 @@ class UserTemplate {
   constructor(socket) {
     this.nickname = null;
     this.monster = null;
-    this.HP = 2;
+    this.HP = 10;
     this.maxHP = 10;
     this.VP = 0;
     this.maxVP = 20;
