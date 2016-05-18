@@ -4,7 +4,7 @@ const cards = require('./cardData.js');
 const deck = cards.slice();
 let currentCards = [];
 let discardPile = [];
-const Users = [];
+let Users = [];
 let currentTurn = 1;
 let currentEmperor = -1;
 let selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
@@ -92,13 +92,13 @@ module.exports = (io) => {
     });
 
     // Roll dice from dices.js
+        }
     socket.on('rollDice', data => {
       // search for current player
       let player;
       Users.forEach((user, index) => {
         if (user.socket === socket) {
           player = index;
-        }
       });
 
       // Data to emit
@@ -239,6 +239,7 @@ module.exports = (io) => {
     });
 
     socket.on('preEndTurn', () => {
+      console.log('in pre end turn');
       socket.emit('midEndTurn');
     });
 
@@ -249,7 +250,7 @@ module.exports = (io) => {
           player = index;
         }
       });
-
+      console.log('End turn by player ' + player);
       // data 4 is attack, 5 is energy, 6 is life
       const data = {};
       dicesKeep.forEach((diceValue) => {
@@ -305,8 +306,7 @@ module.exports = (io) => {
             if (currentTurn > Users.length - 1) {
               currentTurn = 0;
             }
-          } while(!Users[currentTurn].isAlive)
-
+          } while (!Users[currentTurn].isAlive);
 
           const nextUsersDice = [];
           for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
@@ -383,7 +383,59 @@ module.exports = (io) => {
       io.emit('updateSelectabledMonsters', selectableMonsters);
       io.emit('updateUserMonsters', userMonsters);
       io.emit('updateUserNicknames', userNicknames);
+    });
 
+    // Restart Game
+    socket.on('restartGame', () => {
+      currentCards = [];
+      discardPile = [];
+      Users = [];
+      currentTurn = 1;
+      currentEmperor = -1;
+      selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
+      userMonsters = [];
+      userNicknames = [];
+      emitted = false;
+
+      for (let playerConnection in socket.nsp.connected) {
+        Users.push(new UserTemplate(socket.nsp.connected[playerConnection]));
+        e.getUser(Users, socket.nsp.connected[playerConnection]);
+      }
+      e.loadUsers(Users, io);
+      const tempHP = Users.map((user) => {
+        return user.HP;
+      });
+
+      const tempCards = Users.map((user) => {
+        return user.cards;
+      });
+
+      const tempEnergy = Users.map((user) => {
+        return user.energy;
+      });
+
+      const tempVP = Users.map((user) => {
+        return user.VP;
+      });
+
+      io.emit('updateHP', tempHP);
+      io.emit('updateVP', tempVP);
+      io.emit('updateEnergy', tempEnergy);
+      io.emit('updateCards', tempCards);
+      io.emit('cardDisplay', currentCards);
+      io.emit('updateEmperor', currentEmperor);
+      io.emit('updateTurn', currentTurn);
+
+      const nextUsersDice = [];
+      for (let i = 0; i < Users[currentTurn].numberOfDice; i++) {
+        nextUsersDice.push(0);
+      }
+
+      io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
+
+
+      io.emit('startGame', false);
+      io.emit('formCompleted', false);
     });
   });
 };
