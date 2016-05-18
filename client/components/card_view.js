@@ -47,9 +47,9 @@ export default class Card extends React.Component {
     };
 
     const style = {
-      display: 'inline-block',
-      width: 119,
-      height: 164,
+      // display: 'table-column-group',
+      width: 150,
+      height: 200,
       padding: 0,
       margin: 0,
       borderRadius: 10,
@@ -66,10 +66,11 @@ export default class Card extends React.Component {
     const modalImageStyle = {
       display: 'inline-block',
       borderRadius: 30,
+      zIndex: 1,
     };
 
     return (
-      <div style={{ display: 'inline-block', margin: 2 }}>
+      <li style={{ width:200,  margin: 2 }}>
         <img onClick={this.openModal} style={style} src={img} />
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -90,7 +91,7 @@ export default class Card extends React.Component {
           </button>
         </div>
         </Modal>
-      </div>
+      </li>
 
     );
   }

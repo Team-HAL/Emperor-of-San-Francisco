@@ -56,6 +56,7 @@ export default class Dices extends React.Component {
       right: 0,
       margin: 0,
       padding: '0px',
+      zIndex: 0,
     };
 
     const buttonStyle = {
@@ -63,6 +64,7 @@ export default class Dices extends React.Component {
       height: 50,
       margin: '1px 1px',
       padding: '0px',
+      zIndex: 1,
     };
 
     return (

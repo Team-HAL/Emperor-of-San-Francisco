@@ -190,7 +190,7 @@ export default class App extends React.Component {
       width: 'inherit',
       height: 'inherit',
       backgroundColor: 'grey',
-      zIndex:-1,
+      zIndex: -1,
     };
 
     const playerViewStyle = {
