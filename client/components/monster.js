@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 
 const Monster = (props) => {
     // props.player
@@ -39,7 +41,7 @@ const Monster = (props) => {
   });
   return (
     <div>
-        { monsters }
+      { monsters }
     </div>
     );
 };

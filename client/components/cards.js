@@ -38,16 +38,20 @@ export default class Cards extends React.Component {
       height: 50,
       margin: '1px 1px',
       padding: '0px',
+      zIndex: 1,
     };
 
     const style = {
       position: 'relative',
       top: 0,
       left: 0,
+      margin: 0,
+      border: 1,
+      width: 300,
     };
 
     return (
-      <span style={style}>
+      <ul style={style}>
         {items}
         {this.state.card.length >= 3 ? null :
           <button
@@ -60,7 +64,7 @@ export default class Cards extends React.Component {
             Draw<br />Card
           </button>
         }
-      </span>
+      </ul>
     );
   }
 }
