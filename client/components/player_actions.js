@@ -33,8 +33,8 @@ export default class PlayerActions extends React.Component {
       position: 'relative',
       marginTop: 0,
       paddingTop: 0,
-      top: 285,
-      left: 580,
+      top: -50,
+      left: 750,
     };
 
     const buttonStyle = {
