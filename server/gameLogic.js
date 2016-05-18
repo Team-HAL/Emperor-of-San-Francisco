@@ -437,7 +437,7 @@ module.exports = (io) => {
         nextUsersDice.push(0);
       }
 
-      io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
+      // io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
 
 
       io.emit('startGame', false);

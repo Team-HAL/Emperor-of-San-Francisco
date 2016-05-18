@@ -20,7 +20,7 @@ export default class Dices extends React.Component {
     // From gameLogic's preEndTurn listener
     // everytime we _endTurn at player_actions.js
     this.props.socket.on('midEndTurn', () => {
-      this.props.socket.emit(endTurn, this.state.keep.concat(this.state.unkeep));
+      this.props.socket.emit('endTurn', this.state.keep.concat(this.state.unkeep));
     });
   }
   componentWillUnmount() {
