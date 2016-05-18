@@ -17,8 +17,8 @@ body {
 
 .container {
   position: relative;
-  width: 1100px;
-  height: 900px;
+  width: 1400px;
+  height: 1080px;
   margin: 3px auto;
   padding: 0px;
   overflow: auto;
@@ -36,6 +36,23 @@ body {
   transition-duration: 2000ms;
   transition-timing-function: ease-out;
 }
+
+.glowbox {
+/*    background: #4c4c4c;*/ 
+/*    width: 400px;
+*/  margin: 0;
+    padding: 10px;
+    -moz-box-shadow: 0 0 5px 5px #ddd;
+    -webkit-box-shadow: 0 0 5px 5px#ddd;
+    box-shadow: 0 0 5px 5px #ddd;
+}
+
+/*.emperor {
+  top: 175px;
+  left: 575px;
+  z-index: 1;
+  position: absolute;
+}*/
 
 .vp-enter {
   opacity: 0;
