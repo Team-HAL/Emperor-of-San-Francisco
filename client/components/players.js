@@ -28,8 +28,8 @@ const Players = (props) => {
       zIndex: 0,
       margin: 0,
       padding: 0,
-      top: 470 + 300 * Math.cos((i + 1) * deg * (Math.PI / 180)),
-      left: 510 + 300 * Math.sin((i + 1) * deg * (Math.PI / 180)),
+      top: 300 + 300 * Math.cos((i + 1) * deg * (Math.PI / 180)),
+      left: 725 + 300 * Math.sin((i + 1) * deg * (Math.PI / 180)),
     };
 
     return (
@@ -41,6 +41,9 @@ const Players = (props) => {
           energy={props.energy}
           cardsIndividual={props.cardsIndividual}
           userNicknames={props.userNicknames}
+          userMonsters={props.userMonsters}
+          currentTurn={props.currentTurn}
+          currentEmperor={props.currentEmperor}
         />
       </div>
     );

@@ -9,6 +9,8 @@ const MonsterSelection = (props) => {
         type="image"
         name={monster}
         src={url}
+        height="150"
+        width="150"
         onClick={() => {
           props.onMonsterSelect(monster);
         }}

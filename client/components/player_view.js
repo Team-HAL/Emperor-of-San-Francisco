@@ -1,3 +1,4 @@
+'use strict';
 import React from 'react';
 import Modal from 'react-modal';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -67,6 +68,7 @@ export default class Player extends React.Component {
     const headerStyle = {
       margin: 0,
       fontSize: '110%',
+      backgroundColor: 'pink',
     };
 
     const textStyle = {
@@ -184,6 +186,19 @@ export default class Player extends React.Component {
       height: 50,
     };
 
+    let avatar = {
+      display: 'inline-block',
+      float: 'left',
+      width: 100,
+      height: 100,
+      zIndex: -1,
+      // backgroundImage: `../../client/images/monster/${this.props.userMonsters[this.props.player]}.png`,
+    };
+
+    const temp = {
+      float: 'left',
+    };
+
     let items;
     if (this.props.cardsIndividual) {
       items = this.props.cardsIndividual[this.props.player].map((card) => {
@@ -193,7 +208,19 @@ export default class Player extends React.Component {
     } else {
       items = <p>You have no card</p>;
     }
-
+    let glowbox;
+    if(this.props.player === this.props.currentTurn){
+      glowbox = 'glowbox';
+    } else {
+      glowbox = '';
+    }
+    let emperor;
+    if(this.props.player === this.props.currentEmperor){
+      emperor = 'emperor';
+      avatar = {};
+    } else {
+      emperor = '';
+    }
     // if (document.getElementsByClassName('board')[0]) {
     //   console.log(document.getElementsByClassName('board')[0].getBoundingClientRect());
     // }
@@ -204,48 +231,51 @@ export default class Player extends React.Component {
     // }) || null;
     // let items = props.cards[props.player];
 
+    let monster_url = `../../client/images/monster/${this.props.userMonsters[this.props.player]}.png`;
     return (
-      <div style={divStyle}>
-        <h5 style={headerStyle}>{this.props.userNicknames[this.props.player]}</h5>
+      <div style={divStyle} className = {glowbox}>
+        <div style={temp}>
+          <h5 style={headerStyle}>{this.props.userNicknames[this.props.player]}</h5>
 
-        <div style={statusBox}>
-          <p style={textStyle}>HP:</p>
-          <div style={hpProgressBar}>
-            <ReactCSSTransitionGroup transitionName="hp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
-              {[<span key={this.state.hpDifference} style={hpDifference}>
-                {this.state.hpDifference !== 0 ? this.state.hpDifference : null}
-              </span>]}
-            </ReactCSSTransitionGroup>
-            <div style={hpBar}>
-              <div style={statusText}>{this.props.healthPoints[this.props.player]}</div>
+          <div style={statusBox}>
+            <p style={textStyle}>HP:</p>
+            <div style={hpProgressBar}>
+              <ReactCSSTransitionGroup transitionName="hp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
+                {[<span key={this.state.hpDifference} style={hpDifference}>
+                  {this.state.hpDifference !== 0 ? this.state.hpDifference : null}
+                </span>]}
+              </ReactCSSTransitionGroup>
+              <div style={hpBar}>
+                <div style={statusText}>{this.props.healthPoints[this.props.player]}</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div style={statusBox}>
-          <p style={textStyle}>VP:</p>
-          <div style={vpProgressBar}>
-            <ReactCSSTransitionGroup transitionName="vp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
-              {[<span key={this.state.vpDifference} style={vpDifference}>
-                {this.state.vpDifference !== 0 ? this.state.vpDifference : null}
-              </span>]}
-            </ReactCSSTransitionGroup>
-            <div style={vpBar}>
-              <div style={statusText}>{this.props.victoryPoints[this.props.player]}</div>
+          <div style={statusBox}>
+            <p style={textStyle}>VP:</p>
+            <div style={vpProgressBar}>
+              <ReactCSSTransitionGroup transitionName="vp" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
+                {[<span key={this.state.vpDifference} style={vpDifference}>
+                  {this.state.vpDifference !== 0 ? this.state.vpDifference : null}
+                </span>]}
+              </ReactCSSTransitionGroup>
+              <div style={vpBar}>
+                <div style={statusText}>{this.props.victoryPoints[this.props.player]}</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div style={statusBox}>
-          <p style={textStyle}>En:</p>
-          <div style={energyProgressBar}>
-            <ReactCSSTransitionGroup transitionName="energy" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
-              {[<span key={this.state.energyDifference} style={energyDifference}>
-                {this.state.energyDifference !== 0 ? this.state.energyDifference : null}
-              </span>]}
-            </ReactCSSTransitionGroup>
-            <div style={energyBar}>
-              <div style={statusText}>{this.props.energy[this.props.player]}</div>
+          <div style={statusBox}>
+            <p style={textStyle}>En:</p>
+            <div style={energyProgressBar}>
+              <ReactCSSTransitionGroup transitionName="energy" transitionEnterTimeout={2000} transitionLeaveTimeout={1}>
+                {[<span key={this.state.energyDifference} style={energyDifference}>
+                  {this.state.energyDifference !== 0 ? this.state.energyDifference : null}
+                </span>]}
+              </ReactCSSTransitionGroup>
+              <div style={energyBar}>
+                <div style={statusText}>{this.props.energy[this.props.player]}</div>
+              </div>
             </div>
           </div>
         </div>

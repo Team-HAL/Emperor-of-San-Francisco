@@ -5,7 +5,7 @@ import PlayerActions from './player_actions.js';
 import TurnView from './turn_view.js';
 import Board from './board.js';
 import PregameView from './pregame_view.js';
-
+import Monster from './monster.js';
 import _ from 'lodash';
 import Dices from './dices.js';
 import CardsView from './cards.js';
@@ -112,6 +112,12 @@ export default class App extends React.Component {
     return (
       <div style={mainStyle}>
         <Dices socket={socket} />
+        <CardsView
+          socket={socket}
+          currentUser={this.state.currentUser}
+          currentTurn={this.state.currentTurn}
+          gameStart={this.state.gameStart}
+        />
         <TurnView
           currentTurn={this.state.currentTurn}
           currentEmperor={this.state.currentEmperor}
@@ -130,6 +136,9 @@ export default class App extends React.Component {
             energy={this.state.energy}
             cardsIndividual={this.state.cardsIndividual}
             userNicknames={this.state.userNicknames}
+            userMonsters={this.state.userMonsters}
+            currentTurn={this.state.currentTurn}
+            currentEmperor={this.state.currentEmperor}
           />
         </div>
         <PlayerActions
@@ -150,14 +159,16 @@ export default class App extends React.Component {
           energy={this.state.energy}
           cardsIndividual={this.state.cardsIndividual}
           userNicknames={this.state.userNicknames}
-        />
-
-        <CardsView
-          socket={socket}
-          currentUser={this.state.currentUser}
+          userMonsters={this.state.userMonsters}
           currentTurn={this.state.currentTurn}
-          gameStart={this.state.gameStart}
+          currentEmperor={this.state.currentEmperor}
         />
+        <Monster         
+          currentEmperor={this.state.currentEmperor}
+          userMonsters={this.state.userMonsters}
+          player={this.state.currentUser}
+        />
+        
       </div>
     );
   }
@@ -178,6 +189,8 @@ export default class App extends React.Component {
     const mainStyle = {
       width: 'inherit',
       height: 'inherit',
+      backgroundColor: 'grey',
+      zIndex:-1,
     };
 
     const playerViewStyle = {
@@ -186,7 +199,7 @@ export default class App extends React.Component {
       margin: 0,
       padding: 0,
       top: 310,
-      left: 464,
+      left: 575,
     };
 
     return (this.state.gameStart ? this.gameView(mainStyle, playerViewStyle) : this.lobbyView());

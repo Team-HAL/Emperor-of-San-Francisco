@@ -33,7 +33,7 @@ export default class Cards extends React.Component {
     });
 
     const buttonStyle = {
-      float: 'right',
+      float: 'left',
       width: 50,
       height: 50,
       margin: '1px 1px',
@@ -41,13 +41,13 @@ export default class Cards extends React.Component {
     };
 
     const style = {
-      position: 'absolute',
-      top: 53,
-      right: 0,
+      position: 'relative',
+      top: 0,
+      left: 0,
     };
 
     return (
-      <div style={style}>
+      <span style={style}>
         {items}
         {this.state.card.length >= 3 ? null :
           <button
@@ -60,7 +60,7 @@ export default class Cards extends React.Component {
             Draw<br />Card
           </button>
         }
-      </div>
+      </span>
     );
   }
 }
