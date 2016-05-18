@@ -110,9 +110,6 @@ export default class App extends React.Component {
   gameView(mainStyle, playerViewStyle) {
     return (
       <div style={mainStyle}>
-        <ResetButton
-          socket={socket}
-        />
         <Dices 
           socket={socket}
         />
@@ -172,6 +169,9 @@ export default class App extends React.Component {
           userMonsters={this.state.userMonsters}
           player={this.state.currentUser}
         />
+        <ResetButton
+          socket={socket}
+        />
       </div>
     );
   }
@@ -201,8 +201,8 @@ export default class App extends React.Component {
       position: 'relative',
       margin: 0,
       padding: 0,
-      top: 310,
-      left: 575,
+      top: -40,
+      left: 740,
     };
 
     return (this.state.gameStart ? this.gameView(mainStyle, playerViewStyle) : this.lobbyView());

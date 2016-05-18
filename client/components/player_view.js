@@ -233,7 +233,7 @@ export default class Player extends React.Component {
 
     let monster_url = `../../client/images/monster/${this.props.userMonsters[this.props.player]}.png`;
     return (
-      <div style={divStyle} className = {glowbox}>
+      <div style={divStyle} className={glowbox}>
         <div style={temp}>
           <h5 style={headerStyle}>{this.props.userNicknames[this.props.player]}</h5>
 
