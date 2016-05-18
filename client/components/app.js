@@ -9,6 +9,7 @@ import Monster from './monster.js';
 import _ from 'lodash';
 import Dices from './dices.js';
 import CardsView from './cards.js';
+import ResetButton from './reset_button.js';
 
 
 const socket = io.connect();
@@ -51,12 +52,10 @@ export default class App extends React.Component {
   }
   
   _win(msg) {
-    console.log(msg);
     alert(msg);
   }
   
   _lose(msg) {
-    console.log(msg);
     alert(msg);
   }
 
@@ -111,6 +110,9 @@ export default class App extends React.Component {
   gameView(mainStyle, playerViewStyle) {
     return (
       <div style={mainStyle}>
+        <ResetButton
+          socket={socket}
+        />
         <Dices socket={socket} />
         <CardsView
           socket={socket}
@@ -168,7 +170,6 @@ export default class App extends React.Component {
           userMonsters={this.state.userMonsters}
           player={this.state.currentUser}
         />
-        
       </div>
     );
   }

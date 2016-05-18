@@ -7,11 +7,13 @@ export default class PlayerActions extends React.Component {
       canYield: false,
       endedTurn: false,
       currentUserTurn: this.props.currentTurn === this.props.player,
+      turnKey: 7.462,
     };
   }
 
   _endedTurn() {
     this.setState({ endedTurn: true });
+    this.props.socket.emit('preEndTurn');
     setTimeout(() => {
       this.setState({ endedTurn: false });
     }, 5000);
@@ -47,10 +49,13 @@ export default class PlayerActions extends React.Component {
         <button
           className="btn btn-info"
           style={buttonStyle}
-          onClick={() => {
-            this.props.socket.emit('preEndTurn');
+          key={this.state.key}
+          onClick={(event) => {
+            event.preventDefault();
+            this.setState({ turnKey: Math.random() });
             this._endedTurn();
           }}
+          key={this.state.turnKey}
           disabled={!this.state.endedTurn ? this.props.currentTurn !== this.props.player : this.state.endedTurn}
         >
           End Turn

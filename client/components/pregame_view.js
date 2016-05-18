@@ -14,6 +14,7 @@ class PregameView extends React.Component {
       monster: '',
     };
     this.props.socket.on('updateSelectabledMonsters', this._updateSelectabledMonsters.bind(this));
+    this.props.socket.on('formCompleted', (formCompleted) => { this.setState(formCompleted) });
 
   }
 
@@ -34,7 +35,7 @@ class PregameView extends React.Component {
 
   startGame() {
     this.props.socket.emit('start', {draw:false});
-  }  
+  } 
 
   loginPage() {
     return (
