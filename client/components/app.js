@@ -113,7 +113,9 @@ export default class App extends React.Component {
         <ResetButton
           socket={socket}
         />
-        <Dices socket={socket} />
+        <Dices 
+          socket={socket}
+        />
         <CardsView
           socket={socket}
           currentUser={this.state.currentUser}

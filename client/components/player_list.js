@@ -21,7 +21,7 @@ const PlayerList = (props) => {
     }
 
     return (
-      <tr>
+      <tr key={key + Math.random()}>
         <td className="col-sm-1"><h5>{key + 1}</h5></td>
         <td className="col-sm-5"><h5>{userName}</h5></td>
         <td className="col-sm-6">
@@ -34,12 +34,14 @@ const PlayerList = (props) => {
 
   return (
     <table className="table">
-      <tr>
-        <td className="col-sm-1"><h3>#</h3></td>
-        <td className="col-sm-5"><h3>Nickname</h3></td>
-        <td className="col-sm-6"><h3>Monster</h3></td>
-      </tr>
-      {items}
+      <tbody>
+        <tr>
+          <td className="col-sm-1"><h3>#</h3></td>
+          <td className="col-sm-5"><h3>Nickname</h3></td>
+          <td className="col-sm-6"><h3>Monster</h3></td>
+        </tr>
+        {items}
+      </tbody>
     </table>
   );
 
