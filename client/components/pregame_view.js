@@ -13,13 +13,18 @@ class PregameView extends React.Component {
       nickname: '',
       monster: '',
     };
-    this.props.socket.on('updateSelectabledMonsters', this._updateSelectabledMonsters.bind(this));
-    this.props.socket.on('formCompleted', (formCompleted) => { this.setState(formCompleted) });
+    
 
   }
 
-  _updateSelectabledMonsters(selectableMonsters) {
-    this.setState({ selectableMonsters });
+  componentDidMount() {
+    this.props.socket.on('updateSelectabledMonsters', (selectableMonsters) => { this.setState({ selectableMonsters}) });
+    this.props.socket.on('formCompleted', (formCompleted) => { this.setState({ formCompleted }) });
+  }
+
+  componentWillUnmount() {
+    this.props.socket.off('updateSelectabledMonsters');
+    this.props.socket.off('formCompleted');  
   }
 
   handleSubmit(event) {

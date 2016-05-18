@@ -7,14 +7,17 @@ export default class Cards extends React.Component {
     this.state = {
       card: [],
     };
-
-    props.socket.on('cardDisplay', (data) => {
-      this.setState({ card: data });
-    });
-
     this.draw = this.draw.bind(this);
   }
 
+  componentDidMount() {
+    this.props.socket.on('cardDisplay', (data) => {
+      this.setState({ card: data });
+    });
+  }
+  componentWillUnmount() {
+    this.props.socket.off('cardDisplay');
+  }
   draw() {
     this.props.socket.emit('draw', 3 - this.state.card.length);
   }
