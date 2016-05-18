@@ -92,13 +92,14 @@ module.exports = (io) => {
     });
 
     // Roll dice from dices.js
-        }
+
     socket.on('rollDice', data => {
       // search for current player
       let player;
       Users.forEach((user, index) => {
         if (user.socket === socket) {
           player = index;
+        }
       });
 
       // Data to emit
@@ -239,7 +240,6 @@ module.exports = (io) => {
     });
 
     socket.on('preEndTurn', () => {
-      console.log('in pre end turn');
       socket.emit('midEndTurn');
     });
 
@@ -389,13 +389,19 @@ module.exports = (io) => {
     socket.on('restartGame', () => {
       currentCards = [];
       discardPile = [];
-      Users = [];
       currentTurn = 1;
       currentEmperor = -1;
       selectableMonsters = ['Alienoid', 'Cyber_Bunny', 'Giga_Zaur', 'Kraken', 'Meka_Dragon', 'The_King'];
       userMonsters = [];
       userNicknames = [];
       emitted = false;
+
+      for (var i = 0; i < Users.length; i++) {
+        delete Users[i];
+      }
+
+      Users = [];
+
 
       for (let playerConnection in socket.nsp.connected) {
         Users.push(new UserTemplate(socket.nsp.connected[playerConnection]));

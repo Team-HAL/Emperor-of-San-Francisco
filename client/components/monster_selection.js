@@ -5,7 +5,8 @@ const MonsterSelection = (props) => {
     const url = `../../client/images/monster/${monster}.png`;
 
     return (
-      <input 
+      <input
+        key={monster + Math.random()}
         type="image"
         name={monster}
         src={url}

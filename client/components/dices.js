@@ -8,23 +8,32 @@ export default class Dices extends React.Component {
       keep: [],
       unkeep: [0, 0, 0, 0, 0, 0],
     };
+  }
 
+  componentDidMount() {
     // From gameLogic's rollDice listener everytime we roll at the bottom
-    props.socket.on('diceDisplay', data => {
+    this.props.socket.on('diceDisplay', data => {
+      console.log('RAA');
       this.setState({ keep: data.keep, unkeep: data.unkeep });
     });
 
     // From gameLogic's preEndTurn listener
     // everytime we _endTurn at player_actions.js
-    props.socket.on('midEndTurn', () => {
-      this.props.socket.emit('endTurn', this.state.keep.concat(this.state.unkeep));
+    this.props.socket.on('midEndTurn', () => {
+      this.props.socket.emit(endTurn, this.state.keep.concat(this.state.unkeep));
     });
   }
+  componentWillUnmount() {
+    this.props.socket.off('diceDisplay');
+    this.props.socket.off('midEndTurn');
+  }
+
   keep(index) {
     const temp = this.state;
     temp.keep.push(temp.unkeep.splice(index, 1)[0]);
     this.props.socket.emit('updateDice', temp);
   }
+
   unkeep(index) {
     const temp = this.state;
     temp.unkeep.push(temp.keep.splice(index, 1)[0]);
