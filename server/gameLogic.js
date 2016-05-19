@@ -21,7 +21,7 @@ class UserTemplate {
     this.VP = 0;
     this.maxVP = 20;
     this.socket = socket;
-    this.energy = 10;
+    this.energy = 0;
     this.inTokyo = false;
     this.rollRemaining = 3;
     this.maxRoll = 3;
