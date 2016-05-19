@@ -119,12 +119,7 @@ export default class App extends React.Component {
           currentTurn={this.state.currentTurn}
           gameStart={this.state.gameStart}
         />
-        <TurnView
-          currentTurn={this.state.currentTurn}
-          currentEmperor={this.state.currentEmperor}
-          userNicknames={this.state.userNicknames}
-        />
-
+        
         <Board />
 
         {/* Current Player View */}
@@ -194,6 +189,7 @@ export default class App extends React.Component {
       height: 'inherit',
       backgroundImage: 'url(../../client/images/wood_background.jpg)',
       zIndex: -1,
+      overflow: 'hidden',
     };
 
     const playerViewStyle = {
@@ -201,7 +197,7 @@ export default class App extends React.Component {
       position: 'relative',
       margin: 0,
       padding: 0,
-      top: -40,
+      top: -575,
       left: 740,
     };
 

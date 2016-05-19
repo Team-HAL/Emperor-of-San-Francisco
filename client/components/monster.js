@@ -16,18 +16,18 @@ const Monster = (props) => {
       zIndex: 0,
       margin: 0,
       padding: 0,
-      width: 100,
-      height: 100,
-      top: 300 + 300 * Math.cos((i) * deg * (Math.PI / 180)),
-      left: 625 + 300 * Math.sin((i) * deg * (Math.PI / 180)),
+      width: 150,
+      height: 150,
+      top: 500 - 425 * Math.cos((i) * deg * (Math.PI / 180)),
+      left: 600 - 425 * Math.sin((i) * deg * (Math.PI / 180)),
     };
 
     const emperor = {
-      top: 225,
-      left: 575,
+      top: 300,
+      left: 470,
       zIndex: 0,
-      width:275,
-      height:275,
+      width:525,
+      height:525,
       position: 'absolute',
     };
     const checkEmperor = () => {
