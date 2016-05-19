@@ -192,7 +192,7 @@ export default class App extends React.Component {
     const mainStyle = {
       width: 'inherit',
       height: 'inherit',
-      backgroundColor: 'grey',
+      backgroundImage: 'url(../../client/images/wood_background.jpg)',
       zIndex: -1,
     };
 
