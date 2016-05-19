@@ -75,7 +75,7 @@ export default class Player extends React.Component {
     const textStyle = {
       display: 'inline-block',
       position: 'relative',
-      top: 0,
+      top: -6,
       left: 0,
       margin: 0,
       padding: 0,
