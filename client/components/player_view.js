@@ -96,8 +96,8 @@ export default class Player extends React.Component {
       top: 3,
       margin: 0,
       marginLeft: 1,
-      width: 50,
-      height: 13,
+      width: 75,
+      height: 25,
       backgroundColor: '#ddd',
       opacity: 1,
     };
@@ -125,8 +125,8 @@ export default class Player extends React.Component {
       left: 1,
       margin: 0,
       marginLeft: 1,
-      width: 50,
-      height: 13,
+      width: 75,
+      height: 25,
       backgroundColor: '#ddd',
       opacity: 1,
     };
@@ -154,8 +154,8 @@ export default class Player extends React.Component {
       left: 3,
       margin: 0,
       marginLeft: 1,
-      width: 50,
-      height: 13,
+      width: 75,
+      height: 25,
       backgroundColor: '#ddd',
       opacity: 1,
     };
@@ -179,7 +179,6 @@ export default class Player extends React.Component {
     const statusText = {
       display: 'table',
       position: 'relative',
-      top: -5,
       margin: 'auto',
       color: 'white',
     };
