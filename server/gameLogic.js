@@ -21,7 +21,7 @@ class UserTemplate {
     this.VP = 0;
     this.maxVP = 20;
     this.socket = socket;
-    this.energy = 10;
+    this.energy = 0;
     this.inTokyo = false;
     this.rollRemaining = 3;
     this.maxRoll = 3;
@@ -144,12 +144,12 @@ module.exports = (io) => {
 
       Users.forEach((user, index)=>{
         if(user.HP<=0){
-          e.onDeath(Users, index, currentTurn, io, socket);
+          e.onDeath(Users, index, currentTurn, io, socket, userMonsters);
           currentEmperor = e.findEmperor(Users);
         } else if ( user.VP >=20){
           e.onVictory(Users, user)
         }
-      })
+      });
 
       const tempHP = Users.map((user) => {
         return user.HP;
@@ -167,6 +167,8 @@ module.exports = (io) => {
         return user.VP;
       });
       currentEmperor = e.findEmperor(Users);
+
+      io.emit('updateUserMonsters', userMonsters);
       io.emit('updateHP', tempHP);
       io.emit('updateVP', tempVP);
       io.emit('updateEnergy', tempEnergy);
@@ -190,7 +192,7 @@ module.exports = (io) => {
 
       Users.forEach((user, index)=>{
         if(user.HP<=0){
-          e.onDeath(Users, index, currentTurn, io, socket);
+          e.onDeath(Users, index, currentTurn, io, socket, userMonsters);
           currentEmperor = e.findEmperor(Users);
         } else if ( user.VP >=20){
           e.onVictory(Users, user)
@@ -224,6 +226,7 @@ module.exports = (io) => {
       }
 
       emitted = true;
+      io.emit('updateUserMonsters', userMonsters);
       io.emit('emperorAttack', { canYield: false });
       io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
       io.emit('updateHP', tempHP);
@@ -272,7 +275,7 @@ module.exports = (io) => {
       e.onVPEmperorIncrease(Users, player);
       Users.forEach((user, index) => {
         if (user.HP <= 0) {
-          e.onDeath(Users, index, currentTurn, io, socket);
+          e.onDeath(Users, index, currentTurn, io, socket, userMonsters);
           currentEmperor = e.findEmperor(Users);
         } else if (user.VP >= 20) {
           e.onVictory(Users, user);
@@ -313,6 +316,7 @@ module.exports = (io) => {
             nextUsersDice.push(0);
           }
 
+          io.emit('updateUserMonsters', userMonsters);
           io.emit('diceDisplay', { keep: [], unkeep: nextUsersDice });
           io.emit('updateHP', tempHP);
           io.emit('updateVP', tempVP);

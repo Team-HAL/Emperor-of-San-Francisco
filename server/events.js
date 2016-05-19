@@ -117,9 +117,8 @@ module.exports = {
     })
   },
 
-  onDeath: (Users, player, currentTurn, io, socket) => {
+  onDeath: (Users, player, currentTurn, io, socket, userMonsters) => {
     let targetuser = Users[player];
-    console.log(Object.keys(Users).length)
     if (Object.keys(Users).length===0) {
       let playercards = targetuser.action.deathmodifier;
       if (playercards) {
@@ -145,6 +144,8 @@ module.exports = {
         Users[currentTurn].isEmperor = true;
       }
       Users[player].isAlive = false;
+      console.log(player);
+      userMonsters[player] = "rip";
       module.exports.getUser(Users, socket);
       module.exports.loadUsers(Users, io);
     }
