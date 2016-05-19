@@ -1,11 +1,19 @@
-const webpack = require('./webpack.config.js');
+const webpackoptions = require('./webpack.config.js');
+const webpack = require('webpack');
+
 
 module.exports = (grunt) => {
+  grunt.loadNpmTasks("grunt-webpack");
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     webpack: {
-      options: webpack,
+      options: webpackoptions,
+      build: {  
+                plugins:
+                [new webpack.DefinePlugin({'process.env': { NODE_ENV: JSON.stringify('production'),},}),],
+             },
     },
 
     concat: {
