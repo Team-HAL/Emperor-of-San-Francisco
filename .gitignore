@@ -1,10 +1,11 @@
 node_modules
 .env
 config/component/config.js
+dist/emperor-of-san-francisco.js
 .floo
 .flooignore
 bundle.js
 testBundle.js
-.eslintrc.js
+.eslintrc
 npm-debug.log
 .DS_Store
