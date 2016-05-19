@@ -1,9 +1,11 @@
+const webpack = require('./webpack.config.js');
+
 module.exports = (grunt) => {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     webpack: {
-      options: require('./webpack.config.js'),
+      options: webpack,
     },
 
     concat: {

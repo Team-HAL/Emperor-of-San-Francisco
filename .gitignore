@@ -1,7 +1,7 @@
 node_modules
 .env
 config/component/config.js
-dist
+dist/emperor-of-san-francisco.js
 .floo
 .flooignore
 bundle.js

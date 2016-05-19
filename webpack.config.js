@@ -22,9 +22,7 @@ module.exports = {
     historyApiFallback: true,
     contentBase: './',
   },
-  progress: true,
-  watch: true,
-  keepalive: true,
+
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
