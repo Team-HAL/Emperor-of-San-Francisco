@@ -13,7 +13,7 @@ const Monster = (props) => {
     let monster_url = `../../client/images/monster/${monsterArray[i]}.png`;
     let style = {
       position: 'absolute',
-      zIndex: 1,
+      zIndex: 0,
       margin: 0,
       padding: 0,
       width: 100,
@@ -23,9 +23,9 @@ const Monster = (props) => {
     };
 
     const emperor = {
-      top: 175,
+      top: 225,
       left: 575,
-      zIndex: 1,
+      zIndex: 0,
       width:275,
       height:275,
       position: 'absolute',

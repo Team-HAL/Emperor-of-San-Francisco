@@ -5,7 +5,7 @@ const Board = (props) => {
     backgroundImage: 'url("../../client/images/board/esfBoard.jpg")',
     backgroundSize: 'cover',
     position: 'absolute',
-    top: 150,
+    top: 190,
     left: 550,
     zIndex: -1,
     width: 325,
