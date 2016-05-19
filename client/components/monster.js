@@ -37,7 +37,7 @@ const Monster = (props) => {
         return style;
       }
     }
-    return <img src={ monster_url } key={ monster } style={checkEmperor()} />;
+    return <img src={ monster_url } key={ monster + Math.random() } style={checkEmperor()} />;
   });
   return (
     <div>

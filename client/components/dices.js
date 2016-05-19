@@ -13,7 +13,6 @@ export default class Dices extends React.Component {
   componentDidMount() {
     // From gameLogic's rollDice listener everytime we roll at the bottom
     this.props.socket.on('diceDisplay', data => {
-      console.log('RAA');
       this.setState({ keep: data.keep, unkeep: data.unkeep });
     });
 
