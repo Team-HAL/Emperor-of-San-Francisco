@@ -68,7 +68,8 @@ export default class Player extends React.Component {
     const headerStyle = {
       margin: 0,
       fontSize: '110%',
-      backgroundColor: 'pink',
+      color: 'white',
+      fontWeight: 'bold',
     };
 
     const textStyle = {
@@ -80,6 +81,8 @@ export default class Player extends React.Component {
       padding: 0,
       fontSize: '90%',
       textIndent: 7,
+      color: 'white',
+      fontWeight: 'bold',
     };
 
     const statusBox = {
