@@ -28,10 +28,9 @@
 ## Requirements
 
 - React
-- Redux
 - Express/NodeJS
 - Socket.io
-- RethinkDB
+- Grunt
 - etc
 
 ## Development
